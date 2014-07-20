@@ -13,6 +13,9 @@ function handleResponse(e) {
   try {
     var loginID = e.parameter["LoginID"];
     var appName = e.parameter["AppName"];
+//    return ContentService
+//    .createTextOutput(JSON.stringify(e))
+//    .setMimeType(ContentService.MimeType.JSON);
     //return getAssignments("RobertWoodley@steamspace.net", "VisualCalculator");
     return getAssignments(loginID, appName);
   } catch(e){
@@ -32,7 +35,8 @@ function getAssignments(loginID, inAppName) {
   Logger.log(rosters);
 
   try {
-    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
+//    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
+    var doc = getSpreadsheet("Assignments");
     var sheet = doc.getSheetByName("Assignments");
     var retval = [];
     
@@ -101,8 +105,10 @@ function getRostersForLoginID(loginID) {
 
 }
 function getRosterSpreadsheet() {
+  return getSpreadsheet("Rosters");
+}
+function getSpreadsheet(fileName) {
   var folderName = 'SteamSpaceTeacher';
-  var fileName = 'Rosters';
   var folders = DriveApp.getFoldersByName(folderName);
   var returnSheet;
 
@@ -141,32 +147,4 @@ function returnJSON(successOrFailure, object) {
     .createTextOutput(JSON.stringify({"result":"error", "error": object}))
     .setMimeType(ContentService.MimeType.JSON);
 }
-function setup() {  // required when publishing.
-  var doc = SpreadsheetApp.getActiveSpreadsheet();
-  Logger.log(doc.getId());
-  SCRIPT_PROP.setProperty("key", doc.getId());
-}
-
-// --- OLD
-function getRostersForLoginIDOld(loginId) {
-  var url = "https://script.google.com/macros/s/AKfycbxw-URaJzeDjOJvTYFGqcTqPIZ7fSg92eFKCAlezUBAHtQqLis/exec";
-  var payload = { 
-    LoginID : loginId
-  };
-
-  var params = { 
-    method : "post",
-    payload : payload
-  }
-
-  var HTTPResponse;
-
-  try{
-    HTTPResponse = UrlFetchApp.fetch(url, params);
-  }catch(e){
-    Logger.log(e);
-  }
-  return HTTPResponse.getContentText();
-}
-
 
