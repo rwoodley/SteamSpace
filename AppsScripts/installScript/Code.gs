@@ -1,41 +1,12 @@
 function doGet() {
-  return HtmlService.createHtmlOutputFromFile('bobtest.html');
+  return HtmlService.createHtmlOutputFromFile('InstallerLog.html');
 }
 var _date = new Date();
 var _html;
 function logMsg(msg) {
   Logger.log(msg);
   _html += "<br/>" + _date.toUTCString() + ": " + msg;
-  return msg;
-}
-function testSpreadSheetOpen(folderName, fileName) {
-  var folderName = 'SteamSpaceTeacher';
-  var fileName = 'SteamSpace-Rosters';
-  var folders = DriveApp.getFoldersByName(folderName);
-
-  if (!folders.hasNext())
-    return errorMsg("No such folder");
-  
-  //var files = folders.next().getFilesByType('application/vnd.google-apps.spreadsheet');
-  var count = 0;
-  var returnSheet;
-  while (folders.hasNext()) {
-    count++;
-    if (count > 1) return errorMsg("Found more than 1 folders with the name " + folderName);
-    var folder = folders.next();
-    Logger.log("Found " + folder.getName());
-    var files = folder.getFilesByType("application/vnd.google-apps.spreadsheet");
-    while (files.hasNext()) {
-      var file = files.next();
-      Logger.log(file.getName() + file.getMimeType());
-      var spreadsheet = SpreadsheetApp.openById(file.getId());
-      Logger.log("N sheets = "  + spreadsheet.getNumSheets());
-      if (file.getName() == fileName)
-        returnSheet = file;
-    }
-  }
-  if (returnSheet === undefined)
-    Logger.log("can't find file: " + fileName);
+  return _html;
 }
 var FOLDER_NAME = "SteamSpaceTeacherNew";
 function installScript() {
@@ -44,26 +15,21 @@ function installScript() {
   if (folder == null) return logMsg("Can't create folder: " + FOLDER_NAME);
 
   var res = createRosterFile(folder);
-  if (res == null) return logMsg("Can't create rosters file.");
+  if (res == null) logMsg("Didn't create Rosters file.");
   
-}
-function createFolder(folderName) {
-  try {
-    var folders = DriveApp.searchFolders("title contains '" + folderName + "'");
-    if (folders.hasNext()) {
-      logMsg("Folder " + folderName + " already exists, not recreating.");
-      return folders.next();
-    }
-    var folder = DriveApp.createFolder(folderName);
-    logMsg("Created folder: " + folderName);
-    return folder;
-  }
-  catch (e) {
-    logMsg("Unexpected error: " + e);
-    return null;
-  }
-}
+  var res = createAssignmentsFile(folder);
+  if (res == null) logMsg("Didn't create Assignments file.");
 
+  return _html;
+}
+function createAssignmentsFile(folder) {
+  var file = createSpreadsheet(folder, "Assignments");
+  if (file == null) return file;
+  var sheet = file.getActiveSheet();
+  sheet.setName("Assignments");
+  sheet.appendRow(["AssignmentID","AssignmentName","SteamSpaceApp","Roster","Key","State","Notes"]);
+  return file;
+}
 function createRosterFile(folder) {
   var file = createSpreadsheet(folder, "Rosters");
   if (file == null) return file;
@@ -100,6 +66,22 @@ function createSpreadsheet(folder, fileName) {
     return null;
   }
 }
+function createFolder(folderName) {
+  try {
+    var folders = DriveApp.searchFolders("title contains '" + folderName + "'");
+    if (folders.hasNext()) {
+      logMsg("Folder " + folderName + " already exists, not recreating.");
+      return folders.next();
+    }
+    var folder = DriveApp.createFolder(folderName);
+    logMsg("Created folder: " + folderName);
+    return folder;
+  }
+  catch (e) {
+    logMsg("Unexpected error: " + e);
+    return null;
+  }
+}
 function listFiles() {
 // Process all files in the user's Drive.
  var files = DriveApp.getFiles();
@@ -111,4 +93,3 @@ function listFiles() {
  }
  return html;
 }
-
