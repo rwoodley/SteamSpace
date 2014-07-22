@@ -1,6 +1,11 @@
-// This is a web app. The Chrome Web app queries it for a list of assignments. As it now stands it is read-only.
+// This is a web app. You query it for a list of assignments. As it now stands it is read-only.
+var PARAM_LOGIN_ID = "LoginID";
+var PARAM_APP_NAME = "AppName";
+var FOLDER = "SteamSpaceTeacher";
+var ROSTERSFILE = "Rosters";
+var ASSIGNMENTFILE = "Assignments";
+var ASSIGNMENTSHEET = "Assignments";
 
-var SCRIPT_PROP = PropertiesService.getScriptProperties(); // new property service
 function doGet(e){
   return handleResponse(e);
 }
@@ -11,15 +16,15 @@ function doPost(e){
  
 function handleResponse(e) {
   try {
-    var loginID = e.parameter["LoginID"];
-    var appName = e.parameter["AppName"];
-//    return ContentService
-//    .createTextOutput(JSON.stringify(e))
-//    .setMimeType(ContentService.MimeType.JSON);
+    var loginID = e.parameter[PARAM_LOGIN_ID];
+    var appName = e.parameter[PARAM_APP_NAME];
+    //return ContentService
+    //.createTextOutput(JSON.stringify(e))
+    //.setMimeType(ContentService.MimeType.JSON);
     //return getAssignments("RobertWoodley@steamspace.net", "VisualCalculator");
     return getAssignments(loginID, appName);
   } catch(e){
-    return returnJSON("error", e);
+    return returnJSON("error", "loginID = " + loginID + ", appName = " + appName);
   } finally { }
 }
 function test() {
@@ -29,15 +34,14 @@ function test() {
 function getAssignments(loginID, inAppName) {
   var inAppName = inAppName.toUpperCase();
   var rostersText = getRostersForLoginID(loginID);
-  if (rostersText == null) return returnJSON('error', "Can't read Rosters file");
+  if (rostersText == null) return returnJSON('error', "No rosters for " + loginID);
   Logger.log("Roster text = " + rostersText);
   var rosters = rostersText.split(';');
   Logger.log(rosters);
 
   try {
-//    var doc = SpreadsheetApp.openById(SCRIPT_PROP.getProperty("key"));
-    var doc = getSpreadsheet("Assignments");
-    var sheet = doc.getSheetByName("Assignments");
+    var doc = getSpreadsheet(ASSIGNMENTFILE);
+    var sheet = doc.getSheetByName(ASSIGNMENTSHEET);
     var retval = [];
     
     var headRow = 1;
@@ -63,8 +67,11 @@ function getAssignments(loginID, inAppName) {
         if (headers[i] == "Notes") notes = rows[j][i];
         if (headers[i] == "Key") key = rows[j][i];
       }
+      Logger.log("Comparing " + appName.toUpperCase() + " to " + inAppName);
       if (appName.toUpperCase() != inAppName) continue;
+      Logger.log("Checking rosters for " + roster);
       if (rosters.indexOf(roster) < 0) continue;
+      Logger.log("Found an assignment.");
       var retobj = { 
         AssignmentName : assignmentName,
         Key : key,
@@ -72,6 +79,7 @@ function getAssignments(loginID, inAppName) {
       };
       retval.push(retobj);
     }
+    Logger.log("Done checking assignments, retval = " + JSON.stringify(retval));
     return returnJSON('success', retval);
   } catch(e){
     return returnJSON('error', e);
@@ -80,7 +88,7 @@ function getAssignments(loginID, inAppName) {
 }
 // --- GetRosters() code.
 function getRostersForLoginID(loginID) {
-  var loginID = 'rlwoodley@gmail.com';
+//  var loginID = 'rlwoodley@gmail.com';
   
   var ss = getRosterSpreadsheet();
   if (ss == null) return null;
@@ -105,10 +113,10 @@ function getRostersForLoginID(loginID) {
 
 }
 function getRosterSpreadsheet() {
-  return getSpreadsheet("Rosters");
+  return getSpreadsheet(ROSTERSFILE);
 }
 function getSpreadsheet(fileName) {
-  var folderName = 'SteamSpaceTeacher';
+  var folderName = FOLDER;
   var folders = DriveApp.getFoldersByName(folderName);
   var returnSheet;
 
@@ -147,4 +155,3 @@ function returnJSON(successOrFailure, object) {
     .createTextOutput(JSON.stringify({"result":"error", "error": object}))
     .setMimeType(ContentService.MimeType.JSON);
 }
-

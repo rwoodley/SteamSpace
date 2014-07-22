@@ -89,7 +89,7 @@ function GUISetup() {
   function initSelectMenuForTeachers(teachers) {
     showLoading(false);
     var menuEl = document.getElementById('teacherMenu');
-    if (teachers.length == 0) {
+    if (teachers == null || teachers.length == 0) {
       menuEl.innerHTML = '<li><h4>No Teachers Defined</h4></li>';
       return errorMsg('In order to use this app, you need a key file from your teacher.');
     }
@@ -220,7 +220,9 @@ function GUISetup() {
     var inputel = document.getElementById(inputElName);
     inputel.disabled = false;
     inputel.focus();
-    window.speechSynthesis.speak(new SpeechSynthesisUtterance(word));
+    var utt = new SpeechSynthesisUtterance(word);
+    utt.lang = 'en-US'; // later give techer a choice. TODO
+    window.speechSynthesis.speak();
   }
 
 }

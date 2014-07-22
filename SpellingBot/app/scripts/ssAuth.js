@@ -3,18 +3,18 @@
 (function() {
   'use strict';
   /* See: https://developers.google.com/+/web/signin/javascript-flow */
-
+ //render();
  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
- po.src = 'https://apis.google.com/js/client:plusone.js?onload=render';
+ po.src = 'https://apis.google.com/js/client.js?onload=render';
  var s = document.getElementsByTagName('script')[0]; 
  s.parentNode.insertBefore(po, s);
 })();
 
 var _inHere = false;
 function signinCallback(authResult) {
-  if (_inHere) return;  // this is neede because 2nd gapi.auth.signIn below seems to recurse.
+  //if (_inHere) return;  // this is neede because 2nd gapi.auth.signIn below seems to recurse.
   _inHere = true;
-  if (authResult['status']['signed_in']) {
+  if (authResult && !authResult.error) {
     /*
     var additionalParams = {
       'scope' : ' https://www.googleapis.com/auth/plus.profile.emails.read',
@@ -65,13 +65,27 @@ function signinCallback(authResult) {
   }
 }
 /* Executed when the APIs finish loading */
+var _clientId =  "683512459303-fju7kprs821m0ssdi1m5hruo7ff99lpg.apps.googleusercontent.com";
 function render() {
         _inHere = false;
+  gapi.client.setApiKey("AIzaSyB6fvROFZyGeAEme7sLxRAG_XGewoivrPQ");
 
   // Additional params including the callback, the rest of the params will
   // come from the page-level configuration.
   var additionalParams = {
-   'callback': signinCallback
+
+   clientid:  "683512459303-fju7kprs821m0ssdi1m5hruo7ff99lpg.apps.googleusercontent.com",
+   scope:     "https://www.googleapis.com/auth/plus.login https://www.googleapis.com/auth/plus.profile.emails.read",
+   immediate: 'true'
+
   };
-  gapi.auth.signIn(additionalParams); // Will use page level configuration
+
+//  gapi.auth.authorize(additionalParams, signinCallback); // Will use page level configuration
+  var scopes = "https://www.googleapis.com/auth/plus.login  https://www.googleapis.com/auth/plus.profile.emails.read   https://www.googleapis.com/auth/drive";
+  gapi.auth.authorize({client_id: _clientId, scope: scopes, immediate: false}, signinCallback);
+  
+  
+}
+function requestScope(inscope, callback) {
+  gapi.auth.authorize({client_id: _clientId, scope: inscope, immediate: false}, signinCallback);
 }
