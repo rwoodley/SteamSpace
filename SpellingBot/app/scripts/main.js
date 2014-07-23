@@ -6,6 +6,7 @@ function ss_init(loginID, emailID) { // called on auth complete, kicks off menu 
 // Setup GUI - Called on page load.
 (function () {
   'use strict';
+  var voices = window.speechSynthesis.getVoices();  // this needs time to load, kick it off.
   var gui = new GUISetup();
 })();
 // handle user clicks. required because I used innerHTML property below.
@@ -233,12 +234,25 @@ function GUISetup() {
     if (retval.answers)
       showResults(retval.answers); 
   }
+  var _firstWord = true;
+  var _voice;
   this.speakWord = function(word, inputElName) {
     var inputel = document.getElementById(inputElName);
     inputel.disabled = false;
     inputel.focus();
+
+    if (_firstWord) {
+      _firstWord = false;
+      var voices = window.speechSynthesis.getVoices();
+      for(var i = 0; i < voices.length; i++ ) {
+        if (voices[i].lang == 'en-GB') {
+          _voice = voices[i];
+          break;
+        }
+      }
+    }
     var utt = new SpeechSynthesisUtterance(word);
-    utt.lang = 'en-US'; // later give techer a choice. TODO
+    utt.voice = _voice;
     window.speechSynthesis.speak(utt);
   }
 
