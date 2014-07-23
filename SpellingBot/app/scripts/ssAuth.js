@@ -84,7 +84,6 @@ function render() {
   var scopes = "https://www.googleapis.com/auth/plus.login  https://www.googleapis.com/auth/plus.profile.emails.read   https://www.googleapis.com/auth/drive";
   gapi.auth.authorize({client_id: _clientId, scope: scopes, immediate: false}, signinCallback);
   
-  
 }
 function requestScope(inscope, callback) {
   gapi.auth.authorize({client_id: _clientId, scope: inscope, immediate: false}, signinCallback);

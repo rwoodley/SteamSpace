@@ -28,5 +28,5 @@ function ss_postForm(key, emailID, formName, resultsCallback) {
   var $form = $("#"+formName);
   var serializedData = $form.serialize();
   serializedData += "&LoginID=" + emailID;
-  callWebApp(key, serializedData, "post", resultsCallback);
+  ss_callWebApp(key, serializedData, "post", resultsCallback);
 }

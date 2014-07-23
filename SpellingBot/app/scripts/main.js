@@ -60,13 +60,30 @@ function GUISetup() {
   // ======= Handle Steamspace Initialization ========
   var _loginID = "";
   var _emailID = "";
+  this._successfulAuthorization = false;
   this.initGUIForSteamspace = function (loginID, emailID) {
+    _that._successfulAuthorization = true;
+    if (window.SpeechSynthesisUtterance === undefined) {
+      return errorMsg("This browser does not support Speech Synthesis. Try another browser, like Chrome.")
+    }
     if (loginID == null) return errorMsg("You are not logged in. Please log in to Google, and restart.");
     _loginID = loginID;
     _emailID = emailID;
     showLoading(true);
     ss_loadTeachers(initSelectMenuForTeachers);
   }
+
+  // Some browsers won't show pop-ups except in response to a user click.
+  // so if we timeout, lets put up a button to allow use to initiate login sequence.
+  this.showLoginButton = function() {
+    console.log("in here.");
+    if (_that._successfulAuthorization) return; 
+    var el = document.getElementById('mainel');
+    el.innerHTML = "<button onclick='render()'>Click to Login to Google</button>";
+  }
+  console.log("set timeout.");
+  window.setTimeout(this.showLoginButton, 5000);
+
   function errorMsg(mess) {
       //var querySelector = document.querySelector.bind(document);
       var mainEl = querySelector('main');
@@ -222,7 +239,7 @@ function GUISetup() {
     inputel.focus();
     var utt = new SpeechSynthesisUtterance(word);
     utt.lang = 'en-US'; // later give techer a choice. TODO
-    window.speechSynthesis.speak();
+    window.speechSynthesis.speak(utt);
   }
 
 }
