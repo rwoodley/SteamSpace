@@ -1,0 +1,25 @@
+{
+  "name": "Spelling Bot",
+  "short_name": "Spelling Bot",
+  "description": "Spelling test to demo Steam Space framework.",
+  "version": "0.1",
+  "manifest_version": 2,
+  "app": {
+    "background": {
+      "scripts": [
+        "background.js",
+        "scripts/jquery-1.11.1.min.js",
+        "scripts/main.js",
+        "scripts/ssAssignments.js",
+        "scripts/ssAuth.js",
+        "scripts/ssUtil.js"
+        ]
+    }
+  },
+  "icons": {
+            "16": "images/icon16.png",
+            "48" : "images/icon48.png",
+            "128": "images/icon128.png"
+            }
+
+}
