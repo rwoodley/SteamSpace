@@ -4,11 +4,20 @@ function ss_init(loginID, emailID) { // called on auth complete, kicks off menu 
   _that.initGUIForSteamspace(loginID, emailID);
 }
 // Setup GUI - Called on page load.
-(function () {
+
+$(function () {
   'use strict';
   var voices = window.speechSynthesis.getVoices();  // this needs time to load, kick it off.
+  //window.setTimeout(slowStart, 2000);
+  slowStart();
+  
+});
+function slowStart() {
   var gui = new GUISetup();
-})();
+  ss_getUserInfo(true);
+}
+
+
 // handle user clicks. required because I used innerHTML property below.
 function teacherSelected(teacherKey, emailID) { _that.teacherSelected(teacherKey, emailID); }
 function assignmentSelected(assignmentKey) { _that.assignmentSelected(assignmentKey); }
@@ -80,10 +89,11 @@ function GUISetup() {
     console.log("in here.");
     if (_that._successfulAuthorization) return; 
     var el = document.getElementById('mainel');
-    el.innerHTML = "<button onclick='render()'>Click to Login to Google</button>";
+    el.innerHTML = "<button onclick='tryLogin()'>Click to Login to Google</button>";
   }
   console.log("set timeout.");
-  window.setTimeout(this.showLoginButton, 5000);
+  // Turned off for now. Only makes sense for browser interactions.
+  //window.setTimeout(this.showLoginButton, 5000);
 
   function errorMsg(mess) {
       //var querySelector = document.querySelector.bind(document);
@@ -118,13 +128,21 @@ function GUISetup() {
       html += '<li><h4>Pick a Teacher:</h4></li>';
     else
       html = '<li><h4>Your teacher is:</h4></li>'
-    var template = '<li><a onclick=\'$0\'>$1</a></li>';
+    var template = "<li><a id='$0' >$1</a></li>";
     for (var i=0; i < teachers.length; i++) {
-      var cb = 'teacherSelected("'+teachers[i].teacherKey + '","' + _emailID + '")';
-      html += template.replace('$0', cb)
+      var id = "teacher"+i;
+      html += template.replace('$0', id)
                       .replace('$1',teachers[i].name);
     }
     menuEl.innerHTML = html;
+    for (var i=0; i < teachers.length; i++) {
+      var id = "teacher"+i;
+      var el = document.getElementById(id);
+      var tkey = teachers[i].teacherKey;
+      el.onclick = function() { 
+        teacherSelected(tkey, _emailID) 
+      };
+    }      
     if (teachers.length == 1)
       teacherSelected(teachers[0].teacherKey, _emailID);
     else {
@@ -151,12 +169,17 @@ function GUISetup() {
       html += '<li><h4>Pick an Assignment:</h4></li>';
     else
       html = '<li><h4>Current Assignment:</h4></li>'
-    var template = '<li><a onclick=\'$0\'>$1</a></li>';
+    var template = '<li><a id=\'$0\'>$1</a></li>';
     for (var i=0; i < assignments.length; i++) {
-      var cb = 'assignmentSelected("'+assignments[i].key + '")';
-      html += template.replace('$0',cb).replace('$1',assignments[i].name);
+      var id = 'assignment_'+i;
+      html += template.replace('$0',id).replace('$1',assignments[i].name);
     }
     menuEl.innerHTML = html;
+    for (var i=0; i < assignments.length; i++) {
+      var id = 'assignment_'+i;
+      var el = document.getElementById(id);
+      el.onclick = function() { assignmentSelected(assignments[i].key); }
+    }
     
     assignmentSelected(assignments[0].key);
   }

@@ -8,6 +8,35 @@ function ss_log(msg) {
 }
 function ss_loadTeachers(callback) {
   // Lookup all SteamSpaceKeyFiles, should be one for teacher.
+  
+  var queryString = "title contains 'SteamSpaceKeyFile' and mimeType = 'application/vnd.google-apps.spreadsheet'"
+  ss_executeGAPICall('GET',
+            'https://www.googleapis.com/drive/v2/files?q='+queryString,
+            true,
+            function(error, status, responseJSON) {
+              if (!error && status == 200) {
+                console.log(responseJSON);
+                var response = JSON.parse(responseJSON);
+                if (response.items === undefined || response.items.length == 0) {
+                  ss_log("No key files found.");
+                  return callback(null);
+                }
+                var teachers = [];
+                for (i = 0; i < response.items.length; i++) {
+                  var entry = response.items[i];
+                  if (entry.labels.trashed == true) continue;
+                  var teacherName = entry.title.replace('SteamSpaceKeyFile-','');
+                  teachers.push({ name: teacherName, teacherKey: entry.description }); // key is in the description!
+                }
+                ss_log("Found " + teachers.length + " key files.");
+                callback(teachers);
+              } else {
+              console.log("Error searching for key file.");
+              }
+            }
+    );
+
+  /*
   gapi.client.load('drive', 'v2', function() {
     var queryString = "title contains 'SteamSpaceKeyFile' and mimeType = 'application/vnd.google-apps.spreadsheet'"
     var request = gapi.client.drive.files.list({ 'q' : queryString});
@@ -27,6 +56,7 @@ function ss_loadTeachers(callback) {
       callback(teachers);
     });
   });
+  */
 }
 function ss_loadAssignmentsOld(teacherKey, callback) {
   ss_log('Got Key!' + teacherKey);
