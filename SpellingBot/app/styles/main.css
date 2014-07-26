@@ -377,6 +377,10 @@ main {
 .selectMenu-container ul li::before {
   content: none;
 }
+.selectMenu-container-header {
+  background-color: #3367D6;
+  color: white;
+}
 
 .selectMenu-container ul li a:hover {
   background-color: rgba(0, 0, 255, 0.2);
@@ -408,7 +412,7 @@ table td::before {
 @font-face {
   font-family: 'Roboto Condensed';
   font-style: normal;
-ZZ  font-weight: 300;
+  font-weight: 300;
   src: url(/fonts/RobotoCondensed-Light.eot);
   src: local('Roboto Condensed Light'), local('RobotoCondensed-Light'), url(/fonts/RobotoCondensed-Light.eot) format('embedded-opentype'), url(/fonts/RobotoCondensed-Light.woff) format('woff');
 }

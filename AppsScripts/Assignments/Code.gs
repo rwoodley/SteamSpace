@@ -6,12 +6,20 @@ var ROSTERSFILE = "Rosters";
 var ASSIGNMENTFILE = "Assignments";
 var ASSIGNMENTSHEET = "Assignments";
 
+function getVersion() {
+  return "Version is 17";
+}
 function doGet(e){
   return handleResponse(e);
 }
  
 function doPost(e){
-  return handleResponse(e);
+  if (e.parameters.hasOwnProperty(SPREADSHEET_NAME_PARAM)) {
+    var ssName = e.parameter[SPREADSHEET_NAME_PARAM];
+    return updateSpreadSheet(ssName, e.parameters);
+  }
+  else
+    return handleResponse(e);  // get assignment data.
 }
  
 function handleResponse(e) {
@@ -24,8 +32,7 @@ function handleResponse(e) {
     //return getAssignments("RobertWoodley@steamspace.net", "VisualCalculator");
     return getAssignments(loginID, appName);
   } catch(e){
-    return returnJSON("error", "loginID = " + loginID + ", appName = " + appName);
-  } finally { }
+t  } finally { }
 }
 function test() {
   var retval = getAssignments("rlwoodley@gmail.comx", "SpellingBot");

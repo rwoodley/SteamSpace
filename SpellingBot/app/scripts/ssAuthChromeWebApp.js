@@ -44,7 +44,7 @@ function ss_executeGAPICall(method, url, interactive, callback) {
 }
 function onUserInfoFetched(error, status, responseJSON) {
   if (!error && status == 200) {
-    console.log(responseJSON);
+    //console.log(responseJSON);
     var response = JSON.parse(responseJSON);
     for (var emailInc = 0; emailInc < response.emails.length; emailInc++) {
       var thisEmail = response.emails[emailInc];

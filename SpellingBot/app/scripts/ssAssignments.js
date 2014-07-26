@@ -15,7 +15,7 @@ function ss_loadTeachers(callback) {
             true,
             function(error, status, responseJSON) {
               if (!error && status == 200) {
-                console.log(responseJSON);
+                //console.log(responseJSON);
                 var response = JSON.parse(responseJSON);
                 if (response.items === undefined || response.items.length == 0) {
                   ss_log("No key files found.");

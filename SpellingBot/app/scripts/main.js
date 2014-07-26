@@ -124,10 +124,11 @@ function GUISetup() {
     errorMsg('');
 
     var html = '';
+    html += '<li ><h4 class="selectMenu-container-header" >Welcome ' + _loginID + '!</h4></li>';
     if (teachers.length > 1)
-      html += '<li><h4>Pick a Teacher:</h4></li>';
+      html += '<li><h4>Please select a teacher:</h4></li>';
     else
-      html = '<li><h4>Your teacher is:</h4></li>'
+      html += '<li><h4>Your teacher is:</h4></li>'
     var template = "<li><a id='$0' >$1</a></li>";
     for (var i=0; i < teachers.length; i++) {
       var id = "teacher"+i;
@@ -139,9 +140,8 @@ function GUISetup() {
       var id = "teacher"+i;
       var el = document.getElementById(id);
       var tkey = teachers[i].teacherKey;
-      el.onclick = function() { 
-        teacherSelected(tkey, _emailID) 
-      };
+      console.log(tkey);
+      (function(t,e) { el.onclick = function() { teacherSelected(t,e)  }; })(tkey, _emailID);
     }      
     if (teachers.length == 1)
       teacherSelected(teachers[0].teacherKey, _emailID);
@@ -150,6 +150,7 @@ function GUISetup() {
     }
   }
   this.teacherSelected = function(teacherKey, loginID) {
+    console.log("key is " + teacherKey);
     normalMsg('');
     hideSelectMenu();
     showLoading(true);
@@ -178,7 +179,8 @@ function GUISetup() {
     for (var i=0; i < assignments.length; i++) {
       var id = 'assignment_'+i;
       var el = document.getElementById(id);
-      el.onclick = function() { assignmentSelected(assignments[i].key); }
+      //el.onclick = function() { assignmentSelected(assignments[i].key); }
+      (function(key) { el.onclick = function() {  assignmentSelected(key);  }; })(assignments[i].key);
     }
     
     assignmentSelected(assignments[0].key);
@@ -209,15 +211,16 @@ function GUISetup() {
     
     var template = "<tr><td data-th='Listen'>$2</td><td $d1>$1</td></tr>";
     var inputFieldTemplate = "<input class='color--remember' id=$0 name='$1' disabled></input> "
-    var playTemplate = "<img src='images/ic_action_play.png' onclick=speakWord($0,'$1')  ></img>";
+    var playTemplate = "<img src='images/ic_action_play.png' id=$0  ></img>";
   
     for (var i = 0; i < words.length; i++) {
       console.log(words[i]);
   
       var inputFieldID = "word" + i;
+      var imgFieldID = "img_word" + i;
       var ifcopy = inputFieldTemplate.replace("$0",inputFieldID).replace("$1",words[i]);
   
-      var pcopy = playTemplate.replace("$0","'" + words[i] + "'").replace("$1",inputFieldID);
+      var pcopy = playTemplate.replace("$0",imgFieldID);
   
       var copy = template;
       copy = copy.replace("$1", ifcopy).replace("$2", pcopy);
@@ -228,8 +231,20 @@ function GUISetup() {
     }
     html += "</table>";
     html += "</form>";
-    html += "<a onclick='scoreAndSubmit()' class='button--primary'>All Done! Score and Send to Teacher.</a>"
+    html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Score and Send to Teacher.</a>"
     form.innerHTML = html;
+    // now attach click handlers
+    for (var i = 0; i < words.length; i++) {
+      var inputFieldID = "word" + i;
+      var imgFieldID = "img_word" + i;
+      var imgel = document.getElementById(imgFieldID);
+      var word = words[i];
+      console.log(word + " = " + inputFieldID + ", " + imgFieldID);
+      (function(w,i) { imgel.onclick = function() { speakWord(w,i)  }; })(word, inputFieldID);
+      
+    }
+    var bigButton = document.getElementById('scoreAndSubmitButton');
+    bigButton.onclick = scoreAndSubmit;
   }
   function showResults(results) {
     var form = querySelector('main');

@@ -2,7 +2,7 @@
   "name": "Spelling Bot",
   "short_name": "Spelling Bot",
   "description": "Spelling test to demo Steam Space framework.",
-  "version": "0.35",
+  "version": "0.38",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3K23xpW/wmJctb2LBkMVm59ZppxJpN4Z/LP9jk/eH2GQsm3nAM8vMPwZ3kdJP2Oct/H3vPjSOuRAatY7CDS4NyLaLukrr6vcnui1i7g3UN42xrcDTioiLCHD0/z+AJDq6uN2uAJrQsF3gACkTTIKcP6Qp18SIgZIAmUkDeUV9M8dHh0chRcz3Zv5mhwRJOlYlDU+QYgHaoT06qmchCD3GuFhX1+CR/olTefTjFSci9R/l1JzYVkf7JEJZXMft92pxQITHYzhhfVhhllk+0YS1xl00ngJN7VPVcLYNttYZRz4x/qq3s84EhhANJGU8ieTrG8r69RXf4UsFPhtHLGP/QIDAQAB",
   "oauth2": {
       "client_id": "683512459303-nfac0rlkdvvudbs0bh2jc2dk25ipv3qj.apps.googleusercontent.com",
@@ -21,9 +21,9 @@
     }
   },
   "icons": {
-            "16": "images/icon16.png",
-            "48" : "images/icon48.png",
-            "128": "images/icon128.png"
+            "16": "images/little-robot16.png",
+            "48" : "images/little-robot48.png",
+            "128": "images/little-robot128.png"
             },
   "permissions" : [
     "identity"
