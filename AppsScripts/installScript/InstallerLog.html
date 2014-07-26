@@ -1,0 +1,36 @@
+<script>
+function onSuccess(retval) {
+  var el = document.getElementById('part1Output');
+  el.innerHTML = retval;
+  var formel = document.getElementById('myForm');
+  formel.style.display = 'block';
+  formel = document.getElementById('part2Output');
+  formel.style.display = 'block';
+  
+}
+function part2Complete(retval) {
+  var el = document.getElementById('part2Output');
+  el.innerHTML = retval;
+}
+// Start Part 1 immediately.
+google.script.run.withSuccessHandler(onSuccess).installScriptPart1();
+</script>
+
+<div id='part1Output'>
+Starting installation of SteamSpace teacher files.
+</div>
+
+<form id="myForm" style="display: none;">
+  Enter your name as you would like it shown to students. It will be part of the name of the key file that you share with them.<br/>
+  No punctuation please!<br/>
+  Your Name: <input name="TeacherName" type="Text" /><br/>
+  AssignmentsScript Key<input name="TeacherKey" type="Text" /><br/>
+  <input type="button" value="Submit"
+      onclick="google.script.run
+          .withSuccessHandler(part2Complete)
+          .installScriptPart2(this.parentNode)" />
+</form>
+<div id='part2Output'  style="display: none;">
+Starting part 2 of installation script.
+</div>
+
