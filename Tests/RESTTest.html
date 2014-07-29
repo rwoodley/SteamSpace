@@ -1,0 +1,48 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+  <TITLE>A Sample Form Using POST</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FDF5E6">
+<CENTER>
+<H2>Assignment Query (GET, POST doesn't matter)</H2>
+<FORM ACTION="https://script.google.com/macros/s/AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc/exec"
+      METHOD="POST">
+  Login ID:
+  <INPUT TYPE="TEXT" NAME="LoginID" VALUE="robertwoodley@steamspace.net"><BR>
+  App name:
+  <INPUT TYPE="TEXT" NAME="AppName" VALUE="SpellingBot"><P>
+  <INPUT TYPE="SUBMIT">
+</FORM>
+
+<H2>Check Version</H2>
+<a href="https://script.google.com/macros/s/AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc/exec?Diagnostics=11"
+>Get Version Info</a>
+
+<H2>Spreadsheet GET</H2>              
+<FORM ACTION="https://script.google.com/macros/s/AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc/exec"
+      METHOD="GET">
+  Login ID:
+  <INPUT TYPE="TEXT" NAME="LoginID" VALUE="jim@home.net"><BR/>
+  Spread-Sheet:
+  <INPUT TYPE="TEXT" NAME="SpreadSheetName" VALUE="FormulaToyAssignment_0001"><br/>
+  <INPUT TYPE="SUBMIT">
+</FORM>
+<H2>Spreadsheet POST</H2>              
+<FORM ACTION="https://script.google.com/macros/s/AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc/exec"
+      METHOD="POST">
+  Login ID:
+  <INPUT TYPE="TEXT" NAME="LoginID" VALUE="jim@home.net"><BR/>
+  Spread-Sheet:
+  <INPUT TYPE="TEXT" NAME="SpreadSheetName" VALUE="FormulaToyAssignment_0001"><br/>
+  Formula:
+  <INPUT TYPE="TEXT" NAME="Formula" VALUE="z=x+y"><br/>
+  Emotion:
+  <INPUT TYPE="TEXT" NAME="Emotion" VALUE="curious"><br/>
+  Diagnostics: <INPUT TYPE="checkbox" NAME="Diagnostics" VALUE="true"><br/>
+  <INPUT TYPE="SUBMIT">
+</FORM>
+
+
+</CENTER>
+</BODY></HTML>

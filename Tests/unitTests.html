@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="" >
+  <head>
+    <title>Tests</title>
+
+  </head>
+  <body onload="return runTests()">
+
+    <script src="jquery-1.11.1.min.js"></script>
+<script>
+    var SPREADSHEET_NAME_PARAM = "SpreadSheetName";
+    var LOGIN_ID_PARAM = "LoginID";
+    function runTests() {
+        var key = "AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc";
+        // Test Get spreadsheet data.
+        runTest1(key);
+        runTest2(key);
+        runTest3(key);
+        // Test Put data
+        runTest4(key);
+    }
+    var _bogusSSName = "blah";
+    var _realSSName = "FormulaToyAssignment_0001";
+    var _loginNoData = "zzzz";
+    var _loginWithData = "jim@home.net";
+    var _timestr = new Date().getTime();
+    var _tempSS = "Temp" + _timestr;
+    function doWebGet(n, key, loginID, SSName, callback) {
+        console.log("running Test " + n);
+        var params = LOGIN_ID_PARAM + "=" + loginID + "&" + SPREADSHEET_NAME_PARAM + "=" + SSName;
+        ss_callWebApp(key, params, "GET", callback);        
+    }
+    function doWebPost(n, key, loginID, SSName, callback) {
+        console.log("running Test " + n);
+        var params = LOGIN_ID_PARAM + "=" + loginID + "&" + SPREADSHEET_NAME_PARAM + "=" + SSName;
+        params += "&BogusData1=blah&BogusData2=blah2";
+        ss_callWebApp(key, params, "POST", callback);
+    }
+    function runTest1(key) { doWebGet(1, key, _loginNoData, _bogusSSName, test1CB);    }
+    function runTest2(key) { doWebGet(2, key, _loginNoData, _realSSName, test2CB);    }
+    function runTest3(key) { doWebGet(3, key, _loginWithData, _realSSName, test3CB);    }
+    function runTest4(key) { doWebPost(4, key, _loginWithData, _tempSS, test4CB);    }
+    function test1CB(jsontxt, status) {
+        if (status != 'success')
+            console.log("Test 1 failed! Status = " + status);
+        else {
+            var obj = JSON.parse(jsontxt);
+            if (obj.result != 'success') {
+                if (obj.error.indexOf('Spreadsheet "' + _bogusSSName + '" does not exist.') > -1)
+                    console.log("Test 1 SUCCESS!");
+                else
+                    console.log("Test 1 failed! Error from server. JSON is " + jsontxt);
+            }
+            else 
+                console.log("Test 1 failed! Expecting server error, but got success");
+        }
+    }
+
+    function test2CB(jsontxt, status) { // _loginNoData, _realSSName
+        if (status != 'success')
+            console.log("Test 2 failed! Status = " + status);
+        else {
+            var obj = JSON.parse(jsontxt);
+            if (obj.result != 'success') {
+                console.log("Test 2 failed! Error from server. JSON is " + jsontxt);
+            }
+            else {
+                var obj = obj.resultObj;
+                if (obj.hasOwnProperty("headers") && obj.hasOwnProperty("answers")) {
+                    if (obj.headers.length > 0 && obj.answers.length == 0)
+                        console.log("Test 2 SUCCESS");
+                    else
+                        console.log("Test 2 failed. Expected headers, and no answers");
+                }
+                else {
+                    console.log("Test 2 failed! Expecting 'headers' and 'answers' properties in json");
+                }
+            }
+        }
+    }
+    function test3CB(jsontxt, status) { // _loginNoData, _realSSName
+        test3and4CB(3, jsontxt, status);
+    }
+    function test4CB(jsontxt, status) { // _loginNoData, _realSSName
+        test3and4CB(4, jsontxt, status);
+    }
+    function test3and4CB(n, jsontxt, status) { // _loginNoData, _realSSName
+        var testName = "Test " + n;
+        if (status != 'success')
+            console.log(testName + " failed! Status = " + status);
+        else {
+            var obj = JSON.parse(jsontxt);
+            if (obj.result != 'success') {
+                console.log(testName + " failed! Error from server. JSON is " + jsontxt);
+            }
+            else {
+                var obj = obj.resultObj;
+                if (obj.hasOwnProperty("headers") && obj.hasOwnProperty("answers")) {
+                    if (obj.headers.length > 0 && obj.answers.length > 0)
+                        console.log(testName + " SUCCESS");
+                    else
+                        console.log(testName + " failed. Expected headers, and answers");
+                }
+                else {
+                    console.log(testName + " failed! Expecting 'headers' and 'answers' properties in json");
+                }
+            }
+        }
+    }
+
+
+    function ss_callWebApp(key, params, getOrPost, callback) {
+      var request;
+      if (request) { request.abort(); }   // abort any pending request
+      
+      var urltemplate = "https://script.google.com/macros/s/$0/exec";
+      request = $.ajax({
+          url: urltemplate.replace('$0', key),
+          type: getOrPost,
+          data: params
+      });
+    
+      request.done(function (response, textStatus, jqXHR){
+        callback(jqXHR.responseText,'success');
+      });
+    
+      request.fail(function (jqXHR, textStatus, errorThrown){ // failure.
+        var errorMsg = "The following error occured: "+textStatus + ", error = " + errorThrown;
+        callback(null, errorMsg); 
+      });
+    
+      // callback handler that will be called regardless
+      // if the request failed or succeeded
+      request.always(function () {
+      });
+    }
+</script>
+  </body>
+</html>
