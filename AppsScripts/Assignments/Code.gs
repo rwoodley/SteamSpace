@@ -7,10 +7,15 @@ var ASSIGNMENTFILE = "Assignments";
 var ASSIGNMENTSHEET = "Assignments";
 
 function getVersion() {
-  return "Version is 17";
+  return "Version is 19";
 }
 function doGet(e){
-  return handleResponse(e);
+  if (e.parameters.hasOwnProperty(SPREADSHEET_NAME_PARAM)) {
+    var ssName = e.parameter[SPREADSHEET_NAME_PARAM];
+    return getSpreadSheetData(ssName, e.parameters[PARAM_LOGIN_ID]);
+  }
+  else
+    return handleResponse(e);  // get assignment data.
 }
  
 function doPost(e){
@@ -32,7 +37,7 @@ function handleResponse(e) {
     //return getAssignments("RobertWoodley@steamspace.net", "VisualCalculator");
     return getAssignments(loginID, appName);
   } catch(e){
-t  } finally { }
+  } finally { }
 }
 function test() {
   var retval = getAssignments("rlwoodley@gmail.comx", "SpellingBot");
@@ -64,7 +69,7 @@ function getAssignments(loginID, inAppName) {
       var roster = "";
       var enabled = "";
       var notes = "";
-      var key = "";
+      var ss = "";
       for (i in headers) {
         if (headers[i] == "AssignmentID") assignmentId = rows[j][i];
         if (headers[i] == "AssignmentName") assignmentName = rows[j][i];
@@ -72,7 +77,7 @@ function getAssignments(loginID, inAppName) {
         if (headers[i] == "Roster") roster = rows[j][i];
         if (headers[i] == "Enabled") enabled = rows[j][i];
         if (headers[i] == "Notes") notes = rows[j][i];
-        if (headers[i] == "Key") key = rows[j][i];
+        if (headers[i] == "SpreadSheet") ss = rows[j][i];
       }
       Logger.log("Comparing " + appName.toUpperCase() + " to " + inAppName);
       if (appName.toUpperCase() != inAppName) continue;
@@ -81,7 +86,7 @@ function getAssignments(loginID, inAppName) {
       Logger.log("Found an assignment.");
       var retobj = { 
         AssignmentName : assignmentName,
-        Key : key,
+        SpreadSheet : ss,
         Notes: notes
       };
       retval.push(retobj);
@@ -155,7 +160,7 @@ function errorMsg(msg) {
 function returnJSON(successOrFailure, object) {
   if (successOrFailure == 'success')
     return ContentService
-    .createTextOutput(JSON.stringify(object))
+    .createTextOutput(JSON.stringify({"result":"success", "resultObj" : object}))
     .setMimeType(ContentService.MimeType.JSON);
   else
     return ContentService
