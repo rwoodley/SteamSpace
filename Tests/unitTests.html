@@ -10,14 +10,17 @@
 <script>
     var SPREADSHEET_NAME_PARAM = "SpreadSheetName";
     var LOGIN_ID_PARAM = "LoginID";
+    var key = "AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc";
     function runTests() {
-        var key = "AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc";
         // Test Get spreadsheet data.
         runTest1(key);
         runTest2(key);
         runTest3(key);
         // Test Put data
         runTest4(key);
+
+        // Assignment GET
+        doAssignmentFetch(5, key, "joestudent@steamspace.net", "SpellingBot", "GET", test5CB);
     }
     var _bogusSSName = "blah";
     var _realSSName = "FormulaToyAssignment_0001";
@@ -26,20 +29,52 @@
     var _timestr = new Date().getTime();
     var _tempSS = "Temp" + _timestr;
     function doWebGet(n, key, loginID, SSName, callback) {
-        console.log("running Test " + n);
+        console.log("running Test " + n + " with loginID = " + loginID + ", SSName = " + SSName);
         var params = LOGIN_ID_PARAM + "=" + loginID + "&" + SPREADSHEET_NAME_PARAM + "=" + SSName;
         ss_callWebApp(key, params, "GET", callback);        
     }
     function doWebPost(n, key, loginID, SSName, callback) {
-        console.log("running Test " + n);
+        console.log("running Test " + n + " with loginID = " + loginID + ", SSName = " + SSName);
         var params = LOGIN_ID_PARAM + "=" + loginID + "&" + SPREADSHEET_NAME_PARAM + "=" + SSName;
         params += "&BogusData1=blah&BogusData2=blah2";
         ss_callWebApp(key, params, "POST", callback);
+    }
+    function doWebPostIncomplete(n, key, loginID, SSName, callback) { // depends on doWebPost being run first and defining columns.
+        console.log("running Test " + n + " with loginID = " + loginID + ", SSName = " + SSName);
+        var params = LOGIN_ID_PARAM + "=" + loginID + "&" + SPREADSHEET_NAME_PARAM + "=" + SSName;
+        params += "&BogusData1=blah";
+        ss_callWebApp(key, params, "POST", callback);
+    }
+    function doAssignmentFetch(n, key, loginID, appName, verb, callback) {
+        console.log("running Test " + n + " with loginID = " + loginID);
+        var params = LOGIN_ID_PARAM + "=" + loginID +"&AppName=" + appName;
+        ss_callWebApp(key, params, verb, callback);
     }
     function runTest1(key) { doWebGet(1, key, _loginNoData, _bogusSSName, test1CB);    }
     function runTest2(key) { doWebGet(2, key, _loginNoData, _realSSName, test2CB);    }
     function runTest3(key) { doWebGet(3, key, _loginWithData, _realSSName, test3CB);    }
     function runTest4(key) { doWebPost(4, key, _loginWithData, _tempSS, test4CB);    }
+    function runTest4_1(key) { doWebPostIncomplete(4.1, key, _loginWithData, _tempSS, test4_1CB);    }
+    function test5CB(jsontxt, status) {
+        console.log(jsontxt);
+        var n = 5;
+        var testName = "Test " + n;
+        if (status != 'success') console.log(testName + " failed! Status = " + status);
+        else {
+            var obj = JSON.parse(jsontxt);
+            if (obj.result != 'success') { console.log(testName + " failed! Error from server. JSON is " + jsontxt); }
+            else {
+                var obj = obj.resultObj;
+                var assignment = obj[0];
+                if (assignment.hasOwnProperty("AssignmentName")) {
+                        console.log(testName + " SUCCESS");
+                }
+                else {
+                    console.log(testName + " failed! Didn't find any assignments");
+                }
+            }
+        }
+    }
     function test1CB(jsontxt, status) {
         if (status != 'success')
             console.log("Test 1 failed! Status = " + status);
@@ -83,6 +118,10 @@
     }
     function test4CB(jsontxt, status) { // _loginNoData, _realSSName
         test3and4CB(4, jsontxt, status);
+        runTest4_1(key); // post but not all fields present.
+    }
+    function test4_1CB(jsontxt, status) { // _loginNoData, _realSSName
+        test3and4CB(4.1, jsontxt, status);
     }
     function test3and4CB(n, jsontxt, status) { // _loginNoData, _realSSName
         var testName = "Test " + n;
@@ -107,7 +146,6 @@
             }
         }
     }
-
 
     function ss_callWebApp(key, params, getOrPost, callback) {
       var request;

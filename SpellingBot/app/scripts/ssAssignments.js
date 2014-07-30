@@ -66,11 +66,22 @@ function ss_loadAssignmentsOld(teacherKey, callback) {
     ];
   callback(assignments);
 }
-function ss_loadAssignment(assignmentKey, loginID, callback) {
+function ss_loadAssignmentOld1(assignmentKey, loginID, callback) {
   ss_callWebApp(assignmentKey, 'LoginID='+loginID, "get", function(json, errormess) {
     if (json == null) { ss_log(errormess); callback(null);   }  // failure.
     else {
       callback(json);
+    }
+  });
+}
+function ss_loadAssignment(teacherKey, ssName, loginID, callback) {
+  ss_callWebApp(teacherKey, 'LoginID='+loginID+"&SpreadSheetName="+ssName, "get", function(json, errormess) {
+    if (json == null) { ss_log(errormess); callback(null);   }  // failure.
+    else {
+      var obj = JSON.parse(json);
+      if (obj.result != 'success') { ss_log(obj.error); callback(null); }
+      else 
+        callback(teacherKey, ssName, obj.resultObj);
     }
   });
 }
@@ -83,9 +94,9 @@ function ss_loadAssignments(teacherKey, emailID, callback) {
     if (json == null) { ss_log(errormess); callback(null);   }  // failure.
     else {
       var assignments = [];
-      JSON.parse(json).forEach(
+      JSON.parse(json).resultObj.forEach(
         function(x) { 
-          var obj =  { name: x.AssignmentName, key: x.Key};
+          var obj =  { name: x.AssignmentName, spreadSheet: x.SpreadSheet};
           assignments.push(obj);
         }
       );

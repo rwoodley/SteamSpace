@@ -24,9 +24,16 @@ function ss_callWebApp(key, params, getOrPost, callback) {
   request.always(function () {
   });
 }
-function ss_postForm(key, emailID, formName, resultsCallback) {
+function ss_postForm(key, emailID, ssName, formName, resultsCallback) {
   var $form = $("#"+formName);
   var serializedData = $form.serialize();
-  serializedData += "&LoginID=" + emailID;
+  serializedData += "&LoginID=" + emailID + "&SpreadSheetName=" + ssName;
   ss_callWebApp(key, serializedData, "post", resultsCallback);
+}
+var SPREADSHEET_NAME_PARAM = "SpreadSheetName";
+var LOGIN_ID_PARAM = "LoginID";
+function doSpreadsheetGet(assignmentKey, spreadsheetName, loginId, callback) {
+  var params = SPREADSHEET_NAME_PARAM + "=" + spreadsheetName + "&" + LOGIN_ID_PARAM + "=" + loginId
+  ss_callWebApp(assignmentKey, params, "get", callback);
+  // callback(obj). obj.headers has headers, and obj.answers has answers (if any) for loginId.
 }
