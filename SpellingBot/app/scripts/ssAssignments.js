@@ -79,7 +79,7 @@ function ss_loadAssignment(teacherKey, ssName, loginID, callback) {
     if (json == null) { ss_log(errormess); callback(null);   }  // failure.
     else {
       var obj = JSON.parse(json);
-      if (obj.result != 'success') { ss_log(obj.error); callback(null); }
+      if (obj.result != 'success') { ss_log(obj.error); callback(null, null, null); }
       else 
         callback(teacherKey, ssName, obj.resultObj);
     }

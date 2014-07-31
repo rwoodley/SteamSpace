@@ -32,7 +32,6 @@ function GUISetup() {
   var appbarElement = querySelector('.app-bar');
   var menuBtn = querySelector('.menu');
   var main = querySelector('main');
-  initApp(main);
   
   var selectMenu = querySelector('.selectMenu-container');
   var selectMenuButton = querySelector('.selectMenu');
@@ -78,6 +77,10 @@ function GUISetup() {
     if (loginID == null) return errorMsg("You are not logged in. Please log in to Google, and restart.");
     _loginID = loginID;
     _emailID = emailID;
+    var querySelector = document.querySelector.bind(document);
+    var main = querySelector('main');
+
+    initApp(main, _emailID);
     showLoading(true);
     ss_loadTeachers(initSelectMenuForTeachers);
   }
@@ -181,7 +184,7 @@ function GUISetup() {
       var id = 'assignment_'+i;
       var el = document.getElementById(id);
 
-      (function(ss) { el.onclick = function() {  assignmentSelected(ss);  }; })(assignments[i].SpreadSheet);
+      (function(ss) { el.onclick = function() {  assignmentSelected(ss);  }; })(assignments[i].spreadSheet);
     }
     
     assignmentSelected(assignments[0].spreadSheet);
