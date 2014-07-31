@@ -109,7 +109,6 @@ function GUISetup() {
   }
   function showLoading(flag) { 
       var mainEl = querySelector('main');
-//      mainEl.innerHTML = flag == true ? '<img src="images/loading.gif" />' : '';
       if (flag)
         mainEl.classList.add('loadingIcon');
       else
@@ -161,7 +160,6 @@ function GUISetup() {
     ss_loadAssignments(teacherKey, loginID, initAssignmentMenu)
   }
   function initAssignmentMenu(assignments) {
-    showLoading(false);
     var menuEl = document.getElementById('assignmentMenu');
     if (assignments == null || assignments.length == 0) {
       menuEl.innerHTML = '<li><h4>No Assignments Defined</h4></li>';
