@@ -113,7 +113,6 @@ function GUISetup() {
         mainEl.classList.add('loadingIcon');
       else
         mainEl.classList.remove('loadingIcon');
-
   }
   function initSelectMenuForTeachers(teachers) {
     showLoading(false);

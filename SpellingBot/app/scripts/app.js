@@ -26,7 +26,7 @@ var app = function() {
   }
 
   this.assignmentCallback = function(key, ssname, retval) {
-    if (key == null) {
+    if (retval == null) {
       _element.innerHTML = "Error loading assignment. Sorry!";
       return;
     }

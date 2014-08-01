@@ -11,6 +11,14 @@ var SHEET_NAME = 'Sheet1';
 function test2() {
   Logger.log(getSpreadSheetData("xxxFormulaToyAssignment_0001", "x@y.com").getContent());
 }
+function test4() {
+  var fakeParams = {};
+  fakeParams[SPREADSHEET_NAME_PARAM] = 'VisualCalculatorAssignment-00001';
+  fakeParams['LoginID'] = ['x@y.com'];
+  fakeParams['Formula'] = ['play'];
+  var ssName = fakeParams[SPREADSHEET_NAME_PARAM];
+  updateSpreadSheet(ssName, fakeParams);
+}
 function test3() {
   var fakeParams = {};
   fakeParams[SPREADSHEET_NAME_PARAM] = 'SteamSpaceAssignment-00001';
@@ -121,7 +129,8 @@ function updateSpreadSheet(ssname, fields) {
 }
 function createSpreadsheet(folder, fileName, fields) {
   try {
-    var files = folder.searchFiles("title contains '" + fileName + "'");
+    logMsg("Looking for " + fileName + " in " + folder);
+    var files = folder.searchFiles("title = '" + fileName + "'");
     if (files.hasNext()) {
       logMsg("File " + fileName + " already exists.");
       return files.next();
