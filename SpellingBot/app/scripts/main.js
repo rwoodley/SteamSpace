@@ -156,7 +156,7 @@ function GUISetup() {
     normalMsg('');
     hideSelectMenu();
     showLoading(true);
-    ss_loadAssignments(teacherKey, loginID, initAssignmentMenu)
+    ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "SpellingBot");
   }
   function initAssignmentMenu(assignments) {
     var menuEl = document.getElementById('assignmentMenu');
