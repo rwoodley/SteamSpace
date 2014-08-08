@@ -1,0 +1,24 @@
+{
+   "app": {
+      "background": {
+         "scripts": [ "background.js" ]
+      }
+   },
+   "description": "Visual multiplication and division as operations on prime factors.",
+   "icons": {
+      "128": "images/icon128.png",
+      "16": "images/icon16.png",
+      "48": "images/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnoe6lfMceaLdh1NBw+GmcrmZ78+AwXKMEQrw7iD3y3kj2Tu9/uiruAGcmhHscuoMMBXZLtC7ZZzD8WHMqKHkl/eOcP8Bw/9ba7rdD/fO8lxkt7M/CaAc/tMCqQ5fFW4pLK0/cxPNCaZh2xIAkSQhKN8+hPntpZLUeIQ8sIXNLgMmGx8Wox+X7ph/f3AvW5tOAqXCYBwsCol+l5wBXAORHx+S7f70kYVCqP0QLVB1ga7OvhriZOt+aeS43zd0tXUyAuHVB7js2TpKu7DwrZnuTX8Y0U90mzi4FntQ8peYM7paFr8wvSXhYRqVQQ9ErrSlgbO1TUExitDpe6gIj0SD/wIDAQAB",
+   "manifest_version": 2,
+   "name": "Visual Calculator",
+   "oauth2": {
+      "client_id": "683512459303-f6lmhfqm1q03dvtp3hndsis50u9hvcsk.apps.googleusercontent.com",
+      "scopes": [ "https://www.googleapis.com/auth/plus.login", "https://www.googleapis.com/auth/plus.profile.emails.read", "https://www.googleapis.com/auth/drive" ]
+   },
+   "permissions": [ "identity" ],
+   "short_name": "Visual Calculator",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.11"
+}
