@@ -75,32 +75,40 @@ function ss_loadAssignmentOld1(assignmentKey, loginID, callback) {
   });
 }
 function ss_loadAssignment(teacherKey, ssName, loginID, callback) {
+  console.log("loading assignment...");
   ss_callWebApp(teacherKey, 'LoginID='+loginID+"&SpreadSheetName="+ssName, "get", function(json, errormess) {
+    console.log("loading assignment, got response");
     if (json == null) { ss_log(errormess); callback(null);   }  // failure.
     else {
       var obj = JSON.parse(json);
-      if (obj.result != 'success') { ss_log(obj.error); callback(null, null, null); }
+      if (obj.result != 'success') { ss_log(obj.error); callback(teacherKey, ssName, null); }
       else 
         callback(teacherKey, ssName, obj.resultObj);
     }
   });
 }
-function ss_loadAssignments(teacherKey, emailID, callback) {
+function ss_loadAssignments(teacherKey, emailID, callback, appName) {
+  console.log("loading assignments...");
 
-  var datatemplate = "LoginID=$0&AppName=SpellingBot";
-  var params = datatemplate.replace('$0', emailID);
+  var datatemplate = "LoginID=$0&AppName=$1";
+  var params = datatemplate.replace('$0', emailID).replace('$1', appName);
   
   ss_callWebApp(teacherKey, params, "get", function(json, errormess) {
+    console.log("loading assignments, got response");
     if (json == null) { ss_log(errormess); callback(null);   }  // failure.
     else {
       var assignments = [];
-      JSON.parse(json).resultObj.forEach(
-        function(x) { 
-          var obj =  { name: x.AssignmentName, spreadSheet: x.SpreadSheet};
-          assignments.push(obj);
-        }
-      );
-      callback(assignments);
+      var results = JSON.parse(json).resultObj
+      if (results == undefined) { ss_log("bad json object"); callback(null);   }  // failure.
+      else {
+        results.forEach(
+          function(x) { 
+            var obj =  { name: x.AssignmentName, spreadSheet: x.SpreadSheet};
+            assignments.push(obj);
+          }
+        );
+        callback(assignments);
+      }
     }
   });
 }

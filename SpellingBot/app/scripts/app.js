@@ -8,40 +8,42 @@ var _app;
 function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
-function initApp(el, loginID) {
+function initApp(loginID, panel) {
   _app = new app();
-  _app.initApp(el, loginID);
+  _app.initApp(loginID, panel);
 }
 function assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
+function showResultsWrapper(json) { 
+  var retval = JSON.parse(json);
+  if (retval.resultObj.answers && retval.resultObj.answers.length > 0)
+    _app.showResults(retval.resultObj.headers, retval.resultObj.answers); 
+}
 var app = function() {
-  var _element;
+  var _panel;
   var _teacherKey;
   var _ssName;
   var _emailID;
   var _words; // this is only populated when answers are returned for use by '_words' button.
 
-  this.initApp = function(el, loginID) { 
-    _element = el; 
+  this.initApp = function(loginID, panel) { 
+    _panel = panel; 
     _emailID = loginID; 
   }
 
   this.assignmentCallback = function(key, ssname, retval) {
     if (retval == null) {
-      _element.innerHTML = "Error loading assignment. Sorry!";
+      _panel.setContent("Error loading assignment. Sorry!");
       return;
     }
     _teacherKey = key;
     _ssName = ssname;
     if (retval.answers && retval.answers.length > 0)
-      showResults(retval.headers, retval.answers);
+      this.showResults(retval.headers, retval.answers);
     else
-      initWords(retval.headers);
+      this.initWords(retval.headers);
   }
-  function initWords(inwords) {
-    //var form = document.getElementById(formName);
-    var form = _element;
-    
-    //var html = "<table><tr><th></th><th>Type</th><th>Listen</th></tr>";
+  this.initWords = function(inwords) {
+
     var html = '';
     html += "<form id='spellingForm'>";
     html += "<table>";
@@ -65,13 +67,11 @@ var app = function() {
       copy = copy.replace("$1", ifcopy).replace("$2", pcopy);
       copy = copy.replace("$d1","data-th='Word " + (i+1) + "'");
       html += copy;
-      
-      //console.log(copy);
     }
     html += "</table>";
     html += "</form>";
     html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Score and Send to Teacher.</a>"
-    form.innerHTML = html;
+    _panel.setContent(html);
     // now attach click handlers
     for (var i = 0; i < words.length; i++) {
       var inputFieldID = "word" + i;
@@ -95,10 +95,8 @@ var app = function() {
     }
     return words;    
   }
-  function showResults(headers, answers) {
-    var form = _element;
-    
-    //var html = "<table><tr><th></th><th>Type</th><th>Listen</th></tr>";
+  this.showResults = function(headers, answers) {
+
     var html = '';
     html += "<table>";
     html += "<tr><th>Spelling Word:</th><th>Your Answer:</th></tr>";
@@ -114,15 +112,10 @@ var app = function() {
       html += line;
       
     }
-    // results.forEach(function(answer) {
-    //   var aclass = (answer.word.trim().toUpperCase() == answer.student.trim().toUpperCase()) ?
-    //     "correctAnswer" : "incorrectAnswer";
-    //   var line = template.replace('$0', answer.word).replace('$1',answer.student).replace('$2','class='+aclass);
-    //   html += line;
-    // });
+
     html+= "</table>";
     html += "<a id='tryAgainButton' class='button--primary'>Try Again.</a>"
-    form.innerHTML = html;
+    _panel.setContent(html);
 
     var bigButton = document.getElementById('tryAgainButton');
     bigButton.onclick = tryAgain;
@@ -131,12 +124,7 @@ var app = function() {
     ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);
   }
   this.tryAgain = function() {
-    initWords(_words);
-  }
-  function showResultsWrapper(json) { 
-    var retval = JSON.parse(json);
-    if (retval.resultObj.answers && retval.resultObj.answers.length > 0)
-      showResults(retval.resultObj.headers, retval.resultObj.answers); 
+    this.initWords(_words);
   }
   var _firstWord = true;
   var _voice;
