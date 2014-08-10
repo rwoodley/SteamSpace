@@ -219,6 +219,9 @@ button.menu img {
 .navdrawer-container ul li a:active {
   background-color: rgba(255, 255, 255, 0.4);
 }
+.navdrawer-container-selected {
+  background-color: rgba(255, 255, 255, 0.4);
+}
 
 main {
   margin: 0 auto;

@@ -12,7 +12,7 @@ function initApp(loginID, panel) {
   _app = new app();
   _app.initApp(loginID, panel);
 }
-function assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
+function assignmentCallback(key, ssName, retval, name, notes) { _app.assignmentCallback(key, ssName, retval, name, notes); }
 function showResultsWrapper(json) { 
   var retval = JSON.parse(json);
   if (retval.resultObj.answers && retval.resultObj.answers.length > 0)
@@ -24,13 +24,15 @@ var app = function() {
   var _ssName;
   var _emailID;
   var _words; // this is only populated when answers are returned for use by '_words' button.
+  var _assignmentName;
+  var _assignmentNotes;
 
   this.initApp = function(loginID, panel) { 
     _panel = panel; 
     _emailID = loginID; 
   }
 
-  this.assignmentCallback = function(key, ssname, retval) {
+  this.assignmentCallback = function(key, ssname, retval, name, notes) {
     if (retval == null) {
       _panel.setContent("Error loading assignment. Sorry!");
       return;
@@ -40,13 +42,15 @@ var app = function() {
     if (retval.answers && retval.answers.length > 0)
       this.showResults(retval.headers, retval.answers);
     else
-      this.initWords(retval.headers);
+      this.initWords(retval.headers, name, notes);
   }
-  this.initWords = function(inwords) {
+  this.initWords = function(inwords, name, notes) {
 
     var html = '';
     html += "<form id='spellingForm'>";
     html += "<table>";
+    var tmp = "<tr><th>$0</th><th>$1</th></tr>";
+    html += tmp.replace('$0', name).replace('$1', notes);
     html += "<tr><th>Listen:</th><th>Then type what you hear:</th></tr>";
     
     var template = "<tr><td data-th='Listen'>$2</td><td $d1>$1</td></tr>";
@@ -54,6 +58,8 @@ var app = function() {
     var playTemplate = "<img src='images/ic_action_play.png' id=$0  ></img>";
   
     var words = removeKeyWordsFromWordList(inwords);
+    _assignmentName = name;
+    _assignmentNotes = notes;
   
     for (var i = 0; i < words.length; i++) {
       console.log(words[i]);
@@ -99,6 +105,8 @@ var app = function() {
 
     var html = '';
     html += "<table>";
+    if (name && name.length > 0)
+      html += "<tr><th>Assignment:</th><th>" + name + "</th></tr>";
     html += "<tr><th>Spelling Word:</th><th>Your Answer:</th></tr>";
     var template = "<tr><td data-th='Spelling Word' class='spellingWord'>$0</td><td data-th='Your Answer' $2>$1</td></tr>";
   
@@ -124,7 +132,7 @@ var app = function() {
     ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);
   }
   this.tryAgain = function() {
-    this.initWords(_words);
+    this.initWords(_words, _assignmentName, _assignmentNotes);
   }
   var _firstWord = true;
   var _voice;

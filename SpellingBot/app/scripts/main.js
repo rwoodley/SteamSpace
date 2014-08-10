@@ -20,7 +20,7 @@ function slowStart() {
 
 // handle user clicks. required because I used innerHTML property below.
 function teacherSelected(teacherKey, emailID) { _that.teacherSelected(teacherKey, emailID); }
-function assignmentSelected(assignmentKey) { _that.assignmentSelected(assignmentKey); }
+function assignmentSelected(assignment, el) { _that.assignmentSelected(assignment, el); }
 
 function GUISetup() {
   // ===== Generic Setup ======
@@ -143,6 +143,7 @@ function GUISetup() {
     _ssPanel.showLoading(true);
     ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "SpellingBot");
   }
+  var _assignmentMenuItems = [];
   function initAssignmentMenu(assignments) {
     var menuEl = document.getElementById('assignmentMenu');
     if (assignments == null || assignments.length == 0) {
@@ -162,18 +163,26 @@ function GUISetup() {
       html += template.replace('$0',id).replace('$1',assignments[i].name);
     }
     menuEl.innerHTML = html;
+    var lastAssignment, el;
+    _assignmentMenuItems = [];
     for (var i=0; i < assignments.length; i++) {
       var id = 'assignment_'+i;
-      var el = document.getElementById(id);
+      el = document.getElementById(id);
+      _assignmentMenuItems.push(el);
 
-      (function(ss) { el.onclick = function() {  assignmentSelected(ss);  }; })(assignments[i].spreadSheet);
+      (function(ss, menuel) { el.onclick = function() {  assignmentSelected(ss, menuel);  }; })(assignments[i], el);
+      lastAssignment = assignments[i];
     }
     
-    assignmentSelected(assignments[0].spreadSheet);
+    assignmentSelected(lastAssignment, el);
   }
-  this.assignmentSelected = function(spreadSheet) {
+  this.assignmentSelected = function(assignment, menuel) {
+    for (var i = 0; i < _assignmentMenuItems.length; i++) 
+      _assignmentMenuItems[i].classList.remove('navdrawer-container-selected');
+    menuel.classList.add('navdrawer-container-selected');
     closeMenu();
     _ssPanel.errorMsg('');
-    ss_loadAssignment(_teacherKey, spreadSheet, _emailID, assignmentCallback);
+    console.log(assignment.name + "," + assignment.notes);
+    ss_loadAssignment(_teacherKey, assignment, _emailID, assignmentCallback);
   }
 }

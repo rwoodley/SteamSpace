@@ -68,20 +68,23 @@ function GUISetup() {
   // ======= Handle Steamspace Initialization ========
   var _loginID = "";
   var _emailID = "";
+  var _ssPanel;
   this._successfulAuthorization = false;
   this.initGUIForSteamspace = function (loginID, emailID) {
-    _that._successfulAuthorization = true;
-    if (window.SpeechSynthesisUtterance === undefined) {
-      return errorMsg("This browser does not support Speech Synthesis. Try another browser, like Chrome.")
-    }
-    if (loginID == null) return errorMsg("You are not logged in. Please log in to Google, and restart.");
-    _loginID = loginID;
-    _emailID = emailID;
     var querySelector = document.querySelector.bind(document);
     var main = querySelector('main');
+    _ssPanel = new ssPanel(main);
 
-    initApp(main, _emailID);
-    showLoading(true);
+    _that._successfulAuthorization = true;
+    if (window.SpeechSynthesisUtterance === undefined) {
+      return _ssPanel.errorMsg("This browser does not support Speech Synthesis. Try another browser, like Chrome.")
+    }
+    if (loginID == null) return _ssPanel.errorMsg("You are not logged in. Please log in to Google, and restart.");
+    _loginID = loginID;
+    _emailID = emailID;
+
+    initApp(_emailID, _ssPanel);
+    _ssPanel.showLoading(true);
     ss_loadTeachers(initSelectMenuForTeachers);
   }
 
@@ -90,39 +93,20 @@ function GUISetup() {
   this.showLoginButton = function() {
     console.log("in here.");
     if (_that._successfulAuthorization) return; 
-    var el = document.getElementById('mainel');
-    el.innerHTML = "<button onclick='tryLogin()'>Click to Login to Google</button>";
+    _ssPanel.setContent("<button onclick='tryLogin()'>Click to Login to Google</button>");
   }
   console.log("set timeout.");
   // Turned off for now. Only makes sense for browser interactions.
   //window.setTimeout(this.showLoginButton, 5000);
 
-  function errorMsg(mess) {
-      //var querySelector = document.querySelector.bind(document);
-      var mainEl = querySelector('main');
-      mainEl.innerHTML = '<h3>' + mess + '</h3>';
-  }
-  function normalMsg(mess) {
-      //var querySelector = document.querySelector.bind(document);
-      var mainEl = querySelector('main');
-      mainEl.innerHTML = '<h4>' + mess + '</h4>';
-  }
-  function showLoading(flag) { 
-    return; // !!!!!! TODO!!!!!
-      var mainEl = querySelector('main');
-      if (flag)
-        mainEl.classList.add('loadingIcon');
-      else
-        mainEl.classList.remove('loadingIcon');
-  }
   function initSelectMenuForTeachers(teachers) {
-    showLoading(false);
+    _ssPanel.showLoading(false);
     var menuEl = document.getElementById('teacherMenu');
     if (teachers == null || teachers.length == 0) {
       menuEl.innerHTML = '<li><h4>No Teachers Defined</h4></li>';
-      return errorMsg('In order to use this app, you need a key file from your teacher.');
+      return _ssPanel.errorMsg('In order to use this app, you need a key file from your teacher.');
     }
-    errorMsg('');
+    _ssPanel.errorMsg('');
 
     var html = '';
     html += '<li ><h4 class="selectMenu-container-header" >Welcome ' + _loginID + '!</h4></li>';
@@ -154,18 +138,18 @@ function GUISetup() {
   this.teacherSelected = function(teacherKey, loginID) {
     console.log("key is " + teacherKey);
     _teacherKey = teacherKey;
-    normalMsg('');
+    _ssPanel.normalMsg('');
     hideSelectMenu();
-    showLoading(true);
+    _ssPanel.showLoading(true);
     ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "VisualCalculator");
   }
   function initAssignmentMenu(assignments) {
     var menuEl = document.getElementById('assignmentMenu');
     if (assignments == null || assignments.length == 0) {
       menuEl.innerHTML = '<li><h4>No Assignments Defined</h4></li>';
-      return errorMsg('Your teacher has not defined any assignments. Please check back later.');
+      return _ssPanel.errorMsg('Your teacher has not defined any assignments. Please check back later.');
     }
-    errorMsg('');
+    _ssPanel.errorMsg('');
   
     var html = '';
     if (assignments.length > 1)
@@ -189,7 +173,7 @@ function GUISetup() {
   }
   this.assignmentSelected = function(spreadSheet) {
     closeMenu();
-    errorMsg('');
+    _ssPanel.errorMsg('');
     ss_loadAssignment(_teacherKey, spreadSheet, _emailID, assignmentCallback);
   }
 }
