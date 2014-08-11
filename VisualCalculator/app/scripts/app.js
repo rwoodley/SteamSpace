@@ -3,8 +3,9 @@
 // The App is provided with generic Assignment information.
 // Optionally it can do a 'doGet()' to get more meta-data about the assignment (for instance: spelling words)
 // If calls doPost() as needed to return results.
-// The code must implement 3 functions ss_getName(), ss_initApp() and ss_assignmentCallback()
+// The code must implement 4 functions ss_getName(), ss_initApp(), ss_assignmentCallback(), ss_standaloneMode()
 var _app;
+function ss_canRunStandalone() { return true; }
 function ss_getName() { return "VisualCalculator"; }
 function ss_initApp(loginID, panel, utils) {
   _app = new app();
@@ -12,7 +13,7 @@ function ss_initApp(loginID, panel, utils) {
 }
 function ss_assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
 function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
-
+function ss_standaloneMode() { _app.standaloneMode(); }
 var app = function() {
   var _ssPanel;
   var _ssUtil;
@@ -33,7 +34,12 @@ var app = function() {
     initHTML();
     setup();
   }
+  this.standaloneMode = function(key, ssname, retval) {
+    initHTML();
+    setup();
+  }
   this.postFormulaTextToServer = function(txt) {
+    if (_teacherKey == undefined) return;
     var serializedData = "LoginID=" + _emailID + "&SpreadSheetName=" + _ssName + "&Formula=" + txt;
     _ssUtil.ss_callWebApp(_teacherKey, serializedData, "post", resultsCallback);
   }

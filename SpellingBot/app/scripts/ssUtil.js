@@ -1,14 +1,35 @@
 'use strict'
+var _ssUtil;
+function ss_setHTMLContent(html, errmsg) { 
+  if (html == null)
+    _ssUtil.getPanel().setContent(errmsg); 
+  else
+    _ssUtil.getPanel().setContent(html);
+}
+function ss_showWebPage(url) {
+  _ssUtil.ss_getWebContent(url, '', 'get', ss_setHTMLContent);
+}
+
+
 function ssUtil(panel) {
+  var SPREADSHEET_NAME_PARAM = "SpreadSheetName";
+  var LOGIN_ID_PARAM = "LoginID";
   var _panel = panel;
+  _ssUtil = this;
+  this.getPanel = function() { return _panel; }
   this.ss_callWebApp = function(key, params, getOrPost, callback) {
+
+    var urltemplate = "https://script.google.com/macros/s/$0/exec";
+    var url = urltemplate.replace('$0', key);
+    this.ss_getWebContent(url, params, getOrPost, callback);
+  }
+  this.ss_getWebContent = function(url, params, getOrPost, callback) {
     _panel.showLoading(true);
     var request;
     if (request) { request.abort(); }   // abort any pending request
     
-    var urltemplate = "https://script.google.com/macros/s/$0/exec";
     request = $.ajax({
-        url: urltemplate.replace('$0', key),
+        url: url,
         type: getOrPost,
         data: params
     });
@@ -28,8 +49,6 @@ function ssUtil(panel) {
       _panel.showLoading(false);
     });
   }
-  var SPREADSHEET_NAME_PARAM = "SpreadSheetName";
-  var LOGIN_ID_PARAM = "LoginID";
   this.ss_postForm = function(key, emailID, ssName, formName, resultsCallback) {
     var $form = $("#"+formName);
     var serializedData = $form.serialize();

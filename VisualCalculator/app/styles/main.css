@@ -232,7 +232,6 @@ main {
   color: red;
 }
 .main-title {
-  
   line-height: 1.6250em;
   font-size:30px;
   color: black;
@@ -240,6 +239,9 @@ main {
 .main-subtitle {
   font-size:20px;
   font-style: italic;
+  color: black;
+}
+.steamspace-html-content {
   color: black;
 }
 

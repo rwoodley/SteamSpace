@@ -106,7 +106,7 @@ function GUISetup() {
   function initSelectMenuForTeachers(teachers) {
     _ssPanel.showLoading(false);
     var menuEl = document.getElementById('teacherMenu');
-    if (teachers == null || teachers.length == 0) {
+    if (!ss_canRunStandalone() && (teachers == null || teachers.length == 0)) {
       menuEl.innerHTML = '<li><h4>No Teachers Defined</h4></li>';
       return _ssPanel.errorMsg('In order to use this app, you need a key file from your teacher.');
     }
@@ -114,7 +114,12 @@ function GUISetup() {
 
     var html = '';
     html += '<li ><h4 class="selectMenu-container-header" >Welcome ' + _loginID + '!</h4></li>';
-    if (teachers.length > 1)
+    if (teachers.length == 0) {
+      html += '<li><h4>No teacher key file detected.</h4></li>';
+      html += "<li><h4><div id='showApp'>Running in stand-alone mode.</div></h4></li>";
+      html += "<li><h4><div id='topic1'>Click here for more info.</div></h4></li>";
+    }
+    else if (teachers.length > 1)
       html += '<li><h4>Please select a teacher:</h4></li>';
     else
       html += '<li><h4>Your teacher is:</h4></li>'
@@ -131,8 +136,20 @@ function GUISetup() {
       var tkey = teachers[i].teacherKey;
       console.log(tkey);
       (function(t,e) { el.onclick = function() { teacherSelected(t,e)  }; })(tkey, _emailID);
-    }      
-    if (teachers.length == 1)
+    }
+    if (teachers.length == 0) {
+      document.getElementById('showApp').onclick = function() {
+        toggleSelectMenu();
+        ss_standaloneMode();
+      }
+      document.getElementById('topic1').onclick = function() { 
+        toggleSelectMenu();
+        ss_showWebPage("http://www.steamspace.net/appdocs/topic1.html"); 
+        //ss_showWebPage("https://s3.amazonaws.com/FaceSpace/Faces/20487.thumb.anti.jpg");
+      }
+      ss_standaloneMode();
+    }
+    else if (teachers.length == 1)
       teacherSelected(teachers[0].teacherKey, _emailID);
     else {
       toggleSelectMenu();

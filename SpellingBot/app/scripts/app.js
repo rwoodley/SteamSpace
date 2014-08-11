@@ -9,6 +9,7 @@ function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
 function ss_getName() { return "SpellingBot"; }
+function ss_canRunStandalone() { return false; }
 function ss_initApp(loginID, panel, utils) {
   _app = new app();
   _app.initApp(loginID, panel, utils);
