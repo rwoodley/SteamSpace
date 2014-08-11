@@ -3,24 +3,27 @@
 // The App is provided with generic Assignment information.
 // Optionally it can do a 'doGet()' to get more meta-data about the assignment (for instance: spelling words)
 // If calls doPost() as needed to return results.
-// The app must have 2 methods initApp() and assignmentCallback()
+// The code must implement 3 functions ss_getName(), ss_initApp() and ss_assignmentCallback()
 var _app;
-function initApp(el, loginID) {
+function ss_getName() { return "VisualCalculator"; }
+function ss_initApp(loginID, panel, utils) {
   _app = new app();
-  _app.initApp(el, loginID);
+  _app.initApp(loginID, panel, utils);
 }
-function assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
+function ss_assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
 function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
 
 var app = function() {
-  var _element;
+  var _ssPanel;
+  var _ssUtil;
   var _teacherKey;
   var _ssName;
   var _emailID;
   var _words; // this is only populated when answers are returned for use by '_words' button.
 
-  this.initApp = function(el, loginID) { 
-    _element = el; 
+  this.initApp = function(loginID, panel, utils) { 
+    _ssPanel = panel; 
+    _ssUtil = utils;
     _emailID = loginID; 
   }
 
@@ -31,17 +34,11 @@ var app = function() {
     setup();
   }
   this.postFormulaTextToServer = function(txt) {
-    //ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);    
     var serializedData = "LoginID=" + _emailID + "&SpreadSheetName=" + _ssName + "&Formula=" + txt;
-    ss_callWebApp(_teacherKey, serializedData, "post", resultsCallback);
+    _ssUtil.ss_callWebApp(_teacherKey, serializedData, "post", resultsCallback);
   }
   function resultsCallback() { console.log("Formula posted"); }
   function initHTML() {
-    //var form = document.getElementById(formName);
-    var form = _element;
-    
-    var html = htmlString();
-    form.innerHTML = html;
-    // now attach click handlers
+    _ssPanel.setContent(htmlString());
   }
 }

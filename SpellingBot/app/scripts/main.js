@@ -87,7 +87,7 @@ function GUISetup() {
     _loginID = loginID;
     _emailID = emailID;
 
-    initApp(_emailID, _ssPanel, _ssUtil);
+    ss_initApp(_emailID, _ssPanel, _ssUtil);
     _ssPanel.showLoading(true);
     _ssAssignments.ss_loadTeachers(initSelectMenuForTeachers);
   }
@@ -145,7 +145,7 @@ function GUISetup() {
     _ssPanel.normalMsg('');
     hideSelectMenu();
     _ssPanel.showLoading(true);
-    _ssAssignments.ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "SpellingBot");
+    _ssAssignments.ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, ss_getName());
   }
   var _assignmentMenuItems = [];
   function initAssignmentMenu(assignments) {
@@ -187,6 +187,6 @@ function GUISetup() {
     closeMenu();
     _ssPanel.errorMsg('');
     console.log(assignment.name + "," + assignment.notes);
-    _ssAssignments.ss_loadAssignment(_teacherKey, assignment, _emailID, assignmentCallback);
+    _ssAssignments.ss_loadAssignment(_teacherKey, assignment, _emailID, ss_assignmentCallback);
   }
 }

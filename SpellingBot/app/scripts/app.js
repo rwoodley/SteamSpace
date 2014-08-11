@@ -3,16 +3,17 @@
 // The App is provided with generic Assignment information.
 // Optionally it can do a 'doGet()' to get more meta-data about the assignment (for instance: spelling words)
 // If calls doPost() as needed to return results.
-// The app must have 2 methods initApp() and assignmentCallback()
+// The code must implement 3 functions ss_getName(), ss_initApp() and ss_assignmentCallback()
 var _app;
 function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
-function initApp(loginID, panel, utils) {
+function ss_getName() { return "SpellingBot"; }
+function ss_initApp(loginID, panel, utils) {
   _app = new app();
   _app.initApp(loginID, panel, utils);
 }
-function assignmentCallback(key, ssName, retval, name, notes) { _app.assignmentCallback(key, ssName, retval, name, notes); }
+function ss_assignmentCallback(key, ssName, retval, name, notes) { _app.assignmentCallback(key, ssName, retval, name, notes); }
 function showResultsWrapper(json) { 
   var retval = JSON.parse(json);
   if (retval.resultObj.answers && retval.resultObj.answers.length > 0)
@@ -132,7 +133,7 @@ var app = function() {
     }
 
     html+= "</table>";
-    html += "<a id='tryAgainButton' class='button--primary'>Try Again.</a>"
+    html += "<a id='tryAgainButton' class='button--primary'>Click to Try Again.</a>"
     _ssPanel.setContent(html);
 
     var bigButton = document.getElementById('tryAgainButton');

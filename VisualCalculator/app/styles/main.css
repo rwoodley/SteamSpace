@@ -219,6 +219,9 @@ button.menu img {
 .navdrawer-container ul li a:active {
   background-color: rgba(255, 255, 255, 0.4);
 }
+.navdrawer-container-selected {
+  background-color: rgba(255, 255, 255, 0.4);
+}
 
 main {
   margin: 0 auto;
@@ -227,6 +230,17 @@ main {
   min-height: 100%;
   font-size:30px;
   color: red;
+}
+.main-title {
+  
+  line-height: 1.6250em;
+  font-size:30px;
+  color: black;
+}
+.main-subtitle {
+  font-size:20px;
+  font-style: italic;
+  color: black;
 }
 
 /** Larger Screens - desktops and tablets **/

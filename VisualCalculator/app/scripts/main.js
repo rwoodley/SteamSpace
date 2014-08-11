@@ -20,7 +20,7 @@ function slowStart() {
 
 // handle user clicks. required because I used innerHTML property below.
 function teacherSelected(teacherKey, emailID) { _that.teacherSelected(teacherKey, emailID); }
-function assignmentSelected(assignmentKey) { _that.assignmentSelected(assignmentKey); }
+function assignmentSelected(assignment, el) { _that.assignmentSelected(assignment, el); }
 
 function GUISetup() {
   // ===== Generic Setup ======
@@ -69,11 +69,15 @@ function GUISetup() {
   var _loginID = "";
   var _emailID = "";
   var _ssPanel;
+  var _ssUtil;
+  var _ssAssignments;
   this._successfulAuthorization = false;
   this.initGUIForSteamspace = function (loginID, emailID) {
     var querySelector = document.querySelector.bind(document);
     var main = querySelector('main');
     _ssPanel = new ssPanel(main);
+    _ssUtil = new ssUtil(_ssPanel);
+    _ssAssignments = new ssAssignments(_ssUtil);
 
     _that._successfulAuthorization = true;
     if (window.SpeechSynthesisUtterance === undefined) {
@@ -83,9 +87,9 @@ function GUISetup() {
     _loginID = loginID;
     _emailID = emailID;
 
-    initApp(_emailID, _ssPanel);
+    ss_initApp(_emailID, _ssPanel, _ssUtil);
     _ssPanel.showLoading(true);
-    ss_loadTeachers(initSelectMenuForTeachers);
+    _ssAssignments.ss_loadTeachers(initSelectMenuForTeachers);
   }
 
   // Some browsers won't show pop-ups except in response to a user click.
@@ -141,8 +145,9 @@ function GUISetup() {
     _ssPanel.normalMsg('');
     hideSelectMenu();
     _ssPanel.showLoading(true);
-    ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "VisualCalculator");
+    _ssAssignments.ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, ss_getName());
   }
+  var _assignmentMenuItems = [];
   function initAssignmentMenu(assignments) {
     var menuEl = document.getElementById('assignmentMenu');
     if (assignments == null || assignments.length == 0) {
@@ -162,18 +167,26 @@ function GUISetup() {
       html += template.replace('$0',id).replace('$1',assignments[i].name);
     }
     menuEl.innerHTML = html;
+    var lastAssignment, el;
+    _assignmentMenuItems = [];
     for (var i=0; i < assignments.length; i++) {
       var id = 'assignment_'+i;
-      var el = document.getElementById(id);
+      el = document.getElementById(id);
+      _assignmentMenuItems.push(el);
 
-      (function(ss) { el.onclick = function() {  assignmentSelected(ss);  }; })(assignments[i].spreadSheet);
+      (function(ss, menuel) { el.onclick = function() {  assignmentSelected(ss, menuel);  }; })(assignments[i], el);
+      lastAssignment = assignments[i];
     }
     
-    assignmentSelected(assignments[0].spreadSheet);
+    assignmentSelected(lastAssignment, el);
   }
-  this.assignmentSelected = function(spreadSheet) {
+  this.assignmentSelected = function(assignment, menuel) {
+    for (var i = 0; i < _assignmentMenuItems.length; i++) 
+      _assignmentMenuItems[i].classList.remove('navdrawer-container-selected');
+    menuel.classList.add('navdrawer-container-selected');
     closeMenu();
     _ssPanel.errorMsg('');
-    ss_loadAssignment(_teacherKey, spreadSheet, _emailID, assignmentCallback);
+    console.log(assignment.name + "," + assignment.notes);
+    _ssAssignments.ss_loadAssignment(_teacherKey, assignment, _emailID, ss_assignmentCallback);
   }
 }
