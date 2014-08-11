@@ -8,18 +8,19 @@ var _app;
 function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
-function initApp(loginID, panel) {
+function initApp(loginID, panel, utils) {
   _app = new app();
-  _app.initApp(loginID, panel);
+  _app.initApp(loginID, panel, utils);
 }
 function assignmentCallback(key, ssName, retval, name, notes) { _app.assignmentCallback(key, ssName, retval, name, notes); }
 function showResultsWrapper(json) { 
   var retval = JSON.parse(json);
   if (retval.resultObj.answers && retval.resultObj.answers.length > 0)
-    _app.showResults(retval.resultObj.headers, retval.resultObj.answers); 
+    _app.showResults(retval.resultObj.headers, retval.resultObj.answers, '', ''); 
 }
 var app = function() {
-  var _panel;
+  var _ssPanel;
+  var _ssUtil;
   var _teacherKey;
   var _ssName;
   var _emailID;
@@ -27,20 +28,21 @@ var app = function() {
   var _assignmentName;
   var _assignmentNotes;
 
-  this.initApp = function(loginID, panel) { 
-    _panel = panel; 
+  this.initApp = function(loginID, panel, utils) { 
+    _ssPanel = panel; 
+    _ssUtil = utils;
     _emailID = loginID; 
   }
 
   this.assignmentCallback = function(key, ssname, retval, name, notes) {
     if (retval == null) {
-      _panel.setContent("Error loading assignment. Sorry!");
+      _ssPanel.setContent("Error loading assignment. Sorry!");
       return;
     }
     _teacherKey = key;
     _ssName = ssname;
     if (retval.answers && retval.answers.length > 0)
-      this.showResults(retval.headers, retval.answers);
+      this.showResults(retval.headers, retval.answers, name, notes);
     else
       this.initWords(retval.headers, name, notes);
   }
@@ -48,9 +50,10 @@ var app = function() {
 
     var html = '';
     html += "<form id='spellingForm'>";
-    html += "<table>";
-    var tmp = "<tr><th>$0</th><th>$1</th></tr>";
+    var tmp = "<div class='main-title'>Assignment: $0</div><div class='main-subtitle'>$1</div>";
     html += tmp.replace('$0', name).replace('$1', notes);
+
+    html += "<table>";
     html += "<tr><th>Listen:</th><th>Then type what you hear:</th></tr>";
     
     var template = "<tr><td data-th='Listen'>$2</td><td $d1>$1</td></tr>";
@@ -77,7 +80,7 @@ var app = function() {
     html += "</table>";
     html += "</form>";
     html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Score and Send to Teacher.</a>"
-    _panel.setContent(html);
+    _ssPanel.setContent(html);
     // now attach click handlers
     for (var i = 0; i < words.length; i++) {
       var inputFieldID = "word" + i;
@@ -101,12 +104,19 @@ var app = function() {
     }
     return words;    
   }
-  this.showResults = function(headers, answers) {
+  this.showResults = function(headers, answers, name, notes) {
 
     var html = '';
+    var tmp = "<div class='main-title'>Assignment: $0</div><div class='main-subtitle'>$1</div>";
+    if (name && name.length > 0) {
+      html += tmp.replace('$0', name).replace('$1', notes);
+      _assignmentName = name;
+      _assignmentNotes = notes;
+    }
+    else {
+      html += tmp.replace('$0', _assignmentName).replace('$1', _assignmentNotes);
+    }
     html += "<table>";
-    if (name && name.length > 0)
-      html += "<tr><th>Assignment:</th><th>" + name + "</th></tr>";
     html += "<tr><th>Spelling Word:</th><th>Your Answer:</th></tr>";
     var template = "<tr><td data-th='Spelling Word' class='spellingWord'>$0</td><td data-th='Your Answer' $2>$1</td></tr>";
   
@@ -123,13 +133,14 @@ var app = function() {
 
     html+= "</table>";
     html += "<a id='tryAgainButton' class='button--primary'>Try Again.</a>"
-    _panel.setContent(html);
+    _ssPanel.setContent(html);
 
     var bigButton = document.getElementById('tryAgainButton');
     bigButton.onclick = tryAgain;
   }
   this.scoreAndSubmit = function() {
-    ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);
+    _ssPanel.setContent('');
+    _ssUtil.ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);
   }
   this.tryAgain = function() {
     this.initWords(_words, _assignmentName, _assignmentNotes);

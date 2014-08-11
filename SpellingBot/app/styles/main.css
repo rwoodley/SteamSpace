@@ -231,6 +231,17 @@ main {
   font-size:30px;
   color: red;
 }
+.main-title {
+  
+  line-height: 1.6250em;
+  font-size:30px;
+  color: black;
+}
+.main-subtitle {
+  font-size:20px;
+  font-style: italic;
+  color: black;
+}
 
 /** Larger Screens - desktops and tablets **/
 @media all and (min-width: 990px) {

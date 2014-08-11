@@ -69,11 +69,15 @@ function GUISetup() {
   var _loginID = "";
   var _emailID = "";
   var _ssPanel;
+  var _ssUtil;
+  var _ssAssignments;
   this._successfulAuthorization = false;
   this.initGUIForSteamspace = function (loginID, emailID) {
     var querySelector = document.querySelector.bind(document);
     var main = querySelector('main');
     _ssPanel = new ssPanel(main);
+    _ssUtil = new ssUtil(_ssPanel);
+    _ssAssignments = new ssAssignments(_ssUtil);
 
     _that._successfulAuthorization = true;
     if (window.SpeechSynthesisUtterance === undefined) {
@@ -83,9 +87,9 @@ function GUISetup() {
     _loginID = loginID;
     _emailID = emailID;
 
-    initApp(_emailID, _ssPanel);
+    initApp(_emailID, _ssPanel, _ssUtil);
     _ssPanel.showLoading(true);
-    ss_loadTeachers(initSelectMenuForTeachers);
+    _ssAssignments.ss_loadTeachers(initSelectMenuForTeachers);
   }
 
   // Some browsers won't show pop-ups except in response to a user click.
@@ -141,7 +145,7 @@ function GUISetup() {
     _ssPanel.normalMsg('');
     hideSelectMenu();
     _ssPanel.showLoading(true);
-    ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "SpellingBot");
+    _ssAssignments.ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, "SpellingBot");
   }
   var _assignmentMenuItems = [];
   function initAssignmentMenu(assignments) {
@@ -183,6 +187,6 @@ function GUISetup() {
     closeMenu();
     _ssPanel.errorMsg('');
     console.log(assignment.name + "," + assignment.notes);
-    ss_loadAssignment(_teacherKey, assignment, _emailID, assignmentCallback);
+    _ssAssignments.ss_loadAssignment(_teacherKey, assignment, _emailID, assignmentCallback);
   }
 }
