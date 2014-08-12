@@ -1,4 +1,6 @@
 function ft_alert(msg) {
+  var el = document.getElementById('helpText');
+  el.innerHTML = msg;
   console.log("ALERT: " + msg);
 }
 function getPossibleValuesForSystem(system) {

@@ -45,24 +45,26 @@ function updateMeshAppearance()
 var _firstTime = true;
 function updateCoordinateSystem() {
     var updateFormula = !_drawClicked && getParameterByName('formula') == '';
-    var showAlert = !_firstTime || getParameterByName('formula') == '';
+    var showAlert = !_firstTime && getParameterByName('formula') == '';
+    if (_firstTime) 
+      ft_alert("Use mouse or touch to rotate. Scroll to pan/zoom.<br/>Click on help icon on top for more info.");
     _firstTime = false;
     var textArea = document.getElementById('myTextArea');
     if (_params.system == 'cartesian') {
         if (showAlert)
-            ft_alert("The system is set to use cartesian coordinates.\nThat means it is expecting a formula in terms of X, Y, and Z.\nClick on the help button for more details.");
+            ft_alert("The system is set to use cartesian coordinates.<br/>That means it is expecting a formula in terms of X, Y, and Z.");
         //ft_alert('Z is a function of X & Y which both go from -1 to 1');
         if (updateFormula) _params.formula = 'z = x*x - y*y';
     }
     if (_params.system == 'spherical') {
         if (showAlert)
-            ft_alert("The system is set to use spherical coordinates.\nThat means it is expecting a formula in terms of radius, phi, and theta.\nClick on the help button for more details.");
+            ft_alert("The system is set to use spherical coordinates.<br/>That means it is expecting a formula in terms of radius, phi, and theta.");
         //ft_alert('radius is a function of theta (0 to PI) and phi (0 to 2xPI)');
         if (updateFormula) _params.formula = 'radius = 1.0';
     }
     if (_params.system == 'cylindrical') {
         if (showAlert)
-            ft_alert("The system is set to use cylindrical coordinates.\nThat means it is expecting a formula in terms of radius, phi, and Z.\nClick on the help button for more details.");
+            ft_alert("The system is set to use cylindrical coordinates.<br/>That means it is expecting a formula in terms of radius, phi, and Z.");
         //ft_alert('Z is a function of radius (0 to 1) and phi (0 to 2xPI)');
         if (updateFormula) _params.formula = 'z = radius*(cos(4*phi) + sin(4*phi))';
     }
@@ -86,7 +88,7 @@ function setupDatGui() {
   var p = gui1.add(_params, 'P').min(-1).max(1).step(0.01).name("p");
   p.onChange(function (value) { draw(); });
 
-	gui1.add(_params, 'help').name("Click for help, tips.");
+// 	gui1.add(_params, 'help').name("Click for help, tips.");
 
 	var gui = new dat.GUI();
 	    
