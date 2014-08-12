@@ -144,7 +144,7 @@ function GUISetup() {
       }
       document.getElementById('topic1').onclick = function() { 
         toggleSelectMenu();
-        ss_showWebPage("http://www.steamspace.net/topic1.html"); 
+        ss_showWebPage("http://www.steamspace.net/appdocs/topic1.html"); 
         //ss_showWebPage("https://s3.amazonaws.com/FaceSpace/Faces/20487.thumb.anti.jpg");
       }
       ss_standaloneMode();
