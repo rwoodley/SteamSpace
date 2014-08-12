@@ -1,0 +1,5 @@
+put icons in image directory
+change icon in index.html. change title,d escription.
+generate a new key, put it in manifest. go to console.developers.google.com and create a new client id for the new app id.
+write a new app.js file.
+

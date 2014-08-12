@@ -1,0 +1,25 @@
+{
+   "app": {
+      "background": {
+         "scripts": [ "background.js" ]
+      }
+   },
+   "description": "Visual multiplication and division as operations on prime factors.",
+   "icons": {
+      "128": "images/icon128.png",
+      "16": "images/icon16.png",
+      "48": "images/icon48.png"
+   },
+   "manifest_version": 2,
+   "name": "Formula Toy",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnz10QTlgbFpQjiZSxM+yiNaHcYoW/Gc1qFyYhioDEXsKkaHKO1NT9gsa8/YlpHJNrMFrfGpMX0SyFMPLCogHoKcXVgViRad57PFJV7szstgpiPBCwGCEamw+M/15tB2YJB99xH0ZlYPXel0v9QpefaYePUqMS0GSoKtecp3jgYbnSpc0uEixas0x4CrsQz0pLP2H411tPiPmg43zJfxnZVhT6Ffu0BHVlCr2EUYHsU+UJhN+dijjhB3bjkM+Yu/Lq221bdd5ACB2Q8mz8ciW8E74CKybD5iMEiwH4T52+4IZJnL8ZkcdjAPF8Iv+Iq3WRn5a4dyqWOjSi39lYu0RJwIDAQAB",
+   "oauth2": {
+      "client_id": "683512459303-u0m8r36tudm1k74c1imgrhl9tjo00f6i.apps.googleusercontent.com",
+      "scopes": [ "https://www.googleapis.com/auth/plus.login", "https://www.googleapis.com/auth/plus.profile.emails.read", "https://www.googleapis.com/auth/drive" ]
+   },
+   "permissions": [ "identity" ],
+   "short_name": "Formula Toy",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.51",
+   "sandbox": { "pages": ["sandboxed.html"] }
+}

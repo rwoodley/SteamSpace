@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="" >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="An App from SteamSpace.net. Plot surfaces in 3-d using various coordinate systems.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Formula Toy</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="196x196" href="images/touch/chrome-touch-icon-196x196.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Web Starter Kit">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+    
+    <!-- build:css styles/components/main.min.css -->
+    <link rel="stylesheet" href="styles/h5bp.css">
+    <link rel="stylesheet" href="styles/components/components.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <style>
+    /* Since formulaToy is sandboxed, can't use <main> tag like with other apps. just use a simple div. */
+      .formulaToyMainEl {
+        padding: 60px 16px 16px 16px;
+        height: 4em;
+        min-height: 4em;
+        font-size:30px;
+        color: red;
+      }      
+    </style>
+  </head>
+  <body style="overflow-y: scroll;">
+    <header class="app-bar promote-layer">
+      <div class="app-bar-container">
+        <button class="menu"><img src="images/hamburger.svg" alt="Menu"></button>
+        <img style="border-radius: 30%; margin: 10px;" src="images/icon48.png" />
+        <h3 class="logo">Formula Toy</h3>
+        <section class="app-bar-actions">
+        <button class="selectMenu">
+          <svg viewBox="0 0 24 24" style="pointer-events: none; width: 36px; height: 36px; display: block;">
+            <g>
+              <path d="M12,8c1.1,0,2-0.9,2-2s-0.9-2-2-2c-1.1,0-2,0.9-2,2S10.9,8,12,8z M12,10c-1.1,0-2,0.9-2,2s0.9,2,2,2c1.1,0,2-0.9,2-2S13.1,10,12,10z M12,16c-1.1,0-2,0.9-2,2s0.9,2,2,2c1.1,0,2-0.9,2-2S13.1,16,12,16z">
+              </path>
+            </g>
+          </svg>
+          </button>
+        </section>
+      </div>
+    </header>
+
+    <nav class="navdrawer-container promote-layer">
+      <ul id='assignmentMenu'>
+        <li><a href="#">Loading Assignments...</a></li>
+      </ul>
+    </nav>
+    
+    <div class="selectMenu-container selectMenu-container">
+      <ul id='teacherMenu'>
+        <li><h4>Loading Teachers...</h4></li>
+      </ul>
+    </div>
+
+    <main id="mainel" >
+    </main>
+    
+
+    <!-- build:js scripts/main.min.js -->
+    <script src="scripts/jquery-1.11.1.min.js"></script>
+    <script src="scripts/ssUtil.js"></script>
+    <script src="scripts/ssAuthChromeWebApp.js"></script>
+    <script src="scripts/ssAssignments.js"></script>
+    <script src="scripts/ssPanel.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/main.js"></script>
+
+    <!-- endbuild -->
+
+  </body>
+</html>
