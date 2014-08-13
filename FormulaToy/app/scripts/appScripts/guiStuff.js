@@ -123,5 +123,5 @@ function setupDatGui() {
 
 	gui.open();
 	updateCoordinateSystem();
-	draw();
+	//draw();     // there is a call to draw() in updateCoordinateSystem()
 }

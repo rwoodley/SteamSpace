@@ -4,7 +4,7 @@
          "scripts": [ "background.js" ]
       }
    },
-   "description": "Visual multiplication and division as operations on prime factors.",
+   "description": "Graph 3-D formulas in a variety of coordinate systems.",
    "icons": {
       "128": "images/icon128.png",
       "16": "images/icon16.png",

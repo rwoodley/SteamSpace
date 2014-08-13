@@ -62,7 +62,7 @@ function parseTokens(tokens, formula, possibleValues) {
     // note we start at 1. The left side of the '=' sign is tested above.
     for (var i = 1; i < tokens.length; i++) {
         var token = tokens[i];
-        console.log(token, possibleValues);
+        //console.log(token, possibleValues);
         if (
             token == 'cos' ||
             token == 'abs' ||

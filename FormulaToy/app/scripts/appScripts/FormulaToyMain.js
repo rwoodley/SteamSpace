@@ -7,6 +7,7 @@ var _mat;
 var _lastMesh;
 var _params;
 var _drawClicked = false;
+var _lastFormulaPosted = '';
 startFormulaToy();
 function userClickedDraw() {
     _drawClicked = true;
@@ -79,7 +80,13 @@ function doPlot() {
     //var Mat2 = new THREE.MeshLambertMaterial({color: 0xddaaaa, opacity: 1 });
     _mat = new THREE.MeshPhongMaterial(
     { ambient: 0x555555, color: color, specular: 0x0000cc, shininess: 20,shading: THREE.SmoothShading  }  );
-
+    
+    var tmpFormula = _params.formula.replace(/ /g,'');
+    tmpFormula = 'Formula='+encodeURIComponent(tmpFormula)+"&System="+_params.system;
+    if (tmpFormula != _lastFormulaPosted)
+      parent.postMessage(tmpFormula,"*"); 
+    _lastFormulaPosted = tmpFormula;
+    
     var jsFormula = convertToJavascript(_params.system,_params.formula);
     if (jsFormula == null) return;
     _params.setFormula(getCleanFormula(_params.system,_params.formula));
@@ -126,7 +133,7 @@ function doPlot() {
         ";
     }
     
-    console.log(jsFormula);
+    //console.log(jsFormula);
     var preprefix = "var pi = Math.PI; var e = Math.E; var p = " + _params.P + ";";
     var newCode = preprefix + prefix + jsFormula + postFix;
     try {

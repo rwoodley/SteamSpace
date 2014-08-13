@@ -16,7 +16,18 @@ function ss_initApp(loginID, panel, utils) {
 function ss_assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
 function ss_standaloneMode() { _app.standaloneMode(); }
 // ----- END API -----
-function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
+//function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
+
+// Create IE + others compatible event handler
+var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+var eventer = window[eventMethod];
+var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+// Listen to message from child window
+eventer(messageEvent,function(e) {
+  console.log('parent received message!:  ',e.data);
+  _app.postFormulaTextToServer(e.data);
+},false);
 
 var app = function() {
   var _ssPanel;
@@ -52,7 +63,7 @@ var app = function() {
   }
   this.postFormulaTextToServer = function(txt) {
     if (_teacherKey == undefined) return;
-    var serializedData = "LoginID=" + _emailID + "&SpreadSheetName=" + _ssName + "&Formula=" + txt;
+    var serializedData = "LoginID=" + _emailID + "&SpreadSheetName=" + _ssName + "&" + txt;
     _ssUtil.ss_callWebApp(_teacherKey, serializedData, "post", resultsCallback);
   }
   function resultsCallback() { console.log("Formula posted"); }
