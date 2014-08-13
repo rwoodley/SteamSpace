@@ -242,7 +242,13 @@ main {
   color: black;
 }
 .steamspace-html-content {
+  padding: 70px 16px 16px 16px;
   color: black;
+  font-size: 20px;
+}
+.steamspace-html-content dt {
+  color: black;
+  font-size: 20px;
 }
 
 /** Larger Screens - desktops and tablets **/

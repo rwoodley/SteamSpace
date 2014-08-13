@@ -32,6 +32,9 @@ function GUISetup() {
   var appbarElement = querySelector('.app-bar');
   var menuBtn = querySelector('.menu');
   var main = document.getElementById('mainel');
+  var helptext = document.getElementById('HelpText');
+  if (helptext != undefined)   helptext.addEventListener('click', closeMenu);
+
   
   var selectMenu = querySelector('.selectMenu-container');
   var selectMenuButton = querySelector('.selectMenu');
@@ -127,14 +130,9 @@ function GUISetup() {
       (function(t,e) { el.onclick = function() { teacherSelected(t,e)  }; })(tkey, _emailID);
     }
     if (teachers.length == 0) {
-      document.getElementById('showApp').onclick = function() {
-        toggleSelectMenu();
-        ss_standaloneMode();
-      }
       document.getElementById('topic1').onclick = function() { 
         toggleSelectMenu();
-        ss_showWebPage("http://www.steamspace.net/appdocs/topic1.html"); 
-        //ss_showWebPage("https://s3.amazonaws.com/FaceSpace/Faces/20487.thumb.anti.jpg");
+        _ssPanel.showHelpTextForURL("http://www.steamspace.net/appdocs/topic1.html"); 
       }
       ss_standaloneMode();
     }

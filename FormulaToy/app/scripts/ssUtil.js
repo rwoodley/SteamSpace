@@ -2,11 +2,11 @@
 var _ssUtil;
 function ss_setHTMLContent(html, errmsg) { 
   if (html == null)
-    _ssUtil.getPanel().setContent(errmsg); 
+    _ssUtil.getPanel().setHelpContent(errmsg); 
   else
-    _ssUtil.getPanel().setContent(html);
+    _ssUtil.getPanel().setHelpContent(html);
 }
-function ss_showWebPage(url) {
+function ss_showHelpPage(url) {
   _ssUtil.ss_getWebContent(url, '', 'get', ss_setHTMLContent);
 }
 

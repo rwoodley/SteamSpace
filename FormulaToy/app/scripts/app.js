@@ -3,8 +3,10 @@
 // The App is provided with generic Assignment information.
 // Optionally it can do a 'doGet()' to get more meta-data about the assignment (for instance: spelling words)
 // If calls doPost() as needed to return results.
-// The code must implement 4 functions ss_getName(), ss_initApp(), ss_assignmentCallback(), ss_standaloneMode()
+// The code must implement 6 functions ss_getName(), ss_initApp(), ss_assignmentCallback(), ss_canRunStandalone() ss_standaloneMode(), ss_restartApp()
 var _app;
+
+// ----- API -----
 function ss_canRunStandalone() { return true; }
 function ss_getName() { return "FormulaToy"; }
 function ss_initApp(loginID, panel, utils) {
@@ -12,8 +14,11 @@ function ss_initApp(loginID, panel, utils) {
   _app.initApp(loginID, panel, utils);
 }
 function ss_assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
-function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
 function ss_standaloneMode() { _app.standaloneMode(); }
+function ss_restartApp() { _app.initHTML(); }
+// ----- END API -----
+function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
+
 var app = function() {
   var _ssPanel;
   var _ssUtil;
@@ -52,7 +57,7 @@ var app = function() {
     _ssUtil.ss_callWebApp(_teacherKey, serializedData, "post", resultsCallback);
   }
   function resultsCallback() { console.log("Formula posted"); }
-  function initHTML() {
+  this.initHTML = function() {
     _ssPanel.setContent(htmlString());
   }
 }
