@@ -226,7 +226,7 @@ button.menu img {
 main {
   margin: 0 auto;
   /* Height of the header */
-  padding: 60px 16px 16px 16px;
+  padding: 70px 16px 16px 16px;
   min-height: 100%;
   font-size:30px;
   color: red;
@@ -242,7 +242,13 @@ main {
   color: black;
 }
 .steamspace-html-content {
+  padding: 70px 16px 16px 16px;
   color: black;
+  font-size: 20px;
+}
+.steamspace-html-content dt {
+  color: black;
+  font-size: 20px;
 }
 
 /** Larger Screens - desktops and tablets **/

@@ -31,7 +31,10 @@ function GUISetup() {
   var body = document.body;
   var appbarElement = querySelector('.app-bar');
   var menuBtn = querySelector('.menu');
-  var main = querySelector('main');
+  var main = document.getElementById('mainel');
+  var helptext = document.getElementById('HelpText');
+  if (helptext != undefined)   helptext.addEventListener('click', closeMenu);
+
   
   var selectMenu = querySelector('.selectMenu-container');
   var selectMenuButton = querySelector('.selectMenu');
@@ -74,7 +77,7 @@ function GUISetup() {
   this._successfulAuthorization = false;
   this.initGUIForSteamspace = function (loginID, emailID) {
     var querySelector = document.querySelector.bind(document);
-    var main = querySelector('main');
+    var main = document.getElementById('mainel');
     _ssPanel = new ssPanel(main);
     _ssUtil = new ssUtil(_ssPanel);
     _ssAssignments = new ssAssignments(_ssUtil);
@@ -91,17 +94,6 @@ function GUISetup() {
     _ssPanel.showLoading(true);
     _ssAssignments.ss_loadTeachers(initSelectMenuForTeachers);
   }
-
-  // Some browsers won't show pop-ups except in response to a user click.
-  // so if we timeout, lets put up a button to allow use to initiate login sequence.
-  this.showLoginButton = function() {
-    console.log("in here.");
-    if (_that._successfulAuthorization) return; 
-    _ssPanel.setContent("<button onclick='tryLogin()'>Click to Login to Google</button>");
-  }
-  console.log("set timeout.");
-  // Turned off for now. Only makes sense for browser interactions.
-  //window.setTimeout(this.showLoginButton, 5000);
 
   function initSelectMenuForTeachers(teachers) {
     _ssPanel.showLoading(false);
@@ -138,14 +130,9 @@ function GUISetup() {
       (function(t,e) { el.onclick = function() { teacherSelected(t,e)  }; })(tkey, _emailID);
     }
     if (teachers.length == 0) {
-      document.getElementById('showApp').onclick = function() {
-        toggleSelectMenu();
-        ss_standaloneMode();
-      }
       document.getElementById('topic1').onclick = function() { 
         toggleSelectMenu();
-        ss_showWebPage("http://www.steamspace.net/appdocs/topic1.html"); 
-        //ss_showWebPage("https://s3.amazonaws.com/FaceSpace/Faces/20487.thumb.anti.jpg");
+        _ssPanel.showHelpTextForURL("http://www.steamspace.net/appdocs/topic1.html"); 
       }
       ss_standaloneMode();
     }

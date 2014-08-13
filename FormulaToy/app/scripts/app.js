@@ -3,7 +3,7 @@
 // The App is provided with generic Assignment information.
 // Optionally it can do a 'doGet()' to get more meta-data about the assignment (for instance: spelling words)
 // If calls doPost() as needed to return results.
-// The code must implement 6 functions ss_getName(), ss_initApp(), ss_assignmentCallback(), ss_canRunStandalone() ss_standaloneMode(), ss_restartApp()
+// The code must implement 5 functions ss_getName(), ss_initApp(), ss_assignmentCallback(), ss_canRunStandalone() ss_standaloneMode()
 var _app;
 
 // ----- API -----
@@ -15,7 +15,6 @@ function ss_initApp(loginID, panel, utils) {
 }
 function ss_assignmentCallback(key, ssName, retval) { _app.assignmentCallback(key, ssName, retval); }
 function ss_standaloneMode() { _app.standaloneMode(); }
-function ss_restartApp() { _app.initHTML(); }
 // ----- END API -----
 function postFormulaTextToServer(txt) { _app.postFormulaTextToServer(txt); }
 
