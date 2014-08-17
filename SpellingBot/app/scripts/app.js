@@ -141,7 +141,11 @@ var app = function() {
     bigButton.onclick = tryAgain;
   }
   this.scoreAndSubmit = function() {
-    _ssPanel.setContent('');
+    // _ssPanel.setContent('');   // don't do it this way. this gets rid of the form and no data is sent.
+    var form = document.getElementById('spellingForm');
+    form.style.display = 'none';
+    var butt = document.getElementById('scoreAndSubmitButton');
+    butt.style.display = 'none';
     _ssUtil.ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);
   }
   this.tryAgain = function() {

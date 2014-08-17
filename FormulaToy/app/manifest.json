@@ -20,6 +20,6 @@
    "permissions": [ "identity" ],
    "short_name": "Formula Toy",
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "0.51",
+   "version": "0.52",
    "sandbox": { "pages": ["sandboxed.html"] }
 }
