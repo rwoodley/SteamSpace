@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <title>Steam Space</title>
+	<meta name="google-site-verification" content="xgVmNhsVefIXZ7nkzOocrFvCfHvWChrYN0koD0X4HxU" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            $('#register').on('submit', function () {
+                var formdata = $(this).serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "https://script.google.com/macros/s/AKfycbxZ2GQHyyxm1rL7R7umr81oLKCq7RATGFvXf4x5hYC23IjDDbc/exec",
+                    data: formdata,
+                    success: function(data) { alert('Thank you for your interest!'); }
+                 }
+                 );
+                return false;
+            });
+        });
+    </script>
+</head>
+<body>
+
+	
+
+ <div id="headline">
+<header>
+  <h1>Steam Space</h1>
+  <p>Chrome Apps for K-12 Education</p>
+<p>
+We believe in beautiful educational apps that encourage exploration.
+We also believe in building in the teacher-student interaction from the start, using existing tools that teachers are comfortable with. 
+Our apps provide real-time feedback to teachers by writing results into the teachers' Google Docs.
+</p>
+</header>
+<iframe name="formSending" style="visibility: hidden;display:none;"></iframe>
+
+<form id="register" name='blah'>
+        <INPUT TYPE="HIDDEN" NAME="LoginID" VALUE="unused">
+        <INPUT TYPE="HIDDEN" NAME="SpreadSheetName" VALUE="DemoRequests">
+       <h2>Register for a demo</h2>
+       <label for="name">Name</label>
+       <input type="text" name="name" id="name"
+          placeholder="Thomas A Anderson" required>
+       <label for="email">Email address</label>
+       <input type="email" name="email" id="email"
+          placeholder="neo@example.com" required>
+       <label for="role">Your role</label>
+       <input type="role" name="role" id="role"
+          placeholder="e.g. 2nd grade teacher" required>
+       <label for="location">Your location</label>
+       <input type="location" name="location" id="location"
+          placeholder="Chicago, IL" required>
+       <input type="submit" value="Sign up">
+    </form>
+ </div>
+ <div id="section1">
+      <div class="container">
+        <h3>What is the Steam Space framework?</h3>
+        <p>Each app has its own look and feel appropriate for the lesson it offers.
+        Many apps run in standalone mode and can be down-loaded right now and used without needing a teachers involvement.
+        However the Steam Space framework offers additional value and allows for a teacher to be involved with the student as well.</p>
+        <p>How does it work?</p>
+        <ul>
+          <li>Everything is accomplished via a few docs in the Teacher's Google Drive.</li>
+          <li>All the teacher's files are in a folder called SteamSpaceTeacher.</li>
+          <li>The teacher groups students into rosters in a spreadsheet called 'Rosters'.</li>
+          <li>The teacher gives an assignment to a roster by entering a single line into a file called 'Assignments'.</li>
+          <li>Output form the assignment goes into its own spread-sheet. Data is updated immediately as the student uses the app.</li>
+        </ul>
+        <video width="640" height="380" controls poster="images/poster.png">
+          <source src="images/ss.mov" type="video/mp4"></source>
+          <source src="udacity.webm" type="video/webm"></source>
+          <p>Sorry your browser doesn't support video.
+          </p>
+        </video>
+        <br>
+      </div>
+    </div>
+    <!--
+    <div id="section2">
+      <h2>Existing apps</h2>
+      <p>Existing Steam Space Apps:</p>
+    
+      <div id="images">
+        <img src="images/spellingBot128.png" alt="Spelling Bot">
+        <img src="images/visualCalculator128.png" alt="Visual Calculator">
+        <img src="images/formulaToy128.png" alt="Formula Toy">
+      </div>
+    
+      <br>
+    </div>
+    -->
+ <div id="section3">
+      <h2>Steam Space Apps</h2>
+      <p>These are all Chrome Apps. Click on the name to view in the App Store.</p>
+      <table>
+        <thead>
+           <tr>
+             <th></th>
+             <th>Name</th>
+             <th>Description</th>
+             <th><nobr>Can run standalone? <a href="#standalone">*</a></nobr></th>
+             <th>More Info</th>
+           </tr>
+        </thead>
+        <colgroup>
+           <col span="1">
+           <col span="1">
+           <col span="1">
+           <col span="1">
+        </colgroup>
+        <tbody>
+         <tr>
+            <td data-th=""><img src="images/visualCalculator128.png" alt="Visual Calculator"></td>
+            <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/visual-calculator/gjhgkallojkgahkjhppaldkbngihhnnj">Visual Calculator</a></h4></td>
+            <td data-th="Description">View mathematical operations as groupings of prime factors</td>
+            <td data-th="Standalone?">Yes</td>
+            <td data-th="More Info"><a href="images/visualCalculator.gif"><img height=128px src="images/visualCalculator.gif"></a></td>
+          </tr>
+         <tr>
+            <td data-th=""><img src="images/FormulaToy128.png" alt="Visual Calculator"></td>
+            <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/formula-toy/nlokcbhiaandlmgclipefjalpolicngo">Formula Toy</a></h4></td>
+            <td data-th="Description">View 3-D formulas in a variety of coordinate systems</td>
+            <td data-th="Standalone?">Yes</td>
+            <td data-th="More Info"><a href="images/formulaToy.gif"><img height=128px src="images/formulaToy.gif"></a></td>
+          </tr>
+         <tr>
+            <td data-th=""><img src="images/spellingBot128.png" alt="Spelling Bot"></td>
+            <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/spelling-bot/ednohpldhkhgckejpgcehegljincabnk">Spelling Bot</a></h4></td>
+            <td data-th="Description">Practice Spelling Lists assigned by the teacher</td>
+            <td data-th="Standalone?">No</td>
+            <td data-th="More Info">See Video above</td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+    <a name="standalone"></a><div style="text-align: left;">(*) A standalone app can be run without requiring a teacher to setup an assignment. Just download it and run it.</div>
+      <br />
+    </div><footer>
+<p>Contact: <a href=mailto:info@SteamSpace.net>info@SteamSpace.net</a></p>
+</footer>
+
+
+</body>
+</html>
