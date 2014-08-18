@@ -28,53 +28,56 @@
 	
 
  <div id="headline">
-<header>
-  <h1>Steam Space</h1>
-  <p>Chrome Apps for K-12 Education</p>
-<p>
-We believe in beautiful educational apps that encourage exploration.
-We also believe in building in the teacher-student interaction from the start, using existing tools that teachers are comfortable with. 
-Our apps provide real-time feedback to teachers by writing results into the teachers' Google Docs.
-</p>
-</header>
-<iframe name="formSending" style="visibility: hidden;display:none;"></iframe>
-
-<form id="register" name='blah'>
-        <INPUT TYPE="HIDDEN" NAME="LoginID" VALUE="unused">
-        <INPUT TYPE="HIDDEN" NAME="SpreadSheetName" VALUE="DemoRequests">
-       <h2>Register for a demo</h2>
-       <label for="name">Name</label>
-       <input type="text" name="name" id="name"
-          placeholder="Thomas A Anderson" required>
-       <label for="email">Email address</label>
-       <input type="email" name="email" id="email"
-          placeholder="neo@example.com" required>
-       <label for="role">Your role</label>
-       <input type="role" name="role" id="role"
-          placeholder="e.g. 2nd grade teacher" required>
-       <label for="location">Your location</label>
-       <input type="location" name="location" id="location"
-          placeholder="Chicago, IL" required>
-       <input type="submit" value="Sign up">
-    </form>
+    <div class="container">
+       <header>
+         <h1>Steam Space</h1>
+       </header>
+       <div id="blurb">
+         <p>Chrome Apps for K-12 Education</p>
+        <p>
+        We believe in beautiful educational apps that encourage exploration.
+        We also believe in building in the teacher-student interaction from the start, using existing tools that teachers are comfortable with. 
+        Our apps provide real-time feedback to teachers by writing results into the teachers' Google Docs.
+        </p>
+       </div>
+   
+       <form id="register" name='blah'>
+           <INPUT TYPE="HIDDEN" NAME="LoginID" VALUE="unused">
+           <INPUT TYPE="HIDDEN" NAME="SpreadSheetName" VALUE="DemoRequests">
+          <h2>Register for a demo</h2>
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name"
+             placeholder="Thomas A Anderson" required>
+          <label for="email">Email address</label>
+          <input type="email" name="email" id="email"
+             placeholder="neo@example.com" required>
+          <label for="role">Your role</label>
+          <input type="role" name="role" id="role"
+             placeholder="e.g. 2nd grade teacher" required>
+          <label for="location">Your location</label>
+          <input type="location" name="location" id="location"
+             placeholder="Chicago, IL" required>
+          <input type="submit" value="Sign up">
+       </form>
+        <br></br>
+    </div>
  </div>
  <div id="section1">
       <div class="container">
         <h3>What is the Steam Space framework?</h3>
         <p>Each app has its own look and feel appropriate for the lesson it offers.
-        Many apps run in standalone mode and can be down-loaded right now and used without needing a teachers involvement.
+        Many apps run in stand-alone mode and can be downloaded right now and used without needing a teachers involvement.
         However the Steam Space framework offers additional value and allows for a teacher to be involved with the student as well.</p>
-        <p>How does it work?</p>
+        <p>How Does It Work?</p>
         <ul>
-          <li>Everything is accomplished via a few docs in the Teacher's Google Drive.</li>
+          <li>Everything is accomplished via a few docs in the teacher's Google Drive.</li>
           <li>All the teacher's files are in a folder called SteamSpaceTeacher.</li>
           <li>The teacher groups students into rosters in a spreadsheet called 'Rosters'.</li>
           <li>The teacher gives an assignment to a roster by entering a single line into a file called 'Assignments'.</li>
-          <li>Output form the assignment goes into its own spread-sheet. Data is updated immediately as the student uses the app.</li>
+          <li>Output from the assignment goes into its own spreadsheet. Data is updated immediately as the student uses the app.</li>
         </ul>
-        <video width="640" height="380" controls poster="images/poster.png">
+        <video  controls poster="images/poster.png">
           <source src="images/ss.mov" type="video/mp4"></source>
-          <source src="udacity.webm" type="video/webm"></source>
           <p>Sorry your browser doesn't support video.
           </p>
         </video>
@@ -104,7 +107,7 @@ Our apps provide real-time feedback to teachers by writing results into the teac
              <th></th>
              <th>Name</th>
              <th>Description</th>
-             <th><nobr>Can run standalone? <a href="#standalone">*</a></nobr></th>
+             <th><nobr>Can run stand-alone? <a href="#standalone">*</a></nobr></th>
              <th>More Info</th>
            </tr>
         </thead>

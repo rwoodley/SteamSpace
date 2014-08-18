@@ -237,7 +237,8 @@ tbody {
     #headline #register {
       float:right;
       padding: 20px;
-      width: 50%;
+      margin: 20px;
+      width: 40%;
       box-sizing: border-box;
       font-weight: 300;
     }
