@@ -6,13 +6,27 @@ var ROSTERSFILE = "Rosters";
 var ASSIGNMENTFILE = "Assignments";
 var ASSIGNMENTSHEET = "Assignments";
 
+function test2b() {
+  var e = { parameters:
+           {LoginID: 'law@steamspace.net',
+            AppName: 'SpellingBot'
+           }
+          };
+  Logger.log(doGet(e));
+}
+function asstest3() {
+    Logger.log("start asstest3…");
+  var retval = getAssignments("law@steamspace.net", "SpellingBot");
+  Logger.log("Success! " + retval.getContent());
+}
+
 function getVersion() {
-  return "Version is 19";
+  return "Version is 31";
 }
 function doGet(e){
   if (e.parameters.hasOwnProperty(SPREADSHEET_NAME_PARAM)) {
     var ssName = e.parameter[SPREADSHEET_NAME_PARAM];
-    return getSpreadSheetData(ssName, e.parameters[PARAM_LOGIN_ID]);
+    return getSpreadSheetData(ssName, e.parameter[PARAM_LOGIN_ID]);
   }
   else
     return handleResponse(e);  // get assignment data.
@@ -29,8 +43,11 @@ function doPost(e){
  
 function handleResponse(e) {
   try {
+    Logger.log("in here");
     var loginID = e.parameter[PARAM_LOGIN_ID];
+    Logger.log("in here");
     var appName = e.parameter[PARAM_APP_NAME];
+    Logger.log("in here");
     //return ContentService
     //.createTextOutput(JSON.stringify(e))
     //.setMimeType(ContentService.MimeType.JSON);
@@ -39,21 +56,29 @@ function handleResponse(e) {
   } catch(e){
   } finally { }
 }
-function test() {
-  var retval = getAssignments("rlwoodley@gmail.comx", "SpellingBot");
-  Logger.log("Success! " + retval.getContent());
-}
 function getAssignments(loginID, inAppName) {
-  var inAppName = inAppName.toUpperCase();
-  var rostersText = getRostersForLoginID(loginID);
-  if (rostersText == null) return returnJSON('error', "No rosters for " + loginID);
-  Logger.log("Roster text = " + rostersText);
-  var rosters = rostersText.split(';');
-  Logger.log(rosters);
-
   try {
+    Logger.log("start…");
+    var inAppName = inAppName.toUpperCase();
+    var rostersText = getRostersForLoginID(loginID);
+    if (rostersText == null) {
+      Logger.log("No rosters for " + loginID);
+      return returnJSON('error', "No rosters for " + loginID);
+    }
+    Logger.log("****Roster text = " + rostersText);
+    var rosters = rostersText.split(';');
+    Logger.log(rosters);
+
     var doc = getSpreadsheet(ASSIGNMENTFILE);
+    Logger.log("doc ( " + ASSIGNMENTFILE + ") = " + doc.getName());
+    if (doc == undefined) {
+      return returnJSON('error', "Teacher doesn't have an assignments file.");
+    }
     var sheet = doc.getSheetByName(ASSIGNMENTSHEET);
+    if (sheet == null) {
+      return returnJSON('error', "Assignments spreadsheet must have a tab called: " + ASSIGNMENTSHEET);
+    }
+    Logger.log("doc = " + sheet.name);
     var retval = [];
     
     var headRow = 1;
@@ -113,6 +138,7 @@ function getRostersForLoginID(loginID) {
   var sum = 0;
   for (var i = 0; i < sheets.length ; i++ ) {
     var sheet = sheets[i]; 
+    if (sheet.getLastRow() == 0 || sheet.getLastColumn() == 0) continue;  // no data on sheet.
     var headers = sheet.getRange(1, 1, sheet.getLastRow(), sheet.getLastColumn()).getValues();
     for (j in headers){
       var name = headers[j].toString();
@@ -146,8 +172,10 @@ function getSpreadsheet(fileName) {
       var file = files.next();
       Logger.log(file.getName() + file.getMimeType());
       var spreadsheet = SpreadsheetApp.openById(file.getId());
-      if (file.getName() == fileName)
+      if (file.getName() == fileName) {
+        Logger.log("match");
         returnSheet = spreadsheet;
+      }
     }
   }
   return returnSheet;

@@ -33,4 +33,3 @@ function test2() {
           };
   Logger.log(doGet(e).getContent());
 }
-
