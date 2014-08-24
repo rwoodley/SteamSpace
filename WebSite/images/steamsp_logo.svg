@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="576px" height="576px" viewBox="0 0 576 576" enable-background="new 0 0 576 576" xml:space="preserve">
+<polygon fill="none" stroke="#ED1C24" stroke-width="5.7605" stroke-miterlimit="10" points="325.091,345.615 200.375,417.621 
+	75.658,345.615 75.658,201.603 200.375,129.597 325.091,201.603 "/>
+<radialGradient id="SVGID_1_" cx="200.3745" cy="273.6084" r="79.2068" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#FFF33B"/>
+	<stop  offset="0" style="stop-color:#FFE029"/>
+	<stop  offset="0" style="stop-color:#FFD218"/>
+	<stop  offset="0" style="stop-color:#FEC90F"/>
+	<stop  offset="0" style="stop-color:#FDC70C"/>
+	<stop  offset="0" style="stop-color:#F3903F"/>
+	<stop  offset="0" style="stop-color:#FFFFFF"/>
+	<stop  offset="1" style="stop-color:#0069B5"/>
+</radialGradient>
+<circle fill="url(#SVGID_1_)" cx="200.375" cy="273.608" r="79.207"/>
+<text transform="matrix(0.9541 0 0 1 336.166 250.6953)"><tspan x="0" y="0" fill="#2E3192" font-family="'MyriadPro-Regular'" font-size="65.0657" letter-spacing="4.193">STEAM</tspan><tspan x="6.148" y="90" fill="#2E3192" font-family="'MyriadPro-Regular'" font-size="65.0657" letter-spacing="4.193">SPACE</tspan></text>
+</svg>
