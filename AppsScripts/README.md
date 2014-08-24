@@ -18,7 +18,7 @@ Click here to install steam space if you are a teacher: [https://script.google.c
 ----------------
 The 3 main scripts:   
 
-The AssignmentScript has the core logic. It is not published. It seems to be shared, not sure why and if necessary. It may need to be shared since it is being used as a libary by the MainScript.
+The AssignmentScript has the core logic. It is not published. It is shared because it is a 'library' that will be used by MainScript. More info on app script libraries [here](https://developers.google.com/apps-script/guide_libraries).
 
 The MainScript is shared to Teachers by the Installer script. The teacher gets a copy which they will then publish to students. It refers to the specific version of AssignmentScript. Right now there is no way for teachers to get an updated MainScript (and hence no way to get an updated AssignmentScript) without deleting the existing MainScript and running the installer. This is OK, because it allows us to control roll-outs. Of course eventually we need an updater script to decide when/to whom the new MainScript should be deployed.   
 
