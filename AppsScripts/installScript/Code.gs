@@ -15,6 +15,7 @@ var MAINSCRIPT = "MainScript";
 var KEYFILEROOT = "SteamSpaceKeyFile-";
 function installScriptPart2(formObject) {
   try {
+    // Build key file for teacher. (He/she will share this with her students via a link).
     _html = '';
     logMsg("Key is " + formObject.TeacherKey);
     logMsg("Teacher name is " + formObject.TeacherName);
@@ -22,9 +23,18 @@ function installScriptPart2(formObject) {
     var folder = createFolder(FOLDER_NAME);
     if (folder == null) return logMsg("Can't create folder: " + FOLDER_NAME);
     
-    var file = createSpreadsheet(folder, KEYFILEROOT+formObject.TeacherName);
-    var file = DriveApp.getFileById(file.getId());
+    var ssfile = createSpreadsheet(folder, KEYFILEROOT+formObject.TeacherName);
+    var file = DriveApp.getFileById(ssfile.getId());
     file.setDescription(formObject.TeacherKey);
+    var sheet = ssfile.getActiveSheet();
+    sheet.appendRow(["Teachers:"]);
+    sheet.appendRow(["You need to share this file so your students can see it."]);
+    sheet.appendRow(["Click the share button and then select 'Anyone who has the link can view'."]);
+    sheet.appendRow(["Copy the link displayed and put it on your web site, or alternatively invite students to share via the email option."]);
+    sheet.appendRow([" "]);
+    sheet.appendRow(["Students:"]);
+    sheet.appendRow(["Since you are reading this, you have opened this file. That's all you needed to do."]);
+    sheet.appendRow(["You may close the file now."]);
     logMsg("Teacher still needs to run 'test' to authorize the app!!!!");
   }
   catch (e) {
@@ -48,6 +58,8 @@ function installScriptPart1() {
     if (res == null) logMsg("Didn't copy Main Script file.");
     
     logMsg("Successful completion of part 1 of installation script.");
+    logMsg("At this point you need to publish the Main script. Unfortunately this is a manual process.");
+    _html += "Click <a href='http://SteamSpace.net/PublishingInstructions.html' target='_blank'>here</a> for instructions. This link will open in a separate tab."
   }
   catch (e) {
     logMsg("Unexpected error: " + e);
@@ -64,8 +76,7 @@ function copyMainScript(folder) {
     }
     logMsg("Trying to create " + fileName);
 
-    // the Key in this statement comes from the URL you get when you want to share the doc.
-//    var file = DriveApp.getFileById("11xG4Ch5Qc7SqX0_vkTFVUlZTGwDXB1O6eRkwUTu55rVo-PqWA_ZzOg7v");  // AssignmentsScript.
+    // the Key in this statement comes from the URL you get when you want to share the doc. Attn: DONT publish the MainScript, share it!
     var file = DriveApp.getFileById("16NbSrGiTPUGQ-JYNy5khD4bUOqjgWFwKLMQUGf_K452-OoSzB6tQA7ox");  // MainScript (wrapper)
     logMsg("Renaming to " + fileName);
     file.makeCopy(fileName, folder);
