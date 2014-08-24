@@ -10,7 +10,7 @@ Workflow:
 - The Teacher puts a link to the key file out on his/her web page.
 - The Student clicks on the link and opens the key file (which is an empty spreadsheet). That is sufficient to share the file to the Student. The Student then closes the file.   
 
-(*) This manual step is obviously undesirable. I have flagged [the relevant issue](https://code.google.com/p/google-apps-script-issues/issues/detail?id=1703) with Google. When/if it gets fixed, this manual step will no longer be required. 
+(*) This manual step is obviously undesirable. I have flagged [the relevant issue](https://code.google.com/p/google-apps-script-issues/issues/detail?id=1703) with Google. When/if it gets fixed, this manual step will no longer be required. [Here](http://www.steamspace.net/PublishingInstructions.html) are instructions on how to publish the MainScript.
 
 ----------------
 Click here to install steam space if you are a teacher: [https://script.google.com/a/macros/steamspace.net/s/AKfycbxZ35vXFnC4XiohvHUrH-WOoY_xRd1uC6_RKCFc_lARmx-fWCA/exec]   
