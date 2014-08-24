@@ -14,3 +14,7 @@ Workflow:
 
 ----------------
 Click here to install steam space if you are a teacher: [https://script.google.com/a/macros/steamspace.net/s/AKfycbxZ35vXFnC4XiohvHUrH-WOoY_xRd1uC6_RKCFc_lARmx-fWCA/exec]   
+
+----------------
+TODO:   
+Test that deployed 'Main' scripts get updated version of 'Assignment' scripts. Or do we want this?   
