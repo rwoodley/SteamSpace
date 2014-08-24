@@ -16,5 +16,13 @@ Workflow:
 Click here to install steam space if you are a teacher: [https://script.google.com/a/macros/steamspace.net/s/AKfycbxZ35vXFnC4XiohvHUrH-WOoY_xRd1uC6_RKCFc_lARmx-fWCA/exec]   
 
 ----------------
-TODO:   
-Test that deployed 'Main' scripts get updated version of 'Assignment' scripts. Or do we want this?   
+The 3 main scripts:   
+
+The AssignmentScript has the core logic. It is not published. It seems to be shared, not sure why and if necessary. It may need to be shared since it is being used as a libary by the MainScript.
+
+The MainScript is shared to Teachers by the Installer script. The teacher gets a copy which they will then publish to students. It refers to the specific version of AssignmentScript. Right now there is no way for teachers to get an updated MainScript (and hence no way to get an updated AssignmentScript) without deleting the existing MainScript and running the installer. This is OK, because it allows us to control roll-outs. Of course eventually we need an updater script to decide when/to whom the new MainScript should be deployed.   
+
+What is the advantage of breaking out the AssignmentScript and the MainScript into 2 files? This ensures that the AssignmentScript which has most of the core logic is read-only and can't be broken. The copy of the MainScript that the teacher has can be edited by him of course but there is not much there of interest to 'improve' or tinker with.   Note that the AssignmentScript can still be read by someone who takes the time to find it, so the logic is not concealed, it is rather simply immune to modifications.   
+
+The installer script is shared in a way that it runs by whomever invokes it (using the link above).   
+
