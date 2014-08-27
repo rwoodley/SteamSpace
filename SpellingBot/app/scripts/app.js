@@ -59,7 +59,7 @@ var app = function() {
     html += "<tr><th>Listen:</th><th>Then type what you hear:</th></tr>";
     
     var template = "<tr><td data-th='Listen'>$2</td><td $d1>$1</td></tr>";
-    var inputFieldTemplate = "<input class='color--remember' id=$0 name='$1' disabled></input> "
+    var inputFieldTemplate = "<input class='color--remember' id=$0 name=\"$1\" disabled></input> "
     var playTemplate = "<img src='images/ic_action_play.png' id=$0  ></img>";
   
     var words = removeKeyWordsFromWordList(inwords);
