@@ -106,6 +106,7 @@ function GUISetup() {
 
     var html = '';
     html += '<li ><h4 class="selectMenu-container-header" >Welcome ' + _loginID + '!</h4></li>';
+    if (teachers == null) teachers = [];  // simpler than checking over and over below.
     if (teachers.length == 0) {
       html += '<li><h4>No teacher key file detected.</h4></li>';
       html += "<li><h4><div id='showApp'>Running in stand-alone mode.</div></h4></li>";

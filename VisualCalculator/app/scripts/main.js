@@ -106,10 +106,11 @@ function GUISetup() {
 
     var html = '';
     html += '<li ><h4 class="selectMenu-container-header" >Welcome ' + _loginID + '!</h4></li>';
-    if (teachers.length == 0) {
+    if (teachers == null || teachers.length == 0) {
       html += '<li><h4>No teacher key file detected.</h4></li>';
       html += "<li><h4><div id='showApp'>Running in stand-alone mode.</div></h4></li>";
       html += "<li><h4><div id='topic1'>Click here for more info.</div></h4></li>";
+      if (teachers == null) teachers = [];	// simpler than checking everywhere down below.
     }
     else if (teachers.length > 1)
       html += '<li><h4>Please select a teacher:</h4></li>';
