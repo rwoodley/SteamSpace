@@ -26,7 +26,8 @@ var app = function() {
   var _teacherKey;
   var _ssName;
   var _emailID;
-  var _words; // this is only populated when answers are returned for use by '_words' button.
+  var _allWords; // this is only populated when answers are returned for use by 'Try Again' button.
+  var _onlyWrongWords; // this is only populated when answers are returned for use by 'Try Again' button.
   var _assignmentName;
   var _assignmentNotes;
 
@@ -46,9 +47,9 @@ var app = function() {
     if (retval.answers && retval.answers.length > 0)
       this.showResults(retval.headers, retval.answers, name, notes);
     else
-      this.initWords(retval.headers, name, notes);
+      this.initWords(retval.headers, name, notes, retval.headers);
   }
-  this.initWords = function(inwords, name, notes) {
+  this.initWords = function(allwords, name, notes, testwords) {
 
     var html = '';
     html += "<form id='spellingForm'>";
@@ -60,9 +61,10 @@ var app = function() {
     
     var template = "<tr><td data-th='Listen'>$2</td><td $d1>$1</td></tr>";
     var inputFieldTemplate = "<input class='color--remember' id=$0 name=\"$1\" disabled></input> "
+    var inputFieldTemplateNoTest = "<input class='color--remember' id=$0 name=\"$1\" value=\"$2\"></input> "
     var playTemplate = "<img src='images/ic_action_play.png' id=$0  ></img>";
   
-    var words = removeKeyWordsFromWordList(inwords);
+    var words = removeKeyWordsFromWordList(allwords);
     _assignmentName = name;
     _assignmentNotes = notes;
   
@@ -70,7 +72,13 @@ var app = function() {
       console.log(words[i]);
       var inputFieldID = "word" + i;
       var imgFieldID = "img_word" + i;
-      var ifcopy = inputFieldTemplate.replace("$0",inputFieldID).replace("$1",words[i]);
+      var ifcopy;
+      if (testwords.indexOf(words[i]) > -1)
+        ifcopy = inputFieldTemplate.replace("$0",inputFieldID).replace("$1",words[i]);
+      else
+        // if they get this word right already, don't make them type it again.
+        // Instead we show the answer so it gets scored when they submit.
+        ifcopy = inputFieldTemplateNoTest.replace("$0",inputFieldID).replace("$1",words[i]).replace("$2", words[i]);
   
       var pcopy = playTemplate.replace("$0",imgFieldID);
   
@@ -122,12 +130,14 @@ var app = function() {
     html += "<tr><th>Spelling Word:</th><th>Your Answer:</th></tr>";
     var template = "<tr><td data-th='Spelling Word' class='spellingWord'>$0</td><td data-th='Your Answer' $2>$1</td></tr>";
   
-    _words = removeKeyWordsFromWordList(headers); // for use by Try Again button.
+    _allWords = removeKeyWordsFromWordList(headers); // for use by Try Again button.
+    _onlyWrongWords = [];
     for (var i = 0; i < headers.length; i++) {
       var word = headers[i]; var student = answers[answers.length-1][i];  // only display most recent answers tho teacher sees all.
       if (word == 'LoginID' || word == 'Timestamp' || word == 'Score') continue;
       var aclass = (word.trim().toUpperCase() == student.trim().toUpperCase()) ?
         "correctAnswer" : "incorrectAnswer";
+      if (aclass == "incorrectAnswer") _onlyWrongWords.push(word);
       var line = template.replace('$0', word).replace('$1',student).replace('$2','class='+aclass);
       html += line;
       
@@ -149,7 +159,9 @@ var app = function() {
     _ssUtil.ss_postForm(_teacherKey, _emailID, _ssName, 'spellingForm', showResultsWrapper);
   }
   this.tryAgain = function() {
-    this.initWords(_words, _assignmentName, _assignmentNotes);
+    // if there are no wrong words, but they have pressed Try Again, give them all the words.
+    var testWords = _onlyWrongWords.length == 0 ? _allWords : _onlyWrongWords;
+    this.initWords(_allWords, _assignmentName, _assignmentNotes, testWords);
   }
   var _firstWord = true;
   var _voice;
