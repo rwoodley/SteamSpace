@@ -26,3 +26,17 @@ What is the advantage of breaking out the AssignmentScript and the MainScript in
 
 The installer script is shared in a way that it runs by whomever invokes it (using the link above).   
 
+Workflow for modifying Assignment Script (only to be done by me):
+-----------------------------------------------------------------
+Make change to AS, save.   
+Bump version number of AS.   
+Open Main Script (MS), Click on Resources/Libraries, bump version number.   
+Option 1:   
+Log on to teacher's account    
+Open Main Script (MS), Click on Resources/libaries, bump version number.   
+Bump version number of MS.   
+Publish   
+Test, click on http://rwoodley.org/MyContent/RestTest.html and make sure you get good results. Use an account that would normally be permissioned for this teacher.   
+Option 2:
+Log on to teacher's account    
+Try deleting the MainScript and running the installer.   
