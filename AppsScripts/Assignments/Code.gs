@@ -43,11 +43,11 @@ function doPost(e){
  
 function handleResponse(e) {
   try {
-    Logger.log("in here");
+    Logger.log("1-in here");
     var loginID = e.parameter[PARAM_LOGIN_ID];
-    Logger.log("in here");
+    Logger.log("2-in here");
     var appName = e.parameter[PARAM_APP_NAME];
-    Logger.log("in here");
+    Logger.log("3-in here");
     //return ContentService
     //.createTextOutput(JSON.stringify(e))
     //.setMimeType(ContentService.MimeType.JSON);
@@ -92,7 +92,7 @@ function getAssignments(loginID, inAppName) {
       var assignmentName;
       var appName = "";
       var roster = "";
-      var enabled = "";
+      var state = "";
       var notes = "";
       var ss = "";
       for (i in headers) {
@@ -100,7 +100,7 @@ function getAssignments(loginID, inAppName) {
         if (headers[i] == "AssignmentName") assignmentName = rows[j][i];
         if (headers[i] == "SteamSpaceApp") appName = rows[j][i];
         if (headers[i] == "Roster") roster = rows[j][i];
-        if (headers[i] == "Enabled") enabled = rows[j][i];
+        if (headers[i] == "State") state = rows[j][i];
         if (headers[i] == "Notes") notes = rows[j][i];
         if (headers[i] == "SpreadSheet") ss = rows[j][i];
       }
@@ -112,7 +112,8 @@ function getAssignments(loginID, inAppName) {
       var retobj = { 
         AssignmentName : assignmentName,
         SpreadSheet : ss,
-        Notes: notes
+        Notes: notes,
+        State: state
       };
       retval.push(retobj);
     }

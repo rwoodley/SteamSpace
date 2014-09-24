@@ -68,6 +68,7 @@ function ssAssignments(ssutil) {
         else {
           results.forEach(
             function(x) { 
+              if (x.State.toUpperCase() != "OK") return;
               var obj =  { name: x.AssignmentName, spreadSheet: x.SpreadSheet, notes: x.Notes};
               assignments.push(obj);
             }
