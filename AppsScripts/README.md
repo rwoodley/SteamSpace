@@ -30,7 +30,6 @@ Workflow for modifying Assignment Script (only to be done by me):
 -----------------------------------------------------------------
 Make change to AS, save.   
 Bump version number of AS.   
-Open Main Script (MS), Click on Resources/Libraries, bump version number.   
 Option 1:   
 Log on to teacher's account    
 Open Main Script (MS), Click on Resources/libaries, bump version number.   
@@ -40,3 +39,8 @@ Test, click on http://rwoodley.org/MyContent/RestTest.html and make sure you get
 Option 2:
 Log on to teacher's account    
 Try deleting the MainScript and running the installer.   
+
+Workflow for modifying installation script
+------------------------------------------
+Change version number in code (line 48)
+Bump version number, publish.
