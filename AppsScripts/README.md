@@ -40,7 +40,7 @@ Option 2:
 Log on to teacher's account    
 Try deleting the MainScript and running the installer.   
 
-Workflow for modifying installation script
-------------------------------------------
-Change version number in code (line 48)
-Bump version number, publish.
+Workflow for modifying installation script   
+------------------------------------------   
+Change version number in code (line 48)   
+Bump version number, publish.   
