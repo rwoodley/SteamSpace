@@ -180,6 +180,8 @@ var app = function() {
         }
       }
     }
+    else
+        window.speechSynthesis.cancel();
     var utt = new SpeechSynthesisUtterance(word);
     utt.voice = _voice;
     window.speechSynthesis.speak(utt);
