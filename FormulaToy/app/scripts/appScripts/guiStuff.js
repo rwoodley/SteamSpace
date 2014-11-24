@@ -7,9 +7,9 @@ window.addEventListener('keydown', function (event) {
         _params.draw();
     }
 });
-function updateMeshAppearance()
+function updateMeshAppearance(minZ, maxZ)
 {
-    var value = _params.material;
+  var value = _params.material;
 	var newMaterial;
 	if (value == "Basic") {
 		newMaterial = new THREE.MeshBasicMaterial( { color: 0x000000 } );
@@ -22,31 +22,45 @@ function updateMeshAppearance()
 	else if (value == "Phong") {
 		newMaterial = new THREE.MeshPhongMaterial( { color: 0x000000, side: THREE.DoubleSide } );
         _sphereColorS.domElement.parentNode.style.display = 'block';
-    }
+  }
+  else if (value == "Gradient") {
+    var uniforms = {
+      minZ: { type: 'f', value: minZ },
+      maxZ: { type: 'f', value: maxZ }
+    } ;
+    newMaterial = new THREE.ShaderMaterial( {
+      uniforms: uniforms,
+      vertexShader: document.getElementById( 'vs' ).textContent,
+      fragmentShader: document.getElementById( 'fs' ).textContent,
+      side: THREE.DoubleSide
+    } );
+
+  }
 	else { // (value == "Wireframe")
 		newMaterial = new THREE.MeshBasicMaterial( { wireframe: true } );
         _sphereColorS.domElement.parentNode.style.display = 'none';
     }
 	_lastMesh.material = newMaterial;
-	
-	_lastMesh.material.color.setHex( _params.color.replace("#", "0x") );
-//	if (_lastMesh.material.ambient)
-//		_lastMesh.material.ambient.setHex( _params.colorA.replace("#", "0x") );
-//    if (_lastMesh.material.emissive)
-//		_lastMesh.material.emissive.setHex( _params.colorE.replace("#", "0x") ); 
-	if (_lastMesh.material.specular)
-		_lastMesh.material.specular.setHex( _params.colorS.replace("#", "0x") ); 
-    if (_lastMesh.material.shininess)
-		_lastMesh.material.shininess = _params.shininess;
-	_lastMesh.material.opacity = _params.opacity;  
-	_lastMesh.material.transparent = true;
 
+  if (value != "Gradient") {
+    _lastMesh.material.color.setHex( _params.color.replace("#", "0x") );
+    //	if (_lastMesh.material.ambient)
+    //		_lastMesh.material.ambient.setHex( _params.colorA.replace("#", "0x") );
+    //    if (_lastMesh.material.emissive)
+    //		_lastMesh.material.emissive.setHex( _params.colorE.replace("#", "0x") );
+    if (_lastMesh.material.specular)
+    	_lastMesh.material.specular.setHex( _params.colorS.replace("#", "0x") );
+    if (_lastMesh.material.shininess)
+    	_lastMesh.material.shininess = _params.shininess;
+    _lastMesh.material.opacity = _params.opacity;
+    _lastMesh.material.transparent = true;
+  }
 }
 var _firstTime = true;
 function updateCoordinateSystem() {
     var updateFormula = !_drawClicked && getParameterByName('formula') == '';
     var showAlert = !_firstTime && getParameterByName('formula') == '';
-    if (_firstTime) 
+    if (_firstTime)
       ft_alert("Use mouse or touch to rotate. Scroll to pan/zoom.<br/>Click on help icon on top for more info.");
     _firstTime = false;
     var textArea = document.getElementById('myTextArea');
@@ -70,7 +84,7 @@ function updateCoordinateSystem() {
     }
     if (updateFormula)
         draw();
-    else 
+    else
         clearPlot();
 }
 var _sphereColorS;
@@ -91,12 +105,12 @@ function setupDatGui() {
 // 	gui1.add(_params, 'help').name("Click for help, tips.");
 
 	var gui = new dat.GUI();
-	    
+
   var folderAppearance = gui.addFolder('Appearance');
 	var sphereColor = folderAppearance.addColor( _params, 'color' ).name('Color (Diffuse)').listen();
 	sphereColor.onChange(function(value) // onFinishChange
   	{   _lastMesh.material.color.setHex( value.replace("#", "0x") );   });
-	
+
   _sphereColorS = folderAppearance.addColor( _params, 'colorS' ).name('Color (Specular)').listen();
 	_sphereColorS.onChange(function(value) // onFinishChange
 	  {   _lastMesh.material.specular.setHex( value.replace("#", "0x") );   });
@@ -106,12 +120,12 @@ function setupDatGui() {
 	var sphereOpacity = folderAppearance.add( _params, 'opacity' ).min(0).max(1).step(0.01).name('Opacity').listen();
 	sphereOpacity.onChange(function(value)
 	  {   _lastMesh.material.opacity = value;   });
-	
-	var sphereMaterial = folderAppearance.add( _params, 'material', [ "Basic", "Lambert", "Phong", "Wireframe" ] ).name('Material Type').listen();
-	sphereMaterial.onChange(function(value) 
+
+	var sphereMaterial = folderAppearance.add( _params, 'material', [ "Basic", "Lambert", "Phong", "Wireframe", "Gradient" ] ).name('Material Type').listen();
+	sphereMaterial.onChange(function(value)
 	  {   updateMeshAppearance();   });
 	folderAppearance.close();
-    
+
 	var folder1 = gui.addFolder('Camera Focus');
 	folder1.add(_params, 'X', -10, 10);
 	folder1.add(_params, 'Y', -10, 10);

@@ -16,5 +16,26 @@
 		<script src="scripts/appScripts/FormulaValidation.js"></script>
 		<script src="scripts/appScripts/params.js"></script>
 		<script src="scripts/appScripts/FormulaToyMain.js"></script>
+		<script id="vs" type="x-shader/x-vertex">
+      uniform float minZ;
+      uniform float maxZ;
+      varying vec4 vColor;
+			void main() {
+			  float range = maxZ - minZ;
+        //vec3 newPosition = position + normal;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+				vColor = vec4( (position.x-minZ)/range,(position.y-minZ)/range,(position.z-minZ)/range, 1.0 );
+			}
+
+		</script>
+
+		<script id="fs" type="x-shader/x-fragment">
+      varying vec4 vColor;
+			void main() {
+        gl_FragColor = vColor;
+			}
+
+		</script>
+
 </body>
 </html>
