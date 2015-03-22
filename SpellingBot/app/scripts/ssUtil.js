@@ -19,8 +19,17 @@ function ssUtil(panel) {
   this.getPanel = function() { return _panel; }
   this.ss_callWebApp = function(key, params, getOrPost, callback) {
 
-    var urltemplate = "https://script.google.com/macros/s/$0/exec";
-    var url = urltemplate.replace('$0', key);
+    key = key.trim();
+    var lowercaseKey = key.toLowerCase();
+    if (lowercaseKey.substring(0,5) != 'https') {
+       // seems like at one time the key wored this way.
+        var urltemplate = "https://script.google.com/macros/s/$0/exec";
+        var url = urltemplate.replace('$0', key);
+    }
+    else {
+        // now (3/2015) it seems to work this way:
+        url = key;
+    }
     this.ss_getWebContent(url, params, getOrPost, callback);
   }
   this.ss_getWebContent = function(url, params, getOrPost, callback) {
