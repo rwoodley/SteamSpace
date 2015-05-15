@@ -1,0 +1,42 @@
+{ "Curriculum": "Abraham Lincoln School",
+"Classes" :
+    {
+        "2nd Grade" :
+        { "Name" : "2nd Grade",
+            "Assignments" : 
+           [
+           { "Assignment": "Week1", "Words": ["dash","cash","path","map","happy","dance","clearing","drenched","barely","huddled","friendly","kindness"]},
+           { "Assignment": "Week2", "Words": ["then","them","nest","test","next","went","leather","polished","cobbler","handsome","elves","shoemaker"]},
+           { "Assignment": "Week3", "Words": ["Truck","Alpha Species","Bubble","Fire Bomb","ghost","medical","boulder","sit","his","this","lips","serve","guest","stranger","manner","unusual","overjoyed","restaurant","Thanksgiving"]},
+           { "Assignment": "Week4", "Words": ["Truck","feet","leaves","green","sneak","ridge","swooped","wakeful","gripped","glistened","because","chameleon","adobe"]},
+           { "Assignment": "Week5", "Words": ["like","hide","right","find","i'm","bright","disguise","scent","sneaky","avoid","raspberry","walking stick"]},
+           { "Assignment": "Week6", "Words": ["blow","vote","coat","over","show","slowly","fade","drab","enemies","creatures","designed","february"]},
+           { "Assignment": "Week7", "Words": ["boot","tune","knew","food","rude","who","glossy","delicious","slinking","scrambled","cautiously","Abraham Lincoln","always"]},
+           { "Assignment": "Week8", "Words": ["snow","seals","weak","week","meal","blends","mimicry","surroundings","pretenders","costume","president","immigration","always"]},
+           { "Assignment": "Week9", "Words": ["skipping","running","batting","mopped","kissed","slipped","spotted","swatted","creepy","home sick","ancestor","magnets"]},
+           { "Assignment": "Week10", "Words": ["tell","look","give","know","drive","fight","toad","puffing","avalanche","trembling","mountain","courage"]},
+           { "Assignment": "Week11", "Words": ["were","lived","looked","slid","hero","gurgling","gushing","trickling","rumbling","numb","windmill","courageous","always"]},
+           { "Assignment": "Week12", "Words": ["big","bigger","biggest","happy","happier","ashamed","happiest","swarmed","worthy","admre","successor","character"]},
+           { "Assignment": "Week13", "Words": ["aunts","uncles","animals","rabbits","backed","tapped","drifted","qualified","swirling","dreaded","reservation","gymnasium"]},
+           { "Assignment": "Week14", "Words": ["maybe","inside","bedroom","sunrise","everyone","nobody","ferried","brisk","bustling","citizens","recycling","invitation"]},
+           { "Assignment": "Week15", "Words": ["lunchroom","baseball","sunshine","bookstore","himself","railroad","plantation","fretted","settlement","celebrate","freedom","native american"]},
+           { "Assignment": "Week16", "Words": ["two","sea","rode","meet","to","see","piece","meat","peace","road","algonquin","pawnee earth lodge"]}
+           ]
+        },
+        "3rd Grade":
+        { "Name" : "3rd Grade",
+            "Assignments" : 
+           [
+           { "Assignment": "Week1", "Words": ["dash","cash","path","map","happy","dance","clearing","drenched","barely","huddled","friendly","kindness"],
+             "Sentences": [
+		"She ran a 50 yard dash.",
+                "He was paid in cash.",
+                "The path led through the woods.",
+                "Can you find your town on a map?",
+                "Don't worry, be happy."
+              ]
+           }
+           ]
+        }
+    }
+}
