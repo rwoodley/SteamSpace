@@ -69,7 +69,6 @@ var app = function() {
     _assignmentNotes = notes;
   
     for (var i = 0; i < words.length; i++) {
-      console.log(words[i]);
       var inputFieldID = "word" + i;
       var imgFieldID = "img_word" + i;
       var ifcopy;
@@ -97,7 +96,6 @@ var app = function() {
       var imgFieldID = "img_word" + i;
       var imgel = document.getElementById(imgFieldID);
       var word = words[i];
-      console.log(word + " = " + inputFieldID + ", " + imgFieldID);
       (function(w,i) { imgel.onclick = function() { speakWord(w,i)  }; })(word, inputFieldID);
       
     }

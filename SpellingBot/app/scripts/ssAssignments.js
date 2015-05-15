@@ -17,7 +17,6 @@ function ssAssignments(ssutil) {
               true,
               function(error, status, responseJSON) {
                 if (!error && status == 200) {
-                  //console.log(responseJSON);
                   var response = JSON.parse(responseJSON);
                   if (response.items === undefined || response.items.length == 0) {
                     ss_log("No key files found.");
@@ -39,27 +38,24 @@ function ssAssignments(ssutil) {
       );
   }
   this.ss_loadAssignment = function(teacherKey, assignment, loginID, callback) {
-    console.log("loading assignment...");
     var ssName = assignment.spreadSheet;
     _ssUtil.ss_callWebApp(teacherKey, 'LoginID='+loginID+"&SpreadSheetName="+ssName, "get", function(json, errormess) {
-      console.log("loading assignment, got response");
       if (json == null) { ss_log(errormess); callback(null);   }  // failure.
       else {
         var obj = JSON.parse(json);
         if (obj.result != 'success') { ss_log(obj.error); callback(teacherKey, ssName, null); }
         else 
+	  //console.log(assignment.name + ":" + JSON.stringify(obj.resultObj.headers));
           callback(teacherKey, ssName, obj.resultObj, assignment.name, assignment.notes);
       }
     });
   }
   this.ss_loadAssignments = function(teacherKey, emailID, callback, appName) {
-    console.log("loading assignments...");
   
     var datatemplate = "LoginID=$0&AppName=$1";
     var params = datatemplate.replace('$0', emailID).replace('$1', appName);
     
     _ssUtil.ss_callWebApp(teacherKey, params, "get", function(json, errormess) {
-      console.log("loading assignments, got response");
       if (json == null) { ss_log(errormess); callback(null);   }  // failure.
       else {
         var assignments = [];

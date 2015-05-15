@@ -190,7 +190,6 @@ function GUISetup() {
     menuel.classList.add('navdrawer-container-selected');
     closeMenu();
     _ssPanel.errorMsg('');
-    console.log(assignment.name + "," + assignment.notes);
     _ssAssignments.ss_loadAssignment(_teacherKey, assignment, _emailID, ss_assignmentCallback);
   }
 }
