@@ -20,7 +20,8 @@
            { "Assignment": "Week13", "Words": ["aunts","uncles","animals","rabbits","backed","tapped","drifted","qualified","swirling","dreaded","reservation","gymnasium"]},
            { "Assignment": "Week14", "Words": ["maybe","inside","bedroom","sunrise","everyone","nobody","ferried","brisk","bustling","citizens","recycling","invitation"]},
            { "Assignment": "Week15", "Words": ["lunchroom","baseball","sunshine","bookstore","himself","railroad","plantation","fretted","settlement","celebrate","freedom","native american"]},
-           { "Assignment": "Week16", "Words": ["two","sea","rode","meet","to","see","piece","meat","peace","road","algonquin","pawnee earth lodge"]}
+           { "Assignment": "Week16", "Words": ["two","sea","rode","meet","to","see","piece","meat","peace","road","algonquin","pawnee earth lodge"],
+                "Notes": "Good luck!"}
            ]
         },
         "3rd Grade":
@@ -34,7 +35,8 @@
                 "The path led through the woods.",
                 "Can you find your town on a map?",
                 "Don't worry, be happy."
-              ]
+              ],
+              "Notes": "Listen to the words and the usage and then type in the answer"
            }
            ]
         }

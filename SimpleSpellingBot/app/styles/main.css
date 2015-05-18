@@ -226,7 +226,7 @@ button.menu img {
 main {
   margin: 0 auto;
   /* Height of the header */
-  padding: 70px 16px 16px 16px;
+  padding: 16px 16px 16px 16px;
   min-height: 100%;
   font-size:30px;
   color: red;

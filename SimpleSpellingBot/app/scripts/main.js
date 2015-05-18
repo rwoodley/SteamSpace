@@ -35,9 +35,14 @@ function GUISetup() {
   var helptext = document.getElementById('HelpText');
   if (helptext != undefined)   helptext.addEventListener('click', closeMenu);
 
-  
-  var selectMenu = querySelector('.selectMenu-container');
+  var settingsMenuButton = querySelector('.settingsMenu');
+  // var settingsMenu = querySelector('.settingsMenu-container');
+  var settingsMenu = document.getElementById('settingsMenu')
+  settingsMenu.style.display='none';
+
   var selectMenuButton = querySelector('.selectMenu');
+  // var selectMenu = querySelector('.selectMenu-container');
+  var selectMenu = document.getElementById('teacherMenu');
   selectMenu.style.display='none';
 
   function closeMenu() {
@@ -59,8 +64,20 @@ function GUISetup() {
     else
       selectMenu.style.display = 'none';
   }
+  function hideSettingsMenu() {      settingsMenu.style.display = 'none'; }
+  function toggleSettingsMenu() {
+    if (!_settingsMenuInited) return;
+    if (settingsMenu.style.display == 'none') {
+      hideSelectMenu();
+      settingsMenu.style.display = 'block';
+      initSettingsMenu();
+    }
+    else
+      settingsMenu.style.display = 'none';
+  }
 
   selectMenuButton.addEventListener('click', toggleSelectMenu);
+  settingsMenuButton.addEventListener('click', toggleSettingsMenu);
   main.addEventListener('click', closeMenu);
   menuBtn.addEventListener('click', toggleMenu);
   navdrawerContainer.addEventListener('click', function (event) {
@@ -94,27 +111,49 @@ function GUISetup() {
     _ssPanel.showLoading(true);
     _ssAssignments.ss_loadTeachers(initSelectMenuForTeachers, tag);
   }
-
+  var _settingsMenuInited = false;
+  function initSettingsMenu() {
+    if (_settingsMenuInited) return;
+    _settingsMenuInited = true;
+    var menuEl = document.getElementById('settingsMenu');
+    menuEl.innerHTML = '<li><h4>No Teachers Defined</h4></li>';
+    var html = '';
+    html += '<li ><h4 class="selectMenu-container-header" >Choose a voice!</h4></li>';
+    var voices = window.speechSynthesis.getVoices();
+    for(var i = 0; i < voices.length; i++ ) {
+      console.log(voices[i].lang)
+      var id = "voice"+i;
+      html += "<li><a id='$0'>$1</a></li>".replace('$0', id).replace('$1', voices[i].name);
+    }
+    menuEl.innerHTML = html;
+    for(var i = 0; i < voices.length; i++ ) {
+      var id = "voice"+i;
+      var el = document.getElementById(id);
+      (function(t) { el.onclick = function() { 
+        setVoice(t);
+        hideSettingsMenu();
+        }; })(voices[i].name);
+    }
+  }
   function initSelectMenuForTeachers(teachers) {
     _ssPanel.showLoading(false);
     var menuEl = document.getElementById('teacherMenu');
     if (!ss_canRunStandalone() && (teachers == null || teachers.length == 0)) {
-      menuEl.innerHTML = '<li><h4>No Teachers Defined</h4></li>';
-      return _ssPanel.errorMsg('In order to use this app, you need a key file from your teacher.');
+      menuEl.innerHTML = '<li><h4>No Classes/Teachers Defined</h4></li>';
+      return _ssPanel.errorMsg('No classes or teachers defined.');
     }
     _ssPanel.errorMsg('');
 
     var html = '';
-    html += '<li ><h4 class="selectMenu-container-header" >Welcome ' + _loginID + '!</h4></li>';
     if (teachers.length == 0) {
       html += '<li><h4>No teacher key file detected.</h4></li>';
       html += "<li><h4><div id='showApp'>Running in stand-alone mode.</div></h4></li>";
       html += "<li><h4><div id='topic1'>Click here for more info.</div></h4></li>";
     }
     else if (teachers.length > 1)
-      html += '<li><h4>Please select a teacher/class:</h4></li>';
+      html += '<li><h4 class="selectMenu-container-header">Please select a teacher/class:</h4></li>';
     else
-      html += '<li><h4>Your class is:</h4></li>'
+      html += '<li><h4 class="selectMenu-container-header">Your class is:</h4></li>'
     var template = "<li><a id='$0' >$1</a></li>";
     for (var i=0; i < teachers.length; i++) {
       var id = "teacher"+i;
@@ -148,6 +187,7 @@ function GUISetup() {
     _teacherKey = teacherKey;
     _ssPanel.normalMsg('');
     hideSelectMenu();
+    initSettingsMenu();
     _ssPanel.showLoading(true);
     _ssAssignments.ss_loadAssignments(teacherKey, loginID, initAssignmentMenu, ss_getName());
   }

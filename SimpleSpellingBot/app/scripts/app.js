@@ -104,7 +104,7 @@ var app = function() {
     }
     html += "</table>";
     html += "</form>";
-    html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Score and Send to Teacher.</a>"
+    html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Show me how I did.</a>"
     _ssPanel.setContent(html);
     // now attach click handlers
     for (var i = 0; i < words.length; i++) {
@@ -129,7 +129,7 @@ var app = function() {
     html += "<tr><th>Spelling Word:</th><th>Your Answer:</th></tr>";
     var template = "<tr><td data-th='Spelling Word' class='spellingWord'>$0</td><td data-th='Your Answer' $2>$1</td></tr>";
   
-    _allWords = removeKeyWordsFromWordList(headers); // for use by Try Again button.
+    _allWords = headers; // for use by Try Again button.
     _onlyWrongWords = [];
     for (var i = 0; i < headers.length; i++) {
       var word = headers[i]; var student = answers[i];  // only display most recent answers tho teacher sees all.
@@ -178,20 +178,33 @@ var app = function() {
   
     if (_firstWord) {
       _firstWord = false;
-      var voices = window.speechSynthesis.getVoices();
-      for(var i = 0; i < voices.length; i++ ) {
-        if (voices[i].lang == 'en-GB') {
-          _voice = voices[i];
-          break;
+      if (_voice == undefined) {
+        var voices = window.speechSynthesis.getVoices();
+        for(var i = 0; i < voices.length; i++ ) {
+          if (voices[i].lang == 'en-GB') {
+            _voice = voices[i];
+            break;
+          }
         }
       }
     }
     else
         window.speechSynthesis.cancel();
     var sentence = _sentenceLookup[word];
-    var thingToSay = sentence != undefined ? word + ".   ." + sentence + ".   ."  + word + ".": word;
+    var thingToSay = sentence != undefined ? "The word is " + word + ". Usage in a sentence, " 
+          + sentence + "." : word;
     var utt = new SpeechSynthesisUtterance(thingToSay);
     utt.voice = _voice;
     window.speechSynthesis.speak(utt);
+  }
+  setVoice = function(voiceName) {
+    var voices = window.speechSynthesis.getVoices();
+    for(var i = 0; i < voices.length; i++ ) {
+      if (voices[i].name == voiceName) {
+        _voice = voices[i];
+        console.log('*** voice is now '+_voice.name);
+        break;
+      }
+    }
   }
 }
