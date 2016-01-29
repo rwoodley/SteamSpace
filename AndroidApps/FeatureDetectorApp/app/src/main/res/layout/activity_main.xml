@@ -1,0 +1,143 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <org.opencv.android.JavaCameraView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/image_manipulations_activity_surface_view" />
+
+    <TextView
+        android:id="@+id/numMatchesLabel"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/numMatches"
+        android:layout_margin="5dp"
+        android:text="All/XCheck/MinMax:"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/numMatches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/minValueLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="5dp"
+        android:text="matches"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/minValueLabel"
+        android:layout_width="50dip"
+        android:layout_height="40dip"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/minValue"
+        android:layout_margin="5dp"
+        android:text="Min Distance:"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/minValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/seekbars"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="5dp"
+        android:text="min value"
+        android:textColor="@android:color/white"
+        android:textSize="10sp" />
+
+    <RelativeLayout
+        android:id="@+id/seekbars"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+
+        <RelativeLayout
+            android:id="@+id/minMaxSeekBarLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_above="@+id/ransacSeekBarLayout"
+            android:orientation="horizontal"
+            >
+        <TextView
+            android:id="@+id/maxMniLabel"
+            android:layout_width="40dip"
+            android:layout_height="40dip"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="5dp"
+            android:text="Max Distance"
+            android:textColor="@android:color/holo_blue_light"
+            android:textSize="10sp" />
+
+        <SeekBar
+            android:id="@+id/maxMinSeekBar"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_toLeftOf="@+id/maxMinValue"
+            android:layout_toRightOf="@+id/maxMniLabel"
+            android:max="200"
+            android:progress="30" >
+        </SeekBar>
+
+        <TextView
+            android:id="@+id/maxMinValue"
+            android:layout_width="50dip"
+            android:layout_height="40dip"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:text="Val here"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/ransacSeekBarLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/ransacLabel"
+                android:layout_width="60dip"
+                android:layout_height="40dip"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:text="RANSAC Threshold"
+                android:textColor="@android:color/holo_blue_light"
+                android:textSize="10sp" />
+
+            <SeekBar
+                android:id="@+id/ransacSeekBar"
+                android:layout_width="fill_parent"
+                android:layout_height="40dip"
+                android:layout_toLeftOf="@+id/ransacThreshold"
+                android:layout_toRightOf="@+id/ransacLabel"
+                android:max="100"
+                android:progress="30" >
+            </SeekBar>
+
+            <TextView
+                android:id="@+id/ransacThreshold"
+                android:layout_width="50dip"
+                android:layout_height="40dip"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:text="R Val here"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

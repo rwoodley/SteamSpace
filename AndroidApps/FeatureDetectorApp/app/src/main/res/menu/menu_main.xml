@@ -1,0 +1,92 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="net.steamspace.cv.featuredetection.MainActivity">
+
+    <item android:id="@+id/action_screen_shot"
+        android:title="Screen Shot"
+        android:showAsAction="always" />
+
+    <item android:id="@+id/action_train"
+        android:title="Train"
+        android:showAsAction="always" />
+
+    <item android:id="@+id/model_selection"
+        android:title="Model: ORB"
+        android:orderInCategory="100"
+        android:showAsAction="always">
+        <menu>
+            <group
+                android:checkableBehavior="single"
+                >
+                <item android:id="@+id/ORB"
+                    android:title="ORB/ORB"
+                    android:orderInCategory="100"
+                    android:showAsAction="never" />
+
+                <item android:id="@+id/ORBFREAK"
+                    android:title="ORB/FREAK"
+                    android:orderInCategory="100"
+                    android:showAsAction="never" />
+
+                <item android:id="@+id/BRISK"
+                    android:title="BRISK/BRISK"
+                    android:orderInCategory="200"
+                    android:showAsAction="never" />
+
+                <!--<item android:id="@+id/SIFT"-->
+                    <!--android:title="SIFT/SIFT"-->
+                    <!--android:orderInCategory="200"-->
+                    <!--android:showAsAction="never" />-->
+
+                <!--<item android:id="@+id/SURF"-->
+                    <!--android:title="SURF/SURF"-->
+                    <!--android:orderInCategory="200"-->
+                    <!--android:showAsAction="never" />-->
+
+                <!--<item android:id="@+id/SURFBRIEF"-->
+                    <!--android:title="SURF/BRIEF"-->
+                    <!--android:orderInCategory="200"-->
+                    <!--android:showAsAction="never" />-->
+
+                <item android:id="@+id/STAR"
+                    android:title="STAR/BRIEF"
+                    android:orderInCategory="200"
+                    android:showAsAction="never" />
+
+            </group>
+        </menu>
+    </item>
+    <item android:id="@+id/match_style"
+        android:title="Match Style"
+        android:orderInCategory="100"
+        android:showAsAction="always">
+        <menu>
+            <group
+                android:checkableBehavior="all"
+                >
+                <item android:id="@+id/KNN"
+                    android:title="KNN"
+                    android:checked="false"
+                    android:orderInCategory="100"
+                    android:showAsAction="never" />
+
+                <item android:id="@+id/Ratio"
+                    android:title="Ratio Test"
+                    android:checked="false"
+                    android:orderInCategory="100"
+                    android:showAsAction="never" />
+
+                <item android:id="@+id/CrossCheck"
+                    android:title="Cross Check"
+                    android:checked="false"
+                    android:orderInCategory="200"
+                    android:showAsAction="never" />
+
+            </group>
+        </menu>
+    </item>
+
+    <!--<item android:id="@+id/action_settings" android:title="@string/action_settings"-->
+        <!--android:orderInCategory="100" android:showAsAction="never" />-->
+</menu>
