@@ -15,10 +15,7 @@ You can choose one of several algorithms:
 1. ORB Detector, ORB Descriptor Extractor.   
 2. ORB Detector, FREAK Descriptor Extractor.   
 3. BRISK Detector, BRIEF Descriptor Extractor.
-4. SIFT Detector, SIFT Descriptor Extractor. (Too slow for mobile really.
-5. SURF Detector, SURF Descriptor Extractor.
-6. SURF Detector, BRIEF Descriptor Extractor.
-7. STAR Detector, BRIEF Descriptor Extractor.
+4. STAR Detector, BRIEF Descriptor Extractor.
 
 There are several matching modes you can experiment with.   
 1. KNN: K-nearest neighbor matcher. Finds the 15 nearest matches for each feature.   
@@ -30,6 +27,8 @@ Ratio Check, Cross-Check filter matches, reduce the total count. You can also fi
 There are 2 Seek Bars in the app:
 - The first one controls the max distance beyond which a match will be excluded.
 - The second one controls the Ransac threshold. It is only used for Homography. (Drawing the box).
+
+This is a compute-intensive app, on under-powered devices it will be slow and jerky.
 
 To Dos:   
 - The homography doesn't work well if the target image is less than about 25% of the screen.   
