@@ -1,4 +1,1 @@
-SteamSpace
-==========
-
-SteamSpace
+See http://www.steamspace.net
