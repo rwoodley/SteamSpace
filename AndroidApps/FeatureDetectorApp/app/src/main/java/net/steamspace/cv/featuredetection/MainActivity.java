@@ -153,13 +153,7 @@ public class MainActivity extends Activity implements CvCameraViewListener2, See
     public void onResume()
     {
         super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
     }
 
     public void onDestroy() {
@@ -203,8 +197,14 @@ public class MainActivity extends Activity implements CvCameraViewListener2, See
         }
         else {
             item.setChecked(!item.isChecked());
-            if (item.getItemId() == R.id.Ratio && item.isChecked())
+            if (item.getItemId() == R.id.Ratio && item.isChecked()) {
                 _menu.findItem(R.id.KNN).setChecked(true);  // KNN must be checked if running ratio test.
+                showToast("Ratio Test requires KNN too, enabling KNN.");
+            }
+            if (item.getItemId() == R.id.KNN && _menu.findItem(R.id.Ratio).isChecked()) {
+                _menu.findItem(R.id.Ratio).setChecked(false);  // KNN must be checked if running ratio test.
+                showToast("Ratio Test requires KNN too, disabling Ratio test.");
+            }
         }
         return true;
     }
