@@ -163,12 +163,12 @@ var app = function() {
     });
     this.showResults(words, answers);
 
-  }
+  };
   this.tryAgain = function() {
     // if there are no wrong words, but they have pressed Try Again, give them all the words.
     var testWords = _onlyWrongWords.length == 0 ? _allWords : _onlyWrongWords;
     this.initWords(_allWords, _assignmentName, _assignmentNotes, testWords);
-  }
+  };
   var _firstWord = true;
   var _voice;
   this.speakWord = function(word, inputElName) {
@@ -191,7 +191,7 @@ var app = function() {
     else
         window.speechSynthesis.cancel();
     var sentence = _sentenceLookup[word];
-    var thingToSay = sentence != undefined ? "The word is " + word + ". Usage in a sentence, " 
+    var thingToSay = sentence != undefined ? "The word is " + word + ". " 
           + sentence + "." : word;
     var utt = new SpeechSynthesisUtterance(thingToSay);
     utt.voice = _voice;
