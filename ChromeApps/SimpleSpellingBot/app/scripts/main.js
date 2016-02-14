@@ -23,6 +23,7 @@ function teacherSelected(teacherKey, curriculumName) { _that.teacherSelected(tea
 function assignmentSelected(assignment, el) { _that.assignmentSelected(assignment, el); }
 
 function GUISetup() {
+  console.log("HERE!!!");
   // ===== Generic Setup ======
   _that = this;
   var querySelector = document.querySelector.bind(document);

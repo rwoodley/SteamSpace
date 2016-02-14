@@ -20,14 +20,14 @@ function ssAssignments(ssutil) {
 
     callback(
       assignment.Words,
-      assignment.Assignment,
+      assignment.Name,
       assignment.Notes,
       assignment.Sentences
       );
   }
   this.ss_loadAssignments = function(teacherKey, emailID, callback, appName) {
     console.log("loading assignments...");
-    callback(_rawData.Classes[teacherKey].Assignments);
+    callback(_rawData.Classes[0].Assignments);  // NOTE! Assuming for now there is only one class.
     return;
  }
 }

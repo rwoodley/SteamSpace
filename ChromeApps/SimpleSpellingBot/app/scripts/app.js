@@ -12,12 +12,32 @@ function ss_getName() { return "SpellingBot"; }
 function ss_canRunStandalone() { return false; }
 
 $().ready(function() {
+//    var classId = prompt("Please enter your 6 character Class ID.");
+   $("#dialog-form").dialog({
+          autoOpen: false,
+          modal: true,
+          buttons: {
+              "Ok": function() {
+                  var text1 = $("#txt1");
+                  var text2 = $("#txt2");
+                  //Do your code here
+                  text1.val(text2.val().substr(1,9));
+                  $(this).dialog("close");
+              },
+              "Cancel": function() {
+                  $(this).dialog("close");
+              }
+          }
+      });
+  
     // TODO: have the user enter these:
     var curriculumCategory = 'sample';
     var curriculumName = 'sample';
-    var url = "https://s3.amazonaws.com/spellingapp/$0/$1.json";
-    url = url.replace('$0',curriculumCategory).replace('$1', curriculumName);
-  
+    //var url = "https://s3.amazonaws.com/spellingapp/$0/$1.json";
+    //url = url.replace('$0',curriculumCategory).replace('$1', curriculumName);
+    
+    var url = "http://localhost:50906/SpellingTest.aspx?classID=1"
+    console.log("reading " + url);
     var jqxhr = $.ajax(url)
       .done(function(obj) {
         ss_init("loginId", curriculumName, obj);  // TODO: simplify this.
