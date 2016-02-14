@@ -96,6 +96,7 @@ function ss_modalDialog(divName) {
   console.log('in modelDialog' + $(divName));
   $( divName ).dialog({
       modal: true,
+      dialogClass: "no-close",
       buttons: {
       }
   });  
