@@ -12,42 +12,94 @@ function ss_getName() { return "SpellingBot"; }
 function ss_canRunStandalone() { return false; }
 
 $().ready(function() {
-//    var classId = prompt("Please enter your 6 character Class ID.");
-   $("#dialog-form").dialog({
-          autoOpen: false,
-          modal: true,
-          buttons: {
-              "Ok": function() {
-                  var text1 = $("#txt1");
-                  var text2 = $("#txt2");
-                  //Do your code here
-                  text1.val(text2.val().substr(1,9));
-                  $(this).dialog("close");
-              },
-              "Cancel": function() {
-                  $(this).dialog("close");
-              }
-          }
-      });
-  
-    // TODO: have the user enter these:
-    var curriculumCategory = 'sample';
-    var curriculumName = 'sample';
+    doLogon();      // Start here
+});
+
+// ---- All this to handle logon
+function doLogon() {
+    dialog = $( "#logon-form" ).dialog({
+      autoOpen: true,
+      dialogClass: "no-close",
+      height: 450,
+      width: 450,
+      modal: true,
+      buttons: {
+        "Logon": processUserLogonInputs
+      },
+    });
+ 
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addUser();
+    });
+}
+function processUserLogonInputs() {
+    var valid = true;
+
+    classid = $( "#classid" );
+    firstname = $( "#firstname" );
+    lastname = $( "#lastname" );
+
+    valid = valid && checkRegexp( classid, /^[a-z0-9]/i, "A class id is a combination of letters and numbers." );
+    valid = valid && checkRegexp( firstname, /^[a-z]/i, "Please enter a valid first name." );
+    valid = valid && checkRegexp( lastname, /^[a-z]/i, "Please enter a valid last name." );
+
+    if ( valid ) {
+      console.log(firstname);
+      dialog.dialog( "close" );
+      postLogonCallback(firstname.val().toUpperCase(), lastname.val().toUpperCase(), 
+        classid.val().toUpperCase());
+    }
+    return valid;
+}
+function updateTips( t ) {
+  tips = $( ".validateTips" );
+  tips
+    .text( t )
+    .addClass( "ui-state-highlight" );
+  setTimeout(function() {
+    tips.removeClass( "ui-state-highlight", 1500 );
+  }, 500 );
+}
+
+function checkRegexp( o, regexp, n ) {
+  if ( !( regexp.test( o.val() ) ) ) {
+    o.addClass( "ui-state-error" );
+    updateTips( n );
+    return false;
+  } else {
+    return true;
+  }
+}
+// ---- END: All this to handle logon
+
+function postLogonCallback(firstName, lastName, classId) {
+
     //var url = "https://s3.amazonaws.com/spellingapp/$0/$1.json";
     //url = url.replace('$0',curriculumCategory).replace('$1', curriculumName);
     
-    var url = "http://localhost:50906/SpellingTest.aspx?classID=1"
+    var url = "http://192.168.0.103:50906/SpellingTest.aspx?classID=$1&firstName=$2$lastName=$3";
+    url = url.replace('$1', classId).replace('$2', firstName).replace('$3', lastName);
     console.log("reading " + url);
     var jqxhr = $.ajax(url)
       .done(function(obj) {
-        ss_init("loginId", curriculumName, obj);  // TODO: simplify this.
+        ss_init("loginId", obj.Curriculum, obj);  // TODO: simplify this.
         console.log( "success" );
       })
       .fail(function(err, a1, a2) {
         console.log("error loading json: " + a1);
+        ss_modalDialog("#errorConnecting-message");
       });
-});
+}
 
+function ss_modalDialog(divName) {
+  console.log('in modelDialog' + $(divName));
+  $( divName ).dialog({
+      modal: true,
+      buttons: {
+      }
+  });  
+}
 
 function ss_initApp(loginID, panel, utils) {
   _app = new app();
@@ -71,15 +123,15 @@ var app = function() {
     _ssPanel = panel; 
     _ssUtil = utils;
     _loginID = loginID; 
-  } 
+  } ;
 
   this.assignmentCallback = function(words, name, notes, sentences) {
-    if (words == null) {
+    if (words === null) {
       _ssPanel.setContent("Error loading assignment. Sorry!");
       return;
     }
     this.initWords(words, name, notes, words, sentences);
-  }
+  };
   this.initWords = function(allwords, name, notes, testwords, sentences) {
 
     var html = '';
@@ -91,8 +143,8 @@ var app = function() {
     html += "<tr><th>Listen:</th><th>Then type what you hear:</th></tr>";
     
     var template = "<tr><td data-th='Listen'>$2</td><td $d1>$1</td></tr>";
-    var inputFieldTemplate = "<input class='color--remember' id=$0 name=\"$1\" disabled></input> "
-    var inputFieldTemplateNoTest = "<input class='color--remember' id=$0 name=\"$1\" value=\"$2\"></input> "
+    var inputFieldTemplate = "<input class='color--remember' id=$0 name=\"$1\" disabled></input> ";
+    var inputFieldTemplateNoTest = "<input class='color--remember' id=$0 name=\"$1\" value=\"$2\"></input> ";
     var playTemplate = "<img src='images/ic_action_play.png' id=$0  ></img>";
   
     var words = allwords;
@@ -101,7 +153,7 @@ var app = function() {
     _sentenceLookup = {};
   
     for (var i = 0; i < words.length; i++) {
-      if (sentences != undefined && sentences.length > i) {
+      if (sentences !== undefined && sentences.length > i) {
         _sentenceLookup[words[i]] = sentences[i];
       }
       console.log(words[i]);
@@ -124,7 +176,7 @@ var app = function() {
     }
     html += "</table>";
     html += "</form>";
-    html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Show me how I did.</a>"
+    html += "<a id='scoreAndSubmitButton' class='button--primary'>All Done! Show me how I did.</a>";
     _ssPanel.setContent(html);
     // now attach click handlers
     for (var i = 0; i < words.length; i++) {
@@ -133,12 +185,12 @@ var app = function() {
       var imgel = document.getElementById(imgFieldID);
       var word = words[i];
       console.log(word + " = " + inputFieldID + ", " + imgFieldID);
-      (function(w,i) { imgel.onclick = function() { speakWord(w,i)  }; })(word, inputFieldID);
+      (function(w,i) { imgel.onclick = function() { speakWord(w,i);  }; })(word, inputFieldID);
       
     }
     var bigButton = document.getElementById('scoreAndSubmitButton');
     bigButton.onclick = scoreAndSubmit;
-  }
+  };
   this.showResults = function(headers, answers) {
 
     var html = '';
@@ -163,12 +215,12 @@ var app = function() {
     }
 
     html+= "</table>";
-    html += "<a id='tryAgainButton' class='button--primary'>Click to Try Again.</a>"
+    html += "<a id='tryAgainButton' class='button--primary'>Click to Try Again.</a>";
     _ssPanel.setContent(html);
 
     var bigButton = document.getElementById('tryAgainButton');
     bigButton.onclick = tryAgain;
-  }
+  };
   this.scoreAndSubmit = function() {
     // _ssPanel.setContent('');   // don't do it this way. this gets rid of the form and no data is sent.
     var form = document.getElementById('spellingForm');
@@ -179,14 +231,14 @@ var app = function() {
     answers = [];
     $('.color--remember').each(function(el) {
       words.push($(this)[0].name);
-      answers.push($(this)[0].value == "" ? "No Answer" : $(this)[0].value);
+      answers.push($(this)[0].value === "" ? "No Answer" : $(this)[0].value);
     });
     this.showResults(words, answers);
 
   };
   this.tryAgain = function() {
     // if there are no wrong words, but they have pressed Try Again, give them all the words.
-    var testWords = _onlyWrongWords.length == 0 ? _allWords : _onlyWrongWords;
+    var testWords = _onlyWrongWords.length === 0 ? _allWords : _onlyWrongWords;
     this.initWords(_allWords, _assignmentName, _assignmentNotes, testWords);
   };
   var _firstWord = true;
@@ -198,7 +250,7 @@ var app = function() {
   
     if (_firstWord) {
       _firstWord = false;
-      if (_voice == undefined) {
+      if (_voice === undefined) {
         var voices = window.speechSynthesis.getVoices();
         for(var i = 0; i < voices.length; i++ ) {
           if (voices[i].lang == 'en-GB') {
@@ -211,12 +263,12 @@ var app = function() {
     else
         window.speechSynthesis.cancel();
     var sentence = _sentenceLookup[word];
-    var thingToSay = sentence != undefined ? "The word is " + word + ". " 
+    var thingToSay = sentence !== undefined ? "The word is " + word + ". " 
           + sentence + "." : word;
     var utt = new SpeechSynthesisUtterance(thingToSay);
     utt.voice = _voice;
     window.speechSynthesis.speak(utt);
-  }
+  };
   setVoice = function(voiceName) {
     var voices = window.speechSynthesis.getVoices();
     for(var i = 0; i < voices.length; i++ ) {
@@ -226,5 +278,5 @@ var app = function() {
         break;
       }
     }
-  }
-}
+  };
+};

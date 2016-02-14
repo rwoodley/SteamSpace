@@ -29,7 +29,15 @@
     <link rel="stylesheet" href="styles/h5bp.css">
     <link rel="stylesheet" href="styles/components/components.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/jquery-ui.min.1.11.4.css">
     <!-- endbuild -->
+    <style>
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+    .no-close .ui-dialog-titlebar-close {
+      display: none;
+    }
+    </style>
   </head>
   <body style="overflow-y: scroll;">
     <header class="app-bar promote-layer">
@@ -76,9 +84,31 @@
     <div id='HelpText' style='display: none;' ></div>
     <main id="mainel" >
     </main>
+    <div id="errorConnecting-message" title="Network Error">
+      <p>
+        Can't connect to server. Are you on the network?
+      </p>
+    </div>
+    <div id="logon-form" title="Please Logon">
+       <p class="validateTips"></p>
+        <form>
+        <fieldset>
+          <label for="classid">Class ID</label><br/>
+          <input type="text" name="classid" id="classid"  class="text ui-widget-content ui-corner-all"><br/>
+          <label for="firstname">First Name</label><br/>
+          <input type="text" name="firstname" id="firstname"  class="text ui-widget-content ui-corner-all"><br/>
+          <label for="lastname">Last Name</label><br/>
+          <input type="text" name="lastname" id="lastname"  class="text ui-widget-content ui-corner-all"><br/>
+
+          <!-- Allow form submission with keyboard without duplicating the dialog button -->
+          <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+        </fieldset>
+      </form>
+      </div>
 
     <!-- build:js scripts/main.min.js -->
     <script src="scripts/jquery-1.11.1.min.js"></script>
+    <script src="scripts/jquery-ui.min-1.11.4.js"></script>
     <script src="scripts/ssUtil.js"></script>
     <script src="scripts/ssAssignments.js"></script>
     <script src="scripts/ssPanel.js"></script>
