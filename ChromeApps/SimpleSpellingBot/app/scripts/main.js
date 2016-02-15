@@ -1,7 +1,7 @@
 'use strict';
 var _that;
-function ss_init(loginID, curriculumName, tag) { // called on auth complete, kicks off menu initialization.
-  _that.initGUIForSteamspace(loginID, curriculumName, tag);
+function ss_init(curriculumName, tag, firstName, lastName, classId) { // called on auth complete, kicks off menu initialization.
+  _that.initGUIForSteamspace(curriculumName, tag, firstName, lastName, classId);
 }
 // Setup GUI - Called on page load.
 
@@ -86,12 +86,11 @@ function GUISetup() {
     }
   });
   // ======= Handle Steamspace Initialization ========
-  var _loginID = "";
   var _curriculumName = "";
   var _ssPanel;
   var _ssUtil;
   this._successfulAuthorization = false;
-  this.initGUIForSteamspace = function (loginID, curriculumName, classData) {
+  this.initGUIForSteamspace = function(curriculumName, classData, firstName, lastName, classId) {
     var querySelector = document.querySelector.bind(document);
     var main = document.getElementById('mainel');
     _ssPanel = new ssPanel(main);
@@ -101,11 +100,9 @@ function GUISetup() {
     if (window.SpeechSynthesisUtterance === undefined) {
       return _ssPanel.errorMsg("This browser does not support Speech Synthesis. Try another browser, like Chrome.");
     }
-    if (loginID == null) return _ssPanel.errorMsg("You are not logged in. Please log in to Google, and restart.");
-    _loginID = loginID;
     _curriculumName = curriculumName;
 
-    ss_initApp(_curriculumName, _ssPanel, _ssUtil);
+    ss_initApp(_ssPanel, _ssUtil, firstName, lastName, classId);
     _ssPanel.showLoading(true);
     initSelectMenuForTeachers(classData.Classes[0]);
   }
@@ -190,6 +187,7 @@ function GUISetup() {
     console.log(assignment.name + "," + assignment.notes);
     
     ss_assignmentCallback(
+      assignment.Id,
       assignment.Words,
       assignment.Name,
       assignment.Notes,

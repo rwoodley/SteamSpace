@@ -5,92 +5,12 @@
 // If calls doPost() as needed to return results.
 // The code must implement 3 functions ss_getName(), ss_initApp() and ss_assignmentCallback()
 var _app;
+var _postURL = "http://192.168.0.103:50906/Answers.aspx";
 function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
 function ss_getName() { return "SpellingBot"; }
 function ss_canRunStandalone() { return false; }
-
-$().ready(function() {
-    doLogon();      // Start here
-});
-
-// ---- All this to handle logon
-function doLogon() {
-    dialog = $( "#logon-form" ).dialog({
-      autoOpen: true,
-      dialogClass: "no-close",
-      height: 450,
-      width: 450,
-      modal: true,
-      buttons: {
-        "Logon": processUserLogonInputs
-      },
-    });
- 
-    form = dialog.find( "form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      addUser();
-    });
-}
-function processUserLogonInputs() {
-    var valid = true;
-
-    classid = $( "#classid" );
-    firstname = $( "#firstname" );
-    lastname = $( "#lastname" );
-
-    valid = valid && checkRegexp( classid, /^[a-z0-9]/i, "A class id is a combination of letters and numbers." );
-    valid = valid && checkRegexp( firstname, /^[a-z]/i, "Please enter a valid first name." );
-    valid = valid && checkRegexp( lastname, /^[a-z]/i, "Please enter a valid last name." );
-
-    if ( valid ) {
-      console.log(firstname);
-      dialog.dialog( "close" );
-      postLogonCallback(firstname.val().toUpperCase(), lastname.val().toUpperCase(), 
-        classid.val().toUpperCase());
-    }
-    return valid;
-}
-function updateTips( t ) {
-  tips = $( ".validateTips" );
-  tips
-    .text( t )
-    .addClass( "ui-state-highlight" );
-  setTimeout(function() {
-    tips.removeClass( "ui-state-highlight", 1500 );
-  }, 500 );
-}
-
-function checkRegexp( o, regexp, n ) {
-  if ( !( regexp.test( o.val() ) ) ) {
-    o.addClass( "ui-state-error" );
-    updateTips( n );
-    return false;
-  } else {
-    return true;
-  }
-}
-// ---- END: All this to handle logon
-
-function postLogonCallback(firstName, lastName, classId) {
-
-    //var url = "https://s3.amazonaws.com/spellingapp/$0/$1.json";
-    //url = url.replace('$0',curriculumCategory).replace('$1', curriculumName);
-    
-    var url = "http://192.168.0.103:50906/SpellingTest.aspx?classID=$1&firstName=$2$lastName=$3";
-    url = url.replace('$1', classId).replace('$2', firstName).replace('$3', lastName);
-    console.log("reading " + url);
-    var jqxhr = $.ajax(url)
-      .done(function(obj) {
-        ss_init("loginId", obj.Curriculum, obj);  // TODO: simplify this.
-        console.log( "success" );
-      })
-      .fail(function(err, a1, a2) {
-        console.log("error loading json: " + a1);
-        ss_modalDialog("#errorConnecting-message");
-      });
-}
 
 function ss_modalDialog(divName) {
   console.log('in modelDialog' + $(divName));
@@ -102,38 +22,45 @@ function ss_modalDialog(divName) {
   });  
 }
 
-function ss_initApp(loginID, panel, utils) {
+function ss_initApp(panel, utils, firstName, lastName, classId) {
   _app = new app();
-  _app.initApp(loginID, panel, utils);
+  _app.initApp(panel, utils, firstName, lastName, classId);
 }
-function ss_assignmentCallback(words, name, notes, sentences) { _app.assignmentCallback(words, name, notes, sentences); }
+function ss_assignmentCallback(id, words, name, notes, sentences) { _app.assignmentCallback(id, words, name, notes, sentences); }
 
 var app = function() {
+  var _classId;
+  var _firstName;
+  var _lastName;
+  var _assignmentId;
+  
   var _ssPanel;
   var _ssUtil;
   var _teacherKey;
   var _ssName;
-  var _loginID;
   var _allWords; // this is only populated when answers are returned for use by 'Try Again' button.
   var _onlyWrongWords; // this is only populated when answers are returned for use by 'Try Again' button.
   var _assignmentName;
   var _assignmentNotes;
   var _sentenceLookup;
 
-  this.initApp = function(loginID, panel, utils) { 
+  this.initApp = function(panel, utils, firstName, lastName, classId) { 
     _ssPanel = panel; 
     _ssUtil = utils;
-    _loginID = loginID; 
+    
+    _classId = classId;
+    _firstName = firstName;
+    _lastName = lastName;
   } ;
 
-  this.assignmentCallback = function(words, name, notes, sentences) {
+  this.assignmentCallback = function(id, words, name, notes, sentences) {
     if (words === null) {
       _ssPanel.setContent("Error loading assignment. Sorry!");
       return;
     }
-    this.initWords(words, name, notes, words, sentences);
+    this.initWords(id, words, name, notes, words, sentences);
   };
-  this.initWords = function(allwords, name, notes, testwords, sentences) {
+  this.initWords = function(id, allwords, name, notes, testwords, sentences) {
 
     var html = '';
     html += "<form id='spellingForm'>";
@@ -149,6 +76,7 @@ var app = function() {
     var playTemplate = "<img src='images/ic_action_play.png' id=$0  ></img>";
   
     var words = allwords;
+    _assignmentId = id;
     _assignmentName = name;
     _assignmentNotes = notes;
     _sentenceLookup = {};
@@ -230,11 +158,26 @@ var app = function() {
     butt.style.display = 'none';
     words = [];
     answers = [];
+
+    postData = '';
     $('.color--remember').each(function(el) {
       words.push($(this)[0].name);
       answers.push($(this)[0].value === "" ? "No Answer" : $(this)[0].value);
+      postData += "&" + encodeURIComponent($(this)[0].name) + "="
+                + encodeURIComponent($(this)[0].value);
     });
     this.showResults(words, answers);
+
+   postData += "&classId=" + encodeURIComponent(_classId);
+   postData += "&assignmentId=" + encodeURIComponent(_assignmentId);
+   postData += "&firstName=" + encodeURIComponent(_firstName);
+   postData += "&lastName=" + encodeURIComponent(_lastName);
+   $.post(_postURL, postData).done(function() {
+      console.log("Uploaded to server");
+    })
+    .fail(function() {
+      console.log("Failed uploading to server!!");
+    });
 
   };
   this.tryAgain = function() {
