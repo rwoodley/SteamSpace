@@ -1,0 +1,32 @@
+Teacher creates an account:
+	She is given a secret ID to log in with. There is also
+
+	She creates a spelling test which has a 6 digit ID.
+
+Students enter in the 6 digit ID into spelling bot. They also enter their name.
+Name and results are sent back to db and can be view by teacher.
+
+Tables:
+Teacher table:
+- ID
+- Secret Code
+- Name
+- Description
+
+Test table:
+- Teacher ID
+- Test ID (6 digits, letters and numbers, randomly generated)
+- Description
+- preferred language
+
+Words table
+- Test ID
+- Word ID
+- Word
+- Sentence
+
+Answers table
+- Test ID
+- Word ID
+- Student Name
+- Answer
