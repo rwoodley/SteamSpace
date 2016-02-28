@@ -71,7 +71,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Elements\single-test.html" />
+    <Content Include="Elements\paper-calendar.html" />
+    <Content Include="Elements\assignment-admin.html" />
     <Content Include="SQLDocs\GenerateDB.sql" />
     <Content Include="SQLDocs\TestData.sql" />
     <Content Include="SpellingTest.aspx" />

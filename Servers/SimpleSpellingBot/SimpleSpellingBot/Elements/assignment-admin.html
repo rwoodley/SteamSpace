@@ -1,0 +1,69 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="assignment-admin">
+
+    <template>
+
+        <div>Spelling Assignment:</div>
+        <div>Name:<input value="{{name::input}}" /></div>
+        <div>
+            <span>
+                Effective Date {{dateFormat(effectiveDate, 'LL')}}<paper-button class="btn" on-tap="showDialog" raised>Change Date</paper-button>
+            </span>
+        </div>
+
+        <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
+            <paper-date-picker id="picker" date="{{date}}"></paper-date-picker>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm>OK</paper-button>
+            </div>
+        </paper-dialog>
+
+
+        <template is="dom-repeat" items="{{words}}">
+            <div># <span>{{index}}</span></div>
+            <div><input value="{{item.word::input}}" /></div>
+            <div><input value="{{item.sentence::input}}" /></div>
+        </template>
+
+        <div>{{name}}</div>
+
+        <div>
+            <span>Effective Date {{dateFormat(effectiveDate, 'LL')}}</span>
+
+                <template is="dom-repeat" items="{{words}}">
+                    <div># <span>{{index}}</span></div>
+                    <div><span>{{item.word}}</span></div>
+                    <div><span>{{item.sentence}}</span></div>
+                </template>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'assignment-admin',
+            ready: function () {
+                this.name = "Sample Name";
+                this.words = [
+                    { word: "Rat", sentence: "The rat darted across the alleyway" },
+                    { word: "Cat", sentence: "The cat sleeps all day long." },
+                    { word: "Fat", sentence: "You eat too much, you get fat." }
+                ];
+                this.effectiveDate = new Date();
+            },
+            dateFormat: function(date, format) {
+                return moment(date).format(format);
+            },
+            dismissDialog: function(event) {
+                if (event.detail.confirmed) {
+                    this.effectiveDate = this.$.picker.date;
+                }
+            },
+            showDialog: function() {
+                this.$.dialog.toggle();
+            }
+
+        });
+    </script>
+
+</dom-module>
