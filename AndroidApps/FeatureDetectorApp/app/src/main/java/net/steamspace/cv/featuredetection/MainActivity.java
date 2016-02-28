@@ -59,8 +59,6 @@ public class MainActivity extends Activity implements CvCameraViewListener2, See
     private MenuItem             mItemShowKeypoints;
     private CameraBridgeViewBase mOpenCvCameraView;
 
-    private Mat                  mIntermediateMat;
-
     public static int _viewMode = VIEW_MODE_RGBA;
 
     SeekBar _seekBarRansac;
@@ -210,15 +208,9 @@ public class MainActivity extends Activity implements CvCameraViewListener2, See
     }
 
     public void onCameraViewStarted(int width, int height) {
-        mIntermediateMat = new Mat();
     }
 
     public void onCameraViewStopped() {
-        // Explicitly deallocate Mats
-        if (mIntermediateMat != null)
-            mIntermediateMat.release();
-
-        mIntermediateMat = null;
     }
 
     public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
