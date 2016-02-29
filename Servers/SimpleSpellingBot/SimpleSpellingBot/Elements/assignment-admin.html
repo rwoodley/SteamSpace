@@ -23,6 +23,7 @@
 
         <template is="dom-repeat" items="{{words}}">
             <div># <span>{{index}}</span></div>
+            <paper-input label="Spelling Word" value="{{item.word::input}}"></paper-input>
             <div><input value="{{item.word::input}}" /></div>
             <div><input value="{{item.sentence::input}}" /></div>
         </template>
@@ -33,9 +34,20 @@
             <span>Effective Date {{dateFormat(effectiveDate, 'LL')}}</span>
 
                 <template is="dom-repeat" items="{{words}}">
-                    <div># <span>{{index}}</span></div>
-                    <div><span>{{item.word}}</span></div>
-                    <div><span>{{item.sentence}}</span></div>
+                    <paper-item>
+                        <paper-item-body hidden={{item.editing}} three-line class="layout vertical">
+                            <div>YO {{item.editing}}</div>
+                            <div># {{index}}</div>
+                            <div>{{item.word}}</div>
+                            <div secondary>{{item.sentence}}</div>
+                        </paper-item-body>
+                        <paper-item-body hidden={{!item.editing}} three-line class="layout vertical">
+                            <paper-input label="Spelling Word" value="{{item.word::input}}"></paper-input>
+                            <paper-input label="Example usage in sentence" value="{{item.sentence::input}}"></paper-input>
+                        </paper-item-body>
+                        <paper-fab hidden={{item.editing}} mini icon="editor:mode-edit" on-tap="doEdit"></paper-fab>
+                        <paper-fab hidden={{!item.editing}} mini icon="icons:done" on-tap="doEdit"></paper-fab>
+                    </paper-item>
                 </template>
     </template>
 
@@ -45,9 +57,9 @@
             ready: function () {
                 this.name = "Sample Name";
                 this.words = [
-                    { word: "Rat", sentence: "The rat darted across the alleyway" },
-                    { word: "Cat", sentence: "The cat sleeps all day long." },
-                    { word: "Fat", sentence: "You eat too much, you get fat." }
+                    { word: "Rat", sentence: "The rat darted across the alleyway", editing: false },
+                    { word: "Cat", sentence: "The cat sleeps all day long.", editing: false },
+                    { word: "Fat", sentence: "You eat too much, you get fat.", editing: false }
                 ];
                 this.effectiveDate = new Date();
             },
@@ -61,6 +73,10 @@
             },
             showDialog: function() {
                 this.$.dialog.toggle();
+            },
+            doEdit: function (e) {
+                var model = e.model;
+                model.set('item.editing', !model.item.editing);
             }
 
         });
