@@ -1,43 +1,135 @@
 ﻿<link rel="import" href="../bower_components/polymer/polymer.html">
 
 <dom-module id="assignment-admin">
+    <style>
+        .list {
+            padding: 0;
+            /* 		border-right: 1px solid #ccc; */
+        }
+
+            .list paper-item {
+                min-height: 80px;
+                border-bottom: 1px solid #dedede;
+                background-color: #fafafa;
+            }
+
+        #todoEntry {
+            margin: 0;
+            width: 100%;
+            max-width: none;
+            border-bottom: 1px solid #ccc;
+        }
+
+        paper-input {
+            margin: 0 4vw;
+            padding: 0;
+        }
+
+        paper-material {
+            background-color: #fff;
+            max-width: 640px;
+            width: 95%;
+            margin: 25px auto;
+            position: relative;
+        }
+
+        #todos {
+            overflow-y: scroll;
+            height: 66vh;
+        }
+
+        #todos {
+            overflow-y: scroll;
+        }
+
+        paper-fab {
+            position: absolute;
+            background: #00BCD4;
+            bottom: 2vh;
+            right: 2vw;
+        }
+
+        .main-panel {
+            background-color: #eee;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+        .task-empty paper-item {
+            text-align: center;
+            padding: 25px;
+            color: #6f6f6f;
+        }
+
+        paper-toolbar {
+            background: #D32F2F;
+        }
+
+        #made-with {
+            width: 100%;
+            margin: 0;
+            position: fixed;
+            bottom: 0;
+            text-align: center;
+        }
+
+            #made-with img {
+                width: 35%;
+                padding: 10px;
+            }
+    </style>
+
 
     <template>
+        <paper-drawer-panel>
+            <paper-header-panel drawer>
+                <paper-toolbar>
+                    <paper-item>Side Bar Title</paper-item>
+                </paper-toolbar>
+                <!-- Side Bar Content -->
+            </paper-header-panel>
+            <paper-header-panel main>
+                <paper-toolbar>
+                    <paper-item>Main Body Title</paper-item>
+                </paper-toolbar>
+                <!-- Body of Element -->
+            </paper-header-panel>
+        </paper-drawer-panel>
 
-        <div>Spelling Assignment:</div>
-        <div>Name:<input value="{{name::input}}" /></div>
-        <div>
-            <span>
-                Effective Date {{dateFormat(effectiveDate, 'LL')}}<paper-button class="btn" on-tap="showDialog" raised>Change Date</paper-button>
-            </span>
-        </div>
+        <paper-menu class="list">
+            <template is="dom-if" if="{{!done.length}}">
+                <paper-material>
+                    <paper-item>Completed tasks will appear here!</paper-item>
+                </paper-material>
+            </template>
+            <template id="done" is="dom-repeat" items="{{done}}">
+                <paper-item>{{item.task}}<i style="margin-left: 5px;">{{item.user}}</i></paper-item>
+            </template>
+        </paper-menu>
 
-        <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
-            <paper-date-picker id="picker" date="{{date}}"></paper-date-picker>
-            <div class="buttons">
-                <paper-button dialog-dismiss>Cancel</paper-button>
-                <paper-button dialog-confirm>OK</paper-button>
-            </div>
-        </paper-dialog>
+        <div style="border-left: 1px solid #ccc;">
 
+            <div>Spelling Assignment:</div>
+            <paper-material id="todoEntry" elevation="2">
+                <paper-input label="Spelling Word" value="{{name::input}}"></paper-input>
+                <div>
+                    <paper-button class="btn" on-tap="showDialog" raised>Effective Date</paper-button>
+                    {{dateFormat(effectiveDate, 'LL')}}
+                </div>
+            </paper-material>
 
-        <template is="dom-repeat" items="{{words}}">
-            <div># <span>{{index}}</span></div>
-            <paper-input label="Spelling Word" value="{{item.word::input}}"></paper-input>
-            <div><input value="{{item.word::input}}" /></div>
-            <div><input value="{{item.sentence::input}}" /></div>
-        </template>
+            <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
+                <paper-date-picker id="picker" date="{{date}}"></paper-date-picker>
+                <div class="buttons">
+                    <paper-button dialog-dismiss>Cancel</paper-button>
+                    <paper-button dialog-confirm>OK</paper-button>
+                </div>
+            </paper-dialog>
 
-        <div>{{name}}</div>
-
-        <div>
-            <span>Effective Date {{dateFormat(effectiveDate, 'LL')}}</span>
-
-                <template is="dom-repeat" items="{{words}}">
+            <template is="dom-repeat" items="{{words}}">
+                <paper-material>
                     <paper-item>
                         <paper-item-body hidden={{item.editing}} three-line class="layout vertical">
-                            <div>YO {{item.editing}}</div>
-                            <div># {{index}}</div>
                             <div>{{item.word}}</div>
                             <div secondary>{{item.sentence}}</div>
                         </paper-item-body>
@@ -48,7 +140,9 @@
                         <paper-fab hidden={{item.editing}} mini icon="editor:mode-edit" on-tap="doEdit"></paper-fab>
                         <paper-fab hidden={{!item.editing}} mini icon="icons:done" on-tap="doEdit"></paper-fab>
                     </paper-item>
-                </template>
+                </paper-material>
+            </template>
+        </div>
     </template>
 
     <script>
