@@ -7,13 +7,14 @@
             /* 		border-right: 1px solid #ccc; */
         }
 
-            .list paper-item {
-                min-height: 80px;
-                border-bottom: 1px solid #dedede;
-                background-color: #fafafa;
-            }
+        .list paper-item {
+            min-height: 80px;
+            border-bottom: 1px solid #dedede;
+            background-color: #fafafa;
+        }
 
         #todoEntry {
+            background-color: #eee;
             margin: 0;
             width: 100%;
             max-width: none;
@@ -73,49 +74,58 @@
             text-align: center;
         }
 
-            #made-with img {
-                width: 35%;
-                padding: 10px;
-            }
+        #made-with img {
+            width: 35%;
+            padding: 10px;
+        }
     </style>
 
 
     <template>
-        <paper-drawer-panel>
-            <paper-header-panel drawer>
-                <paper-toolbar>
-                    <paper-item>Side Bar Title</paper-item>
-                </paper-toolbar>
-                <!-- Side Bar Content -->
-            </paper-header-panel>
-            <paper-header-panel main>
-                <paper-toolbar>
-                    <paper-item>Main Body Title</paper-item>
-                </paper-toolbar>
-                <!-- Body of Element -->
-            </paper-header-panel>
-        </paper-drawer-panel>
+            <paper-drawer-panel>
+                <paper-header-panel drawer>
+                    <paper-toolbar>
+                        <paper-item>Side Bar Title</paper-item>
+                    </paper-toolbar>
+                    <!-- Side Bar Content -->
+                    Some sample side bar content.
+                    <paper-menu class="list">
+                        <template is="dom-if" if="{{!done.length}}">
+                            <paper-material>
+                                <paper-item>Completed tasks will appear here!</paper-item>
+                            </paper-material>
+                        </template>
+                        <template id="done" is="dom-repeat" items="{{done}}">
+                            <paper-item>{{item.task}}<i style="margin-left: 5px;">{{item.user}}</i></paper-item>
+                        </template>
+                    </paper-menu>
+                </paper-header-panel>
+                <paper-header-panel main class="main-panel">
+                    <paper-toolbar>
+                        <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                        <paper-item>
+                            <iron-icon icon="icons:face"></iron-icon>
+                            <span id="here">0</span>
+                        </paper-item>
+                        <paper-item>Active Tasks</paper-item>
+                    </paper-toolbar>
+                    <!-- Body of Element -->
+        <div style="border-left: 1px solid #ccc;" >
 
-        <paper-menu class="list">
-            <template is="dom-if" if="{{!done.length}}">
-                <paper-material>
-                    <paper-item>Completed tasks will appear here!</paper-item>
-                </paper-material>
-            </template>
-            <template id="done" is="dom-repeat" items="{{done}}">
-                <paper-item>{{item.task}}<i style="margin-left: 5px;">{{item.user}}</i></paper-item>
-            </template>
-        </paper-menu>
-
-        <div style="border-left: 1px solid #ccc;">
-
-            <div>Spelling Assignment:</div>
-            <paper-material id="todoEntry" elevation="2">
-                <paper-input label="Spelling Word" value="{{name::input}}"></paper-input>
-                <div>
-                    <paper-button class="btn" on-tap="showDialog" raised>Effective Date</paper-button>
-                    {{dateFormat(effectiveDate, 'LL')}}
-                </div>
+            <paper-material id="todoEntry" elevation="2" >
+                <paper-input label="Assignment Name" value="{{name::input}}"></paper-input>
+                <paper-item>
+                    <div>
+                        <paper-button class="btn" on-tap="showDialogEffective" raised>Effective Date</paper-button>
+                        {{dateFormat(effectiveDate, 'LL')}}
+                    </div>
+                </paper-item>
+                <paper-item>
+                    <div>
+                        <paper-button class="btn" on-tap="showDialogExpiry" raised>Expiration Date</paper-button>
+                        {{dateFormat(expirationDate, 'LL')}}
+                    </div>
+                </paper-item>
             </paper-material>
 
             <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
@@ -142,12 +152,27 @@
                     </paper-item>
                 </paper-material>
             </template>
+            <paper-item-body three-line class="layout vertical">
+                <paper-dialog-scrollable>{{JSON}}</paper-dialog-scrollable>
+            </paper-item-body>
         </div>
+        </paper-header-panel>
+        </paper-drawer-panel>
     </template>
 
     <script>
         Polymer({
             is: 'assignment-admin',
+            properties: {
+                name: "",
+                words: [],
+                effectiveDate: "",
+                expirationDate: "",
+                JSON: {
+                    type: String,
+                    computed: "getJson(name, words, effectiveDate, expirationDate)"
+                    }
+            },
             ready: function () {
                 this.name = "Sample Name";
                 this.words = [
@@ -156,21 +181,44 @@
                     { word: "Fat", sentence: "You eat too much, you get fat.", editing: false }
                 ];
                 this.effectiveDate = new Date();
+                this.expirationDate = new Date();
+                this.whichDateAmIModifying = "";
             },
-            dateFormat: function(date, format) {
+            observers: [
+                'getJson(words.*)'
+            ],
+            dateFormat: function (date, format) {
                 return moment(date).format(format);
             },
-            dismissDialog: function(event) {
+            dismissDialog: function (event) {
                 if (event.detail.confirmed) {
-                    this.effectiveDate = this.$.picker.date;
+                    if (this.whichDataAmIModifying == 'Effective')
+                        this.effectiveDate = this.$.picker.date;
+                    else
+                        this.expirationDate = this.$.picker.date;
                 }
             },
-            showDialog: function() {
+            showDialogEffective: function () {
+                this.whichDataAmIModifying = 'Effective';
+                this.$.dialog.toggle();
+            },
+            showDialogExpiry: function () {
+                this.whichDataAmIModifying = 'Expiry';
                 this.$.dialog.toggle();
             },
             doEdit: function (e) {
                 var model = e.model;
                 model.set('item.editing', !model.item.editing);
+            },
+            getJson: function () {
+                var myObj = {
+                    name: this.name,
+                    words: this.words,
+                    effectiveDate: this.effectiveDate,
+                    expirationDate: this.expirationDate
+                }
+                console.log(JSON.stringify(myObj));
+                return JSON.stringify(myObj);
             }
 
         });
