@@ -126,8 +126,12 @@
                         {{dateFormat(expirationDate, 'LL')}}
                     </div>
                 </paper-item>
+                <paper-material id="todoEntry" elevation="2">
+                    <paper-fab icon="icons:add" on-tap="addWord"></paper-fab>
+                </paper-material>
             </paper-material>
 
+            <!-- Date Pop-Up -->
             <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
                 <paper-date-picker id="picker" date="{{date}}"></paper-date-picker>
                 <div class="buttons">
@@ -219,6 +223,13 @@
                 }
                 console.log(JSON.stringify(myObj));
                 return JSON.stringify(myObj);
+            },
+            addWord: function () {
+                this.push('words', {
+                    word: '',
+                    sentence: '',
+                    editing: true
+                });
             }
 
         });
