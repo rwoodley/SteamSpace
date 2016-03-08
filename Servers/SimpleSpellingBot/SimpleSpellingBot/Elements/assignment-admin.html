@@ -49,6 +49,12 @@
             bottom: 2vh;
             right: 2vw;
         }
+        #wrapperDiv paper-fab{
+            position: absolute !important;
+            background: #00BCD4 !important;
+            bottom: 8vh !important;
+            right: 2vw !important;
+        }
 
         .main-panel {
             background-color: #eee;
@@ -151,8 +157,11 @@
                             <paper-input label="Spelling Word" value="{{item.word::input}}"></paper-input>
                             <paper-input label="Example usage in sentence" value="{{item.sentence::input}}"></paper-input>
                         </paper-item-body>
-                        <paper-fab hidden={{item.editing}} mini icon="editor:mode-edit" on-tap="doEdit"></paper-fab>
+                        <div id="wrapperDiv">
+                            <paper-fab class='paper-fab-cancel' hidden={{!item.editing}} mini icon="icons:close" on-tap="doDelete"></paper-fab>
+                        </div>
                         <paper-fab hidden={{!item.editing}} mini icon="icons:done" on-tap="doEdit"></paper-fab>
+                        <paper-fab hidden={{item.editing}} mini icon="editor:mode-edit" on-tap="doEdit"></paper-fab>
                     </paper-item>
                 </paper-material>
             </template>
@@ -211,6 +220,10 @@
                 this.$.dialog.toggle();
             },
             doEdit: function (e) {
+                var model = e.model;
+                model.set('item.editing', !model.item.editing);
+            },
+            doDelete: function (e) {
                 var model = e.model;
                 model.set('item.editing', !model.item.editing);
             },
