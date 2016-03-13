@@ -3,3 +3,8 @@ node_modules
 dist
 .tmp
 *.zip
+/Servers/SimpleSpellingBot/SimpleSpellingBot/bin/SimpleSpellingBot.dll
+/Servers/SimpleSpellingBot/SimpleSpellingBot/bin/SimpleSpellingBot.dll.config
+/Servers/SimpleSpellingBot/SimpleSpellingBot/bin/SimpleSpellingBot.pdb
+/Servers/SimpleSpellingBot/SimpleSpellingBot/obj/Debug
+/Servers/wsk
