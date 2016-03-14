@@ -112,13 +112,15 @@
                 $.get(url, function (data) {
                     console.log("got " + data);
                     self.words = [];
-                    for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.Words.length; i++) {
                         self.push('words', {
-                            word: data[i].SpellingWord,
-                            sentence: data[i].Sentence
+                            word: data.Words[i],
+                            sentence: data.Sentences[i]
                         });
                     }
-                    self.name = data.Description;
+                    self.name = data.Name;
+                    self.effectiveDate = data.EffectiveDate;
+                    self.expirationDate = data.ExpirationDate;
                     console.log("done");
                 });
             },

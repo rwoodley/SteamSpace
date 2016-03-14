@@ -29,7 +29,13 @@
         }
     </style>
     <script>
+        var firstTime = true;
         window.addEventListener('WebComponentsReady', function (e) {
+            if (!firstTime) {
+                console.log("--------Ignoring extra calls.----------");
+                return;
+            }
+            firstTime = false;
             console.log("-------Adding evet listener");
             document.querySelector('assignment-list').addEventListener('assignment-clicked', function (e) {
                 console.log("Got the event! " + e.detail.assignment.Description);
