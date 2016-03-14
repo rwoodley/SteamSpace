@@ -1,0 +1,67 @@
+﻿<!doctype html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="A Spelling App from SteamSpace.net.">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+    <title>Simple Spelling Bot - Teacher Admin</title>
+    <!-- build:js scripts/main.min.js -->
+    <script>
+    </script>
+
+    <!-- Because this project uses vulcanize this should be your only html import
+         in this file. All other imports should go in elements.html -->
+    <link rel="import" href="elements/elements.html">
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild-->
+    <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <!-- endbuild -->
+
+    <style is="custom-style" include="paper-date-picker-dialog-style">
+        section {
+            margin: 24px;
+        }
+    </style>
+    <script>
+        window.addEventListener('WebComponentsReady', function (e) {
+            console.log("-------Adding evet listener");
+            document.querySelector('assignment-list').addEventListener('assignment-clicked', function (e) {
+                console.log("Got the event! " + e.detail.assignment.Description);
+                document.querySelector('assignment-admin').loadForAssignment(e.detail.assignment);
+            });
+        });
+    </script>
+    
+</head>
+<body unresolved class="fullbleed unresolved">
+    <template is="dom-bind">
+        <paper-drawer-panel>
+            <paper-header-panel drawer>
+                <paper-toolbar>
+                    <paper-item></iron-icon>Assignments List:</paper-item>
+                </paper-toolbar>
+                <!-- Side Bar Content -->
+                <assignment-list></assignment-list>
+            </paper-header-panel>
+            <paper-header-panel main class="main-panel">
+                <paper-toolbar>
+                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                    <paper-item>Assignment Details:</paper-item>
+                </paper-toolbar>
+                <!-- Body of Element -->
+                <assignment-admin></assignment-admin>
+
+            </paper-header-panel>
+        </paper-drawer-panel>
+    </template>
+
+</body>
+</html>
+
+

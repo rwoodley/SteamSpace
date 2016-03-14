@@ -1,0 +1,176 @@
+﻿<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="assignment-admin">
+    <style>
+
+        paper-fab {
+            position: absolute;
+            background: #00BCD4;
+            bottom: 1vh;
+            right: 2vw;
+        }
+        #wrapperDiv paper-fab{
+            position: absolute !important;
+            background: #00BCD4 !important;
+            bottom: 10vh !important;
+            right: 2vw !important;
+        }
+
+        .main-panel {
+            background-color: #eee;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+
+
+    </style>
+
+    <template>
+
+        <div style="border-left: 1px solid #ccc;">
+            
+            <paper-material id="todoEntry" elevation="2">
+                <paper-input label="Assignment Name" value="{{name::input}}"></paper-input>
+                <paper-item>
+                    <div>
+                        <paper-button class="btn" on-tap="showDialogEffective" raised>Effective Date</paper-button>
+                        {{dateFormat(effectiveDate, 'LL')}}
+                    </div>
+                </paper-item>
+                <paper-item>
+                    <div>
+                        <paper-button class="btn" on-tap="showDialogExpiry" raised>Expiration Date</paper-button>
+                        {{dateFormat(expirationDate, 'LL')}}
+                    </div>
+                </paper-item>
+                <paper-material id="todoEntry" elevation="2">
+                    <paper-fab icon="icons:add" on-tap="addWord"></paper-fab>
+                </paper-material>
+            </paper-material>
+
+            <!-- Date Pop-Up -->
+            <paper-dialog id="dialog" class="paper-date-picker-dialog" modal on-iron-overlay-closed="dismissDialog">
+                <paper-date-picker id="picker" date="{{date}}"></paper-date-picker>
+                <div class="buttons">
+                    <paper-button dialog-dismiss>Cancel</paper-button>
+                    <paper-button dialog-confirm>OK</paper-button>
+                </div>
+            </paper-dialog>
+
+            <template is="dom-repeat" items="{{words}}">
+                <paper-material>
+                    <paper-item>
+                        <paper-item-body hidden={{item.editing}} three-line class="layout vertical">
+                            <div>{{item.word}}</div>
+                            <div secondary>{{item.sentence}}</div>
+                        </paper-item-body>
+                        <paper-item-body hidden={{!item.editing}} three-line class="layout vertical">
+                            <paper-input label="Spelling Word" value="{{item.word::input}}"></paper-input>
+                            <paper-input label="Example usage in sentence" value="{{item.sentence::input}}"></paper-input>
+                        </paper-item-body>
+                        <div id="wrapperDiv">
+                            <paper-fab class='paper-fab-cancel' hidden={{!item.editing}} mini icon="icons:close" on-tap="doDelete"></paper-fab>
+                        </div>
+                        <paper-fab hidden={{!item.editing}} mini icon="icons:done" on-tap="doEdit"></paper-fab>
+                        <paper-fab hidden={{item.editing}} mini icon="editor:mode-edit" on-tap="doEdit"></paper-fab>
+                    </paper-item>
+                </paper-material>
+            </template>
+            <paper-item-body three-line class="layout vertical">
+                <paper-dialog-scrollable>{{JSON}}</paper-dialog-scrollable>
+            </paper-item-body>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'assignment-admin',
+            properties: {
+                name: "",
+                words: [],
+                effectiveDate: "",
+                expirationDate: "",
+                JSON: {
+                    type: String,
+                    computed: "getJson(name, words, effectiveDate, expirationDate)"
+                    }
+            },
+            ready: function () {
+                this.name = "No Name";
+                var self = this;
+                this.words = [];
+                this.effectiveDate = new Date();
+                this.expirationDate = new Date();
+                this.whichDateAmIModifying = "";
+            },
+            loadForAssignment: function (ass) {
+                var self = this;
+                self.words = [];
+                console.log('here!!!' + ass.Description);
+                var url = "SingleAssignment.aspx?id=" + ass.AssignmentID;
+                console.log("Loading " + url);
+                $.get(url, function (data) {
+                    console.log("got " + data);
+                    self.words = [];
+                    for (var i = 0; i < data.length; i++) {
+                        self.push('words', {
+                            word: data[i].SpellingWord,
+                            sentence: data[i].Sentence
+                        });
+                    }
+                    self.name = data.Description;
+                    console.log("done");
+                });
+            },
+            observers: [
+                'getJson(words.*)'
+            ],
+            dateFormat: function (date, format) {
+                return moment(date).format(format);
+            },
+            dismissDialog: function (event) {
+                if (event.detail.confirmed) {
+                    if (this.whichDataAmIModifying == 'Effective')
+                        this.effectiveDate = this.$.picker.date;
+                    else
+                        this.expirationDate = this.$.picker.date;
+                }
+            },
+            showDialogEffective: function () {
+                this.whichDataAmIModifying = 'Effective';
+                this.$.dialog.toggle();
+            },
+            showDialogExpiry: function () {
+                this.whichDataAmIModifying = 'Expiry';
+                this.$.dialog.toggle();
+            },
+            doEdit: function (e) {
+                var model = e.model;
+                model.set('item.editing', !model.item.editing);
+            },
+            doDelete: function (e) {
+                var model = e.model;
+                model.set('item.editing', !model.item.editing);
+            },
+            getJson: function () {
+                var myObj = {
+                    name: this.name,
+                    words: this.words,
+                    effectiveDate: this.effectiveDate,
+                    expirationDate: this.expirationDate
+                }
+                console.log(JSON.stringify(myObj));
+                return JSON.stringify(myObj);
+            },
+            addWord: function () {
+                this.push('words', {
+                    word: '',
+                    sentence: '',
+                    editing: true
+                });
+            }
+
+        });
+    </script>
+
+</dom-module>

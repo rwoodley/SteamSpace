@@ -1,0 +1,249 @@
+USE [master]
+GO
+/****** Object:  Database [SimpleSpellingBot]    Script Date: 3/13/2016 11:08:03 PM ******/
+CREATE DATABASE [SimpleSpellingBot]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'SimpleSpellingBot', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\SimpleSpellingBot.mdf' , SIZE = 4096KB , MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB )
+ LOG ON 
+( NAME = N'SimpleSpellingBot_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\DATA\SimpleSpellingBot_log.ldf' , SIZE = 1024KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+GO
+ALTER DATABASE [SimpleSpellingBot] SET COMPATIBILITY_LEVEL = 110
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [SimpleSpellingBot].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [SimpleSpellingBot] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET AUTO_CREATE_STATISTICS ON 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET RECOVERY FULL 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET  MULTI_USER 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [SimpleSpellingBot] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [SimpleSpellingBot] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'SimpleSpellingBot', N'ON'
+GO
+USE [SimpleSpellingBot]
+GO
+/****** Object:  StoredProcedure [dbo].[GetID]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[GetID] @TableName VARCHAR(50), @BatchSize INT = NULL AS
+BEGIN
+
+	BEGIN TRANSACTION
+	DECLARE @ret INTEGER, @rc INTEGER, @err INTEGER
+	SELECT @ret = NextID FROM IDGen WHERE TableName=@TableName
+	SELECT @rc = @@ROWCOUNT, @err = @@ERROR
+	IF (@rc = 0 OR @err != 0)
+	BEGIN
+		ROLLBACK TRANSACTION
+		RAISERROR ('unable to find current id for %s', 10, 1, @TableName);
+		RETURN
+	END
+
+	UPDATE IDGen SET NextID = @ret + ISNULL(@BatchSize, 1) WHERE TableName=@TableName
+	SELECT @rc = @@ROWCOUNT, @err = @@ERROR
+
+	IF (@rc = 0 OR @err != 0)
+	BEGIN
+		ROLLBACK TRANSACTION
+		RAISERROR ('unable to update next id for %s', 10, 1, @TableName);
+		RETURN
+	END
+
+	COMMIT TRANSACTION
+	RETURN @ret	
+END
+
+
+
+
+GO
+/****** Object:  Table [dbo].[Answers]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Answers](
+	[TestID] [char](10) NOT NULL,
+	[WordID] [int] NOT NULL,
+	[StudentName] [varchar](100) NOT NULL,
+	[Answer] [varchar](100) NOT NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Assignments]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Assignments](
+	[AssignmentID] [int] NOT NULL,
+	[ClassID] [int] NOT NULL,
+	[Description] [varchar](200) NOT NULL,
+	[Language] [varchar](50) NOT NULL,
+	[EffectiveDate] [datetime] NOT NULL,
+	[ExpirationDate] [datetime] NOT NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Classes]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Classes](
+	[ClassID] [char](10) NOT NULL,
+	[TeacherID] [int] NOT NULL,
+	[Description] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_Classes] PRIMARY KEY CLUSTERED 
+(
+	[ClassID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[IDGen]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[IDGen](
+	[TableName] [varchar](50) NOT NULL,
+	[NextID] [int] NOT NULL,
+ CONSTRAINT [PK_IDGen] PRIMARY KEY CLUSTERED 
+(
+	[TableName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Teachers]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Teachers](
+	[TeacherID] [int] NOT NULL,
+	[SecretCode] [varchar](50) NOT NULL,
+	[Name] [varchar](100) NOT NULL,
+	[Description] [varchar](200) NOT NULL,
+ CONSTRAINT [PK_Teachers] PRIMARY KEY CLUSTERED 
+(
+	[TeacherID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [dbo].[Words]    Script Date: 3/13/2016 11:08:03 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[Words](
+	[AssignmentID] [int] NOT NULL,
+	[WordID] [int] NOT NULL,
+	[SpellingWord] [varchar](100) NOT NULL,
+	[Sentence] [varchar](200) NOT NULL,
+ CONSTRAINT [PK_Words] PRIMARY KEY CLUSTERED 
+(
+	[AssignmentID] ASC,
+	[WordID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+SET ANSI_PADDING ON
+
+GO
+/****** Object:  Index [IX_Teachers]    Script Date: 3/13/2016 11:08:03 PM ******/
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Teachers] ON [dbo].[Teachers]
+(
+	[SecretCode] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+USE [master]
+GO
+ALTER DATABASE [SimpleSpellingBot] SET  READ_WRITE 
+GO
