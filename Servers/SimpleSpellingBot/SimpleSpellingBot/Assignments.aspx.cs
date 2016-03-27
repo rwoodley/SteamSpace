@@ -29,39 +29,6 @@ namespace SimpleSpellingBot
                 Response.Write(json);
                 Response.End();
             }
-            if (Request.HttpMethod.Equals("POST"))
-            {
-                string postData = new System.IO.StreamReader(Request.InputStream).ReadToEnd();
-                //var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.ASCII.GetBytes(postData), new System.Xml.XmlDictionaryReaderQuotas());
-
-                //var root = XElement.Load(jsonReader);
-                //Console.WriteLine(root.XPathSelectElement("//Name").Value);
-                //Console.WriteLine(root.XPathSelectElement("//Address/State").Value);
-
-                // For that you will need to add reference to System.Web.Helpers
-                dynamic json = System.Web.Helpers.Json.Decode(postData);
-                Console.WriteLine(json.name);
-                Console.WriteLine(json.words);
-                int assignmentid = int.Parse(Request.QueryString["id"]);
-                var temp = new List<dynamic>(json.words);
-                List<Word> words = temp.Select(x =>
-                    new Word() {
-                        SpellingWord = x.word,
-                        Sentence = x.Sentence,
-                        AssignmentID = assignmentid
-                    })
-                    .ToList();
-
-                DBHelper.UpdateAssignment(
-                    assignmentid,
-                    DateTime.Parse(json.effectiveDate),
-                    DateTime.Parse(json.expirationDate),
-                    (String) json.name,
-                    words
-                    );
-
-            }
-
 
         }
     }

@@ -36,6 +36,9 @@ namespace SimpleSpellingBot
     partial void InsertWord(Word instance);
     partial void UpdateWord(Word instance);
     partial void DeleteWord(Word instance);
+    partial void InsertAssignment(Assignment instance);
+    partial void UpdateAssignment(Assignment instance);
+    partial void DeleteAssignment(Assignment instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -92,19 +95,19 @@ namespace SimpleSpellingBot
 			}
 		}
 		
-		public System.Data.Linq.Table<Assignment> Assignments
-		{
-			get
-			{
-				return this.GetTable<Assignment>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Word> Words
 		{
 			get
 			{
 				return this.GetTable<Word>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Assignment> Assignments
+		{
+			get
+			{
+				return this.GetTable<Assignment>();
 			}
 		}
 		
@@ -388,123 +391,6 @@ namespace SimpleSpellingBot
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Assignments")]
-	public partial class Assignment
-	{
-		
-		private int _AssignmentID;
-		
-		private int _ClassID;
-		
-		private string _Description;
-		
-		private string _Language;
-		
-		private System.DateTime _EffectiveDate;
-		
-		private System.DateTime _ExpirationDate;
-		
-		public Assignment()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssignmentID", DbType="Int NOT NULL")]
-		public int AssignmentID
-		{
-			get
-			{
-				return this._AssignmentID;
-			}
-			set
-			{
-				if ((this._AssignmentID != value))
-				{
-					this._AssignmentID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassID", DbType="Int NOT NULL")]
-		public int ClassID
-		{
-			get
-			{
-				return this._ClassID;
-			}
-			set
-			{
-				if ((this._ClassID != value))
-				{
-					this._ClassID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(200) NOT NULL", CanBeNull=false)]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this._Description = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Language", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Language
-		{
-			get
-			{
-				return this._Language;
-			}
-			set
-			{
-				if ((this._Language != value))
-				{
-					this._Language = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EffectiveDate", DbType="DateTime NOT NULL")]
-		public System.DateTime EffectiveDate
-		{
-			get
-			{
-				return this._EffectiveDate;
-			}
-			set
-			{
-				if ((this._EffectiveDate != value))
-				{
-					this._EffectiveDate = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpirationDate", DbType="DateTime NOT NULL")]
-		public System.DateTime ExpirationDate
-		{
-			get
-			{
-				return this._ExpirationDate;
-			}
-			set
-			{
-				if ((this._ExpirationDate != value))
-				{
-					this._ExpirationDate = value;
-				}
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Words")]
 	public partial class Word : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -614,6 +500,188 @@ namespace SimpleSpellingBot
 					this._Sentence = value;
 					this.SendPropertyChanged("Sentence");
 					this.OnSentenceChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Assignments")]
+	public partial class Assignment : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _AssignmentID;
+		
+		private int _ClassID;
+		
+		private string _Description;
+		
+		private string _Language;
+		
+		private System.DateTime _EffectiveDate;
+		
+		private System.DateTime _ExpirationDate;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAssignmentIDChanging(int value);
+    partial void OnAssignmentIDChanged();
+    partial void OnClassIDChanging(int value);
+    partial void OnClassIDChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnLanguageChanging(string value);
+    partial void OnLanguageChanged();
+    partial void OnEffectiveDateChanging(System.DateTime value);
+    partial void OnEffectiveDateChanged();
+    partial void OnExpirationDateChanging(System.DateTime value);
+    partial void OnExpirationDateChanged();
+    #endregion
+		
+		public Assignment()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssignmentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int AssignmentID
+		{
+			get
+			{
+				return this._AssignmentID;
+			}
+			set
+			{
+				if ((this._AssignmentID != value))
+				{
+					this.OnAssignmentIDChanging(value);
+					this.SendPropertyChanging();
+					this._AssignmentID = value;
+					this.SendPropertyChanged("AssignmentID");
+					this.OnAssignmentIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ClassID", DbType="Int NOT NULL")]
+		public int ClassID
+		{
+			get
+			{
+				return this._ClassID;
+			}
+			set
+			{
+				if ((this._ClassID != value))
+				{
+					this.OnClassIDChanging(value);
+					this.SendPropertyChanging();
+					this._ClassID = value;
+					this.SendPropertyChanged("ClassID");
+					this.OnClassIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(200) NOT NULL", CanBeNull=false)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Language", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Language
+		{
+			get
+			{
+				return this._Language;
+			}
+			set
+			{
+				if ((this._Language != value))
+				{
+					this.OnLanguageChanging(value);
+					this.SendPropertyChanging();
+					this._Language = value;
+					this.SendPropertyChanged("Language");
+					this.OnLanguageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EffectiveDate", DbType="DateTime NOT NULL")]
+		public System.DateTime EffectiveDate
+		{
+			get
+			{
+				return this._EffectiveDate;
+			}
+			set
+			{
+				if ((this._EffectiveDate != value))
+				{
+					this.OnEffectiveDateChanging(value);
+					this.SendPropertyChanging();
+					this._EffectiveDate = value;
+					this.SendPropertyChanged("EffectiveDate");
+					this.OnEffectiveDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpirationDate", DbType="DateTime NOT NULL")]
+		public System.DateTime ExpirationDate
+		{
+			get
+			{
+				return this._ExpirationDate;
+			}
+			set
+			{
+				if ((this._ExpirationDate != value))
+				{
+					this.OnExpirationDateChanging(value);
+					this.SendPropertyChanging();
+					this._ExpirationDate = value;
+					this.SendPropertyChanged("ExpirationDate");
+					this.OnExpirationDateChanged();
 				}
 			}
 		}

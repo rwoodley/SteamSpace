@@ -92,7 +92,7 @@
                 expirationDate: "",
                 JSON: {
                     type: String,
-                    computed: "getJson(name, words, effectiveDate, expirationDate)"
+                    computed: "convertToJson(name, words, effectiveDate, expirationDate)"
                     }
             },
             ready: function () {
@@ -114,10 +114,12 @@
                     console.log("got " + data);
                     self.words = [];
                     for (var i = 0; i < data.Words.length; i++) {
-                        self.push('words', {
+                        var newObj = {
                             word: data.Words[i],
-                            sentence: data.Sentences[i]
-                        });
+                            sentence: data.Sentences[i],
+                            id: i + 1
+                        };
+                        self.push('words', newObj);
                     }
                     self.name = data.Name;
                     self.effectiveDate = data.EffectiveDate;
@@ -126,7 +128,7 @@
                 });
             },
             observers: [
-                'getJson(words.*)'
+                'convertToJson(words.*)'
             ],
             dateFormat: function (date, format) {
                 return moment(date).format(format);
@@ -156,7 +158,9 @@
                 var model = e.model;
                 model.set('item.editing', !model.item.editing);
             },
-            getJson: function () {
+            convertToJson: function () {
+                for (var i = 0; i < this.words.length; i++)
+                    this.words[i].id = i + 1;  // server expects each word to have an id. not used on client.
                 var myObj = {
                     name: this.name,
                     words: this.words,
@@ -167,15 +171,14 @@
                 return JSON.stringify(myObj);
             },
             postJSON: function() {
-                var postURL = "http://" + document.location.hostname + ":50906/Assignments.aspx?id=" + this.AssignmentID;
+                var postURL = "http://" + document.location.hostname + ":50906/SingleAssignment.aspx?id=" + this.AssignmentID;
 
-                $.post(postURL, this.getJson()).done(function () {
-                    console.log("Uploaded to server");
+                $.post(postURL, this.convertToJson()).done(function () {
+                    console.log("SUCCESS! Uploaded to server.");
                 })
                  .fail(function () {
-                     console.log("Failed uploading to server!!");
+                     console.log("FAILED! not uploaded to server!!");
                  });
-
             },
             addWord: function () {
                 this.push('words', {
