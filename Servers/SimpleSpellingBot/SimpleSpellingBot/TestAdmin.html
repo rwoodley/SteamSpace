@@ -50,21 +50,21 @@
         <paper-drawer-panel>
             <paper-header-panel drawer>
                 <paper-toolbar>
-                    <paper-item></iron-icon>Assignments List:</paper-item>
+                    <paper-item>Assignments List:</paper-item>
                 </paper-toolbar>
                 <!-- Side Bar Content -->
                 <assignment-list></assignment-list>
             </paper-header-panel>
             <paper-header-panel main class="main-panel">
-                <paper-toolbar>
-                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                <paper-toolbar id="mainToolbar">
+                    <paper-icon-button icon="menu" style="color: white;" paper-drawer-toggle></paper-icon-button>
                     <paper-item>Assignment Details:</paper-item>
                 </paper-toolbar>
                 <!-- Body of Element -->
                 <assignment-admin></assignment-admin>
 
             </paper-header-panel>
-        </paper-drawer-panel>
+        </paper-drawer-panel> 
     </template>
 
 </body>

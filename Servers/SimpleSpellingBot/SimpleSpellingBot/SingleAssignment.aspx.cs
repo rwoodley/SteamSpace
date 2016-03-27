@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Script.Serialization;
 using SimpleSpellingBot.DTO;
+using Newtonsoft.Json;
 
 namespace SimpleSpellingBot
 {
@@ -21,7 +22,8 @@ namespace SimpleSpellingBot
             var assignment = new DTO.Assignment(
                 db.Assignments.Where(x=>x.AssignmentID == testid).Single(), testid, words);
 
-            var json = new JavaScriptSerializer().Serialize(assignment);
+            //var json = new JavaScriptSerializer().Serialize(assignment);
+            var json = JsonConvert.SerializeObject(assignment);
 
             Response.Clear();
             Response.AppendHeader("Access-Control-Allow-Origin", "*");

@@ -15,11 +15,12 @@
         Polymer({
             is: 'assignment-list',
             properties: {
-                assignments: []
+                assignments: [],
+                assignmentId: 1
             },
             ready: function () {
                 var self = this;
-                $.get("Assignments.aspx", function (data) {
+                $.get("http://" + document.location.hostname + ":50906/Assignments.aspx", function (data) {
                     self.assignments = [];
                     for (var i = 0; i < data.length; i++)
                         self.push('assignments', data[i]);

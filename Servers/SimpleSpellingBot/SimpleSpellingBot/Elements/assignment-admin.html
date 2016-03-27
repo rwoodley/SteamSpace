@@ -102,12 +102,13 @@
                 this.effectiveDate = new Date();
                 this.expirationDate = new Date();
                 this.whichDateAmIModifying = "";
+                this.AssignmentID = 1;
             },
             loadForAssignment: function (ass) {
                 var self = this;
                 self.words = [];
                 console.log('here!!!' + ass.Description);
-                var url = "SingleAssignment.aspx?id=" + ass.AssignmentID;
+                var url = "http://" + document.location.hostname + ":50906/SingleAssignment.aspx?id=" + ass.AssignmentID;
                 console.log("Loading " + url);
                 $.get(url, function (data) {
                     console.log("got " + data);
@@ -149,6 +150,7 @@
             doEdit: function (e) {
                 var model = e.model;
                 model.set('item.editing', !model.item.editing);
+                this.postJSON();
             },
             doDelete: function (e) {
                 var model = e.model;
@@ -163,6 +165,17 @@
                 }
                 console.log(JSON.stringify(myObj));
                 return JSON.stringify(myObj);
+            },
+            postJSON: function() {
+                var postURL = "http://" + document.location.hostname + ":50906/Assignments.aspx?id=" + this.AssignmentID;
+
+                $.post(postURL, this.getJson()).done(function () {
+                    console.log("Uploaded to server");
+                })
+                 .fail(function () {
+                     console.log("Failed uploading to server!!");
+                 });
+
             },
             addWord: function () {
                 this.push('words', {
