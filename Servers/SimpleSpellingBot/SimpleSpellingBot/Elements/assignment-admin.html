@@ -77,9 +77,9 @@
                     </paper-item>
                 </paper-material>
             </template>
-            <paper-item-body three-line class="layout vertical">
+            <!--<paper-item-body three-line class="layout vertical">
                 <paper-dialog-scrollable>{{JSON}}</paper-dialog-scrollable>
-            </paper-item-body>
+            </paper-item-body>-->
         </div>
     </template>
     <script>
@@ -90,10 +90,10 @@
                 words: [],
                 effectiveDate: "",
                 expirationDate: "",
-                JSON: {
-                    type: String,
-                    computed: "convertToJson(name, words, effectiveDate, expirationDate)"
-                    }
+                //JSON: {
+                //    type: String,
+                //    computed: "convertToJson(name, words, effectiveDate, expirationDate)"
+                //    }
             },
             ready: function () {
                 this.name = "No Name";
@@ -128,7 +128,7 @@
                 });
             },
             observers: [
-                'convertToJson(words.*)'
+                //'convertToJson(words.*)'
             ],
             dateFormat: function (date, format) {
                 return moment(date).format(format);
