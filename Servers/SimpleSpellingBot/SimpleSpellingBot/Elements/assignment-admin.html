@@ -157,10 +157,13 @@
             doDelete: function (e) {
                 var model = e.model;
                 model.set('item.editing', !model.item.editing);
+                console.log("deleting ... " + e.model.index);
+                this.splice('words', e.model.index, 1);
+                this.postJSON();
             },
             convertToJson: function () {
                 for (var i = 0; i < this.words.length; i++)
-                    this.words[i].id = i + 1;  // server expects each word to have an id. not used on client.
+                    this.words[i].id = i + 1;
                 var myObj = {
                     name: this.name,
                     words: this.words,

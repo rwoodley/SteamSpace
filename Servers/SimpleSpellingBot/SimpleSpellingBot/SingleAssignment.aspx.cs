@@ -16,23 +16,6 @@ namespace SimpleSpellingBot
         {
             int testid = int.Parse(Request.QueryString["id"]);
 
-            if (Request.HttpMethod.Equals("GET"))
-            {
-                var db = new DataClasses1DataContext();
-                var words = db.Words.Where(x => x.AssignmentID == testid).ToList();
-
-                var assignment = new DTO.Assignment(
-                    db.Assignments.Where(x => x.AssignmentID == testid).Single(), testid, words);
-
-                //var json = new JavaScriptSerializer().Serialize(assignment);
-                var json = JsonConvert.SerializeObject(assignment);
-
-                Response.Clear();
-                Response.AppendHeader("Access-Control-Allow-Origin", "*");
-                Response.ContentType = "application/json; charset=utf-8";
-                Response.Write(json);
-                Response.End();
-            }
             if (Request.HttpMethod.Equals("POST"))
             {
                 string postData = new System.IO.StreamReader(Request.InputStream).ReadToEnd();
@@ -61,7 +44,24 @@ namespace SimpleSpellingBot
 
             }
 
+            {
+                // For both GET and POST we send back the current DB state.
 
+                var db = new DataClasses1DataContext();
+                var words = db.Words.Where(x => x.AssignmentID == testid).ToList();
+
+                var assignment = new DTO.Assignment(
+                    db.Assignments.Where(x => x.AssignmentID == testid).Single(), testid, words);
+
+                //var json = new JavaScriptSerializer().Serialize(assignment);
+                var json = JsonConvert.SerializeObject(assignment);
+
+                Response.Clear();
+                Response.AppendHeader("Access-Control-Allow-Origin", "*");
+                Response.ContentType = "application/json; charset=utf-8";
+                Response.Write(json);
+                Response.End();
+            }
         }
     }
 }
