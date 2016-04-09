@@ -28,6 +28,15 @@
             margin: 24px;
         }
     </style>
+    <style>
+        #new_assignment_button {
+            position: absolute;
+            top: calc(64px - 28px);
+            right: 24px;
+            z-index: 1;
+            transition: top 0.18s ease-in;
+        }
+    </style>
     <script>
         var firstTime = true;
         window.addEventListener('WebComponentsReady', function (e) {
@@ -46,17 +55,24 @@
             document.querySelector('assignment-admin').addEventListener('nameChanged', function (e) {
                 document.querySelector('assignment-list').ready();
             });
-
+            document.getElementById('new_assignment_button').addEventListener('click', function (e) {
+                $.get("http://" + document.location.hostname + ":50906/NewAssignment.aspx", function (data) { // TODO: handle classid
+                    document.querySelector('assignment-list').ready();
+                }).fail(function () {
+                    alert("Couldn't create new assignment.");
+                });;
+            })
         });
     </script>
     
 </head>
 <body unresolved class="fullbleed unresolved">
-    <template is="dom-bind">
+    <template is="dom-bind" id="main-test-administration">
         <paper-drawer-panel>
             <paper-header-panel drawer>
                 <paper-toolbar>
                     <paper-item>Assignments:</paper-item>
+                    <paper-fab id="new_assignment_button" icon="icons:add" ></paper-fab>
                 </paper-toolbar>
                 <!-- Side Bar Content -->
                 <assignment-list></assignment-list>
@@ -72,7 +88,6 @@
             </paper-header-panel>
         </paper-drawer-panel> 
     </template>
-
 </body>
 </html>
 

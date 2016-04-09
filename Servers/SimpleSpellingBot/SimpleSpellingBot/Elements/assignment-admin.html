@@ -28,7 +28,7 @@
     <template>
 
         <div style="border-left: 1px solid #ccc;">
-            <paper-material id="todoEntry" elevation="2">
+            <paper-material elevation="2">
                 <paper-input label="Assignment Name" on-change="namechanged" value="{{name::input}}"></paper-input>
                 <paper-item>
                     <div>
@@ -42,7 +42,7 @@
                         {{dateFormat(expirationDate, 'LL')}}
                     </div>
                 </paper-item>
-                <paper-material id="todoEntry" elevation="2">
+                <paper-material elevation="2">
                     <paper-fab icon="icons:add" on-tap="addWord"></paper-fab>
                 </paper-material>
             </paper-material>

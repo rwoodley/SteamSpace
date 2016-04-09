@@ -79,7 +79,9 @@
     <Content Include="Elements\elements.html" />
     <Content Include="Elements\paper-calendar.html" />
     <Content Include="Elements\assignment-admin.html" />
+    <Content Include="NewAssignment.aspx" />
     <Content Include="SingleAssignment.aspx" />
+    <Content Include="SQLDocs\AfterCreation.sql" />
     <Content Include="SQLDocs\GenerateDB.sql" />
     <Content Include="SQLDocs\TestData.sql" />
     <Content Include="SpellingTest.aspx" />
@@ -108,6 +110,13 @@
     <Compile Include="DBHelper.cs" />
     <Compile Include="DebugTextWriter.cs" />
     <Compile Include="DTOs.cs" />
+    <Compile Include="NewAssignment.aspx.cs">
+      <DependentUpon>NewAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewAssignment.aspx.designer.cs">
+      <DependentUpon>NewAssignment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleAssignment.aspx.cs">
       <DependentUpon>SingleAssignment.aspx</DependentUpon>
