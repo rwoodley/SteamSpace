@@ -1,0 +1,1 @@
+﻿insert into IDGen (TableName, NextID) values ('Assignments', 1);
