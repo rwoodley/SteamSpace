@@ -36,11 +36,17 @@
                 return;
             }
             firstTime = false;
-            console.log("-------Adding evet listener");
+            console.log("-------Adding event listener");
             document.querySelector('assignment-list').addEventListener('assignment-clicked', function (e) {
                 console.log("Got the event! " + e.detail.assignment.Description);
+                document.querySelector('assignment-admin').style.display = 'block';
                 document.querySelector('assignment-admin').loadForAssignment(e.detail.assignment);
             });
+
+            document.querySelector('assignment-admin').addEventListener('nameChanged', function (e) {
+                document.querySelector('assignment-list').ready();
+            });
+
         });
     </script>
     
@@ -50,7 +56,7 @@
         <paper-drawer-panel>
             <paper-header-panel drawer>
                 <paper-toolbar>
-                    <paper-item>Assignments List:</paper-item>
+                    <paper-item>Assignments:</paper-item>
                 </paper-toolbar>
                 <!-- Side Bar Content -->
                 <assignment-list></assignment-list>
@@ -58,10 +64,10 @@
             <paper-header-panel main class="main-panel">
                 <paper-toolbar id="mainToolbar">
                     <paper-icon-button icon="menu" style="color: white;" paper-drawer-toggle></paper-icon-button>
-                    <paper-item>Assignment Details:</paper-item>
+                    <paper-item>Details:</paper-item>
                 </paper-toolbar>
                 <!-- Body of Element -->
-                <assignment-admin></assignment-admin>
+                <assignment-admin style="display: none"></assignment-admin>
 
             </paper-header-panel>
         </paper-drawer-panel> 

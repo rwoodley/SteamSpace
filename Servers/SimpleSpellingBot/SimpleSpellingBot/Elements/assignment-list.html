@@ -2,7 +2,11 @@
 
 <dom-module id="assignment-list">
     <script src="../bower_components/jquery-2.1.0.min/index.js"></script>
-
+    <style>
+        paper-button {
+            text-transform: none;
+        }
+    </style>
     <template>
         <paper-menu class="list">
             <template is="dom-repeat" items="{{assignments}}">
