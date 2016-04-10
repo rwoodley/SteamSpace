@@ -106,8 +106,7 @@
             loadForAssignment: function (ass) {
                 var self = this;
                 self.words = [];
-                //console.log('here!!!' + ass.Description);
-                //var url = "http://" + document.location.hostname + ":50906/SingleAssignment.aspx?id=" + ass.AssignmentID;
+                var url = "http://" + document.location.hostname + ":50906/SingleAssignment.aspx?id=" + ass.AssignmentID;
                 console.log("Loading " + url);
                 $.get(url, function (data) {
                     //console.log("got " + data);
