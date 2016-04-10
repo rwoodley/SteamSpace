@@ -75,6 +75,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DeleteAssignment.aspx" />
     <Content Include="Elements\assignment-list.html" />
     <Content Include="Elements\elements.html" />
     <Content Include="Elements\paper-calendar.html" />
@@ -109,6 +110,13 @@
     </Compile>
     <Compile Include="DBHelper.cs" />
     <Compile Include="DebugTextWriter.cs" />
+    <Compile Include="DeleteAssignment.aspx.cs">
+      <DependentUpon>DeleteAssignment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DeleteAssignment.aspx.designer.cs">
+      <DependentUpon>DeleteAssignment.aspx</DependentUpon>
+    </Compile>
     <Compile Include="DTOs.cs" />
     <Compile Include="NewAssignment.aspx.cs">
       <DependentUpon>NewAssignment.aspx</DependentUpon>

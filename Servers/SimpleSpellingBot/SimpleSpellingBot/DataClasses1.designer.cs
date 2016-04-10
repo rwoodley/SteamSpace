@@ -543,6 +543,8 @@ namespace SimpleSpellingBot
 		
 		private System.DateTime _ExpirationDate;
 		
+		private bool _IsDeleted;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -559,6 +561,8 @@ namespace SimpleSpellingBot
     partial void OnEffectiveDateChanged();
     partial void OnExpirationDateChanging(System.DateTime value);
     partial void OnExpirationDateChanged();
+    partial void OnIsDeletedChanging(bool value);
+    partial void OnIsDeletedChanged();
     #endregion
 		
 		public Assignment()
@@ -682,6 +686,26 @@ namespace SimpleSpellingBot
 					this._ExpirationDate = value;
 					this.SendPropertyChanged("ExpirationDate");
 					this.OnExpirationDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDeleted", DbType="Bit NOT NULL")]
+		public bool IsDeleted
+		{
+			get
+			{
+				return this._IsDeleted;
+			}
+			set
+			{
+				if ((this._IsDeleted != value))
+				{
+					this.OnIsDeletedChanging(value);
+					this.SendPropertyChanging();
+					this._IsDeleted = value;
+					this.SendPropertyChanged("IsDeleted");
+					this.OnIsDeletedChanged();
 				}
 			}
 		}

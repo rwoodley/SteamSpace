@@ -36,6 +36,13 @@
             z-index: 1;
             transition: top 0.18s ease-in;
         }
+        #delete_assignment_button {
+            position: absolute;
+            top: calc(64px - 28px);
+            right: 24px;
+            z-index: 1;
+            transition: top 0.18s ease-in;
+        }
     </style>
     <script>
         var firstTime = true;
@@ -49,6 +56,7 @@
             document.querySelector('assignment-list').addEventListener('assignment-clicked', function (e) {
                 console.log("Got the event! " + e.detail.assignment.Description);
                 document.querySelector('assignment-admin').style.display = 'block';
+                document.getElementById('delete_assignment_button').hidden = false;
                 document.querySelector('assignment-admin').loadForAssignment(e.detail.assignment);
             });
 
@@ -61,6 +69,20 @@
                 }).fail(function () {
                     alert("Couldn't create new assignment.");
                 });;
+            });
+            document.getElementById('delete_assignment_button').addEventListener('click', function (e) {
+                var name = document.querySelector('assignment-admin').name;
+                var id = document.querySelector('assignment-admin').AssignmentID;
+                console.log(id);
+                if (confirm("Please confirm you wish to delete this assignment (" + name + "). All words will be deleted as well.")) {
+                    $.get("http://" + document.location.hostname + ":50906/DeleteAssignment.aspx?id=" + id, function (data) { // TODO: handle classid
+                        document.querySelector('assignment-admin').style.display = 'none';
+                        document.getElementById('delete_assignment_button').hidden = true;
+                        document.querySelector('assignment-list').ready();
+                    }).fail(function () {
+                        alert("Couldn't delete assignment.");
+                    });
+                }
             })
         });
     </script>
@@ -81,6 +103,7 @@
                 <paper-toolbar id="mainToolbar">
                     <paper-icon-button icon="menu" style="color: white;" paper-drawer-toggle></paper-icon-button>
                     <paper-item>Details:</paper-item>
+                    <paper-fab hidden="true" id="delete_assignment_button" icon="icons:close"></paper-fab>
                 </paper-toolbar>
                 <!-- Body of Element -->
                 <assignment-admin style="display: none"></assignment-admin>

@@ -1,6 +1,6 @@
 USE [master]
 GO
-/****** Object:  Database [SimpleSpellingBot]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Database [SimpleSpellingBot]    Script Date: 4/10/2016 11:08:41 AM ******/
 CREATE DATABASE [SimpleSpellingBot]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -77,7 +77,7 @@ EXEC sys.sp_db_vardecimal_storage_format N'SimpleSpellingBot', N'ON'
 GO
 USE [SimpleSpellingBot]
 GO
-/****** Object:  StoredProcedure [dbo].[GetID]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  StoredProcedure [dbo].[GetID]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -116,7 +116,7 @@ END
 
 
 GO
-/****** Object:  Table [dbo].[Answers]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Table [dbo].[Answers]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -133,7 +133,7 @@ CREATE TABLE [dbo].[Answers](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Assignments]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Table [dbo].[Assignments]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -146,13 +146,18 @@ CREATE TABLE [dbo].[Assignments](
 	[Description] [varchar](200) NOT NULL,
 	[Language] [varchar](50) NOT NULL,
 	[EffectiveDate] [datetime] NOT NULL,
-	[ExpirationDate] [datetime] NOT NULL
+	[ExpirationDate] [datetime] NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+ CONSTRAINT [PK_Assignments] PRIMARY KEY CLUSTERED 
+(
+	[AssignmentID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Classes]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Table [dbo].[Classes]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -172,7 +177,7 @@ CREATE TABLE [dbo].[Classes](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[IDGen]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Table [dbo].[IDGen]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -191,7 +196,7 @@ CREATE TABLE [dbo].[IDGen](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Teachers]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Table [dbo].[Teachers]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -212,7 +217,7 @@ CREATE TABLE [dbo].[Teachers](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [dbo].[Words]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Table [dbo].[Words]    Script Date: 4/10/2016 11:08:41 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -237,7 +242,7 @@ GO
 SET ANSI_PADDING ON
 
 GO
-/****** Object:  Index [IX_Teachers]    Script Date: 3/13/2016 11:08:03 PM ******/
+/****** Object:  Index [IX_Teachers]    Script Date: 4/10/2016 11:08:41 AM ******/
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Teachers] ON [dbo].[Teachers]
 (
 	[SecretCode] ASC

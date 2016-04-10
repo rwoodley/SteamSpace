@@ -21,7 +21,7 @@ namespace SimpleSpellingBot
             if (Request.HttpMethod.Equals("GET"))
             {
                 //var json = new JavaScriptSerializer().Serialize(db.Assignments.ToList());
-                var json = JsonConvert.SerializeObject(db.Assignments.ToList());
+                var json = JsonConvert.SerializeObject(db.Assignments.Where(x=>!x.IsDeleted).ToList());
 
                 Response.Clear();
                 Response.AppendHeader("Access-Control-Allow-Origin", "*");
