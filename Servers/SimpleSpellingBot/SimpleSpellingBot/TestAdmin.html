@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
 
     <title>Simple Spelling Bot - Teacher Admin</title>
+
     <!-- build:js scripts/main.min.js -->
     <script>
     </script>
@@ -82,13 +83,25 @@
                         alert("Couldn't delete assignment.");
                     });
                 }
-            })
+            });
+            document.getElementById('googleSignIn').addEventListener('google-signin-success', function (e) {
+                console.log('----here');
+                console.log(gapi.auth2.getAuthInstance().currentUser.get());
+                var profile = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Full Name: ' + profile.getName());
+                console.log('Given Name: ' + profile.getGivenName());
+                console.log('Family Name: ' + profile.getFamilyName());
+                console.log('Image URL: ' + profile.getImageUrl());
+                console.log('Email: ' + profile.getEmail());
+
+            });
         });
     </script>
     
 </head>
 <body unresolved class="fullbleed unresolved">
-    <template is="dom-bind" id="main-test-administration">
+        <template is="dom-bind" id="main-test-administration">
         <paper-drawer-panel>
             <paper-header-panel drawer>
                 <paper-toolbar>
@@ -100,10 +113,22 @@
             </paper-header-panel>
             <paper-header-panel main class="main-panel">
                 <paper-toolbar id="mainToolbar">
-                    <paper-icon-button icon="menu" style="color: white;" paper-drawer-toggle></paper-icon-button>
-                    <paper-item>Details:</paper-item>
+                    <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+
+                    <span class="space"></span>
+
+                    <!-- Toolbar icons -->
+                    <paper-icon-button icon="icons:account-circle" onclick=""></paper-icon-button>
+                    <google-signin id="googleSignIn" client-id="162790104805-bq78951i6h5mk51e164ghtdldndvut9h.apps.googleusercontent.com"
+                                   scopes="https://www.googleapis.com/auth/drive"></google-signin>
+                    <!-- Application name -->
+                    <div class="middle middle-container">
+                        <div class="app-name">Details</div>
+                    </div>
+
                     <paper-fab hidden="true" id="delete_assignment_button" icon="icons:close"></paper-fab>
                 </paper-toolbar>
+                                
                 <!-- Body of Element -->
                 <assignment-admin style="display: none"></assignment-admin>
 

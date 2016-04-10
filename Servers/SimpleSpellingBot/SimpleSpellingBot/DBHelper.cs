@@ -35,5 +35,9 @@ namespace SimpleSpellingBot
                             db.SubmitChanges();
                         }
         }
+        public static int getClassIdForEmail(String email)
+        {
+            return 1;
+        }
     }
 }
