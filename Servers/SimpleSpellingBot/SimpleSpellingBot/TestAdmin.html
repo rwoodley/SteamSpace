@@ -48,13 +48,13 @@
         var firstTime = true;
         window.addEventListener('WebComponentsReady', function (e) {
             if (!firstTime) {
-                console.log("--------Ignoring extra calls.----------");
+                //console.log("--------Ignoring extra calls.----------");
                 return;
             }
             firstTime = false;
-            console.log("-------Adding event listener");
+            //console.log("-------Adding event listener");
             document.querySelector('assignment-list').addEventListener('assignment-clicked', function (e) {
-                console.log("Got the event! " + e.detail.assignment.Description);
+                //console.log("Got the event! " + e.detail.assignment.Description);
                 document.querySelector('assignment-admin').style.display = 'block';
                 document.getElementById('delete_assignment_button').hidden = false;
                 document.querySelector('assignment-admin').loadForAssignment(e.detail.assignment);
@@ -73,7 +73,6 @@
             document.getElementById('delete_assignment_button').addEventListener('click', function (e) {
                 var name = document.querySelector('assignment-admin').name;
                 var id = document.querySelector('assignment-admin').AssignmentID;
-                console.log(id);
                 if (confirm("Please confirm you wish to delete this assignment (" + name + "). All words will be deleted as well.")) {
                     $.get("http://" + document.location.hostname + ":50906/DeleteAssignment.aspx?id=" + id, function (data) { // TODO: handle classid
                         document.querySelector('assignment-admin').style.display = 'none';
