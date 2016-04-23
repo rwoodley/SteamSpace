@@ -137,6 +137,9 @@
     <Compile Include="Assignments.aspx.designer.cs">
       <DependentUpon>Assignments.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="DataClasses1.cs">
       <DependentUpon>DataClasses1.dbml</DependentUpon>
     </Compile>

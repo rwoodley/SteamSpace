@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace SimpleSpellingBot
 {
-    public partial class SingleAssignment : System.Web.UI.Page
+    public partial class SingleAssignment : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -36,6 +36,7 @@ namespace SimpleSpellingBot
 
                 DBHelper.UpdateAssignment(
                     assignmentid,
+                    currentClassId(),
                     DateTime.Parse(json.effectiveDate),
                     DateTime.Parse(json.expirationDate),
                     (String)json.name,

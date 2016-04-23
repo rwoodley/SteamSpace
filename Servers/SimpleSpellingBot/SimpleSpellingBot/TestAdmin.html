@@ -80,7 +80,7 @@
                 document.querySelector('assignment-list').ready();
             });
             document.getElementById('new_assignment_button').addEventListener('click', function (e) {
-                $.get("http://" + document.location.hostname + ":50906/NewAssignment.aspx", function (data) { // TODO: handle classid
+                $.get("http://" + document.location.hostname + ":50906/NewAssignment.aspx", function (data) {
                     document.querySelector('assignment-list').ready();
                 }).fail(function () {
                     alert("Couldn't create new assignment.");
@@ -90,7 +90,7 @@
                 var name = document.querySelector('assignment-admin').name;
                 var id = document.querySelector('assignment-admin').AssignmentID;
                 if (confirm("Please confirm you wish to delete this assignment (" + name + "). All words will be deleted as well.")) {
-                    $.get("http://" + document.location.hostname + ":50906/DeleteAssignment.aspx?id=" + id, function (data) { // TODO: handle classid
+                    $.get("http://" + document.location.hostname + ":50906/DeleteAssignment.aspx?id=" + id, function (data) {
                         document.querySelector('assignment-admin').style.display = 'none';
                         document.getElementById('delete_assignment_button').hidden = true;
                         document.querySelector('assignment-list').ready();

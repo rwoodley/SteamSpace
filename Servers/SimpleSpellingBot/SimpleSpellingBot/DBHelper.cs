@@ -11,6 +11,7 @@ namespace SimpleSpellingBot
         private static Object lockObject = new Object();
         public static void UpdateAssignment(
                     int assignmentid,
+                    int classId,
                     DateTime effectiveDate,
                     DateTime expirationDate,
                     String name,
@@ -21,6 +22,8 @@ namespace SimpleSpellingBot
                             var db = new DataClasses1DataContext();
                             //db.Log = new DebugTextWriter();
                             Assignment ass = db.Assignments.Where(x => x.AssignmentID == assignmentid).Single();
+                            if (ass.ClassID != classId)
+                                throw new ApplicationException("You don't own that assignment!");
                             ass.EffectiveDate = effectiveDate;
                             ass.ExpirationDate = expirationDate;
                             ass.Description = name;

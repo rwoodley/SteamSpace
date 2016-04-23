@@ -8,7 +8,7 @@ using System.Web.Script.Serialization;
 using SimpleSpellingBot.DTO;
 namespace SimpleSpellingBot
 {
-    public partial class SpellingTest : System.Web.UI.Page
+    public partial class SpellingTest : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

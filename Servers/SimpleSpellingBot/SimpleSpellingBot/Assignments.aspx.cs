@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace SimpleSpellingBot
 {
-    public partial class Assignments : System.Web.UI.Page
+    public partial class Assignments : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,11 +20,8 @@ namespace SimpleSpellingBot
 
             if (Request.HttpMethod.Equals("GET"))
             {
-                //var json = new JavaScriptSerializer().Serialize(db.Assignments.ToList());
-                int classId = -1;
-                Int32.TryParse((Session["ClassID"]??"-1").ToString(), out classId);
                 var json = JsonConvert.SerializeObject(db.Assignments.Where(x=>
-                    x.ClassID == classId && 
+                    x.ClassID == currentClassId() && 
                     !x.IsDeleted).ToList());
 
                 Response.Clear();

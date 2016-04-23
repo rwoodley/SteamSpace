@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace SimpleSpellingBot
 {
-    public partial class DeleteAssignment : System.Web.UI.Page
+    public partial class DeleteAssignment : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,6 +17,8 @@ namespace SimpleSpellingBot
             {
                 int testid = int.Parse(Request.QueryString["id"]);
                 Assignment ass = db.Assignments.Where(x=>x.AssignmentID == testid).Single();
+                if (ass.ClassID != currentClassId())
+                    throw new ApplicationException("You don't own that assignment!");
                 ass.IsDeleted = true;
                 db.SubmitChanges();
 
