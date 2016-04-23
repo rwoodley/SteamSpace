@@ -8,14 +8,6 @@
       <Column Name="Answer" Member="Answer1" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
-  <Table Name="dbo.Teachers" Member="Teachers">
-    <Type Name="Teacher">
-      <Column Name="TeacherID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SecretCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Name" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.Classes" Member="Classes">
     <Type Name="Class">
       <Column Name="ClassID" Type="System.String" DbType="Char(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -40,6 +32,13 @@
       <Column Name="EffectiveDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="ExpirationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="IsDeleted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Teachers" Member="Teachers">
+    <Type Name="Teacher">
+      <Column Name="TeacherID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(300) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Function Name="dbo.GetID" Method="GetID">

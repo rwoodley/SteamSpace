@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -50,97 +51,112 @@ namespace SimpleSpellingBot
         /// <param name="context">Contains the request and response.</param>
         public void ProcessRequest(HttpContext context)
         {
-            // Get the code from the request POST body.
-            string accessToken = context.Request.Params["access_token"];
-            string idToken = context.Request.Params["id_token"];
-
-            // Validate the ID token
-            if (idToken != null)
+            try
             {
-                JwtSecurityToken token = new JwtSecurityToken(idToken);
-                JwtSecurityTokenHandler jsth = new JwtSecurityTokenHandler();
+                // Get the code from the request POST body.
+                string accessToken = context.Request.Params["access_token"];
+                string idToken = context.Request.Params["id_token"];
 
-                // Configure validation
-                Byte[][] certBytes = getCertBytes();
-                Dictionary<String, X509Certificate2> certificates = new Dictionary<String, X509Certificate2>();
+                // Validate the ID token
+                if (idToken != null)
+                {
+                    JwtSecurityToken token = new JwtSecurityToken(idToken);
+                    JwtSecurityTokenHandler jsth = new JwtSecurityTokenHandler();
 
-                for (int i = 0; i < certBytes.Length; i++)
-                {
-                    if (certBytes[i] == null) break;
-                    X509Certificate2 certificate = new X509Certificate2(certBytes[i]);
-                    certificates.Add(certificate.Thumbprint, certificate);
-                }
-                {
-                    // Set up token validation
-                    TokenValidationParameters tvp = new TokenValidationParameters()
+                    // Configure validation
+                    Byte[][] certBytes = getCertBytes();
+                    Dictionary<String, X509Certificate2> certificates = new Dictionary<String, X509Certificate2>();
+
+                    for (int i = 0; i < certBytes.Length; i++)
                     {
-                        ValidateActor = false, // check the profile ID
-
-                        ValidAudience = CLIENT_ID,
-
-                        ValidateIssuer = true, // check token came from Google
-                        ValidIssuers = new List<string> { "accounts.google.com", "https://accounts.google.com" },
-
-                        ValidateIssuerSigningKey = true,
-                        RequireSignedTokens = true,
-                        //CertificateValidator = X509CertificateValidator.None,
-                        IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
+                        if (certBytes[i] == null) break;
+                        X509Certificate2 certificate = new X509Certificate2(certBytes[i]);
+                        certificates.Add(certificate.Thumbprint, certificate);
+                    }
+                    {
+                        // Set up token validation
+                        TokenValidationParameters tvp = new TokenValidationParameters()
                         {
-                            return identifier.Select(x =>
+                            ValidateActor = false, // check the profile ID
+
+                            ValidAudience = CLIENT_ID,
+
+                            ValidateIssuer = true, // check token came from Google
+                            ValidIssuers = new List<string> { "accounts.google.com", "https://accounts.google.com" },
+
+                            ValidateIssuerSigningKey = true,
+                            RequireSignedTokens = true,
+                            //CertificateValidator = X509CertificateValidator.None,
+                            IssuerSigningKeyResolver = (s, securityToken, identifier, parameters) =>
                             {
-                                // TODO: Consider returning null here if you have case sensitive JWTs.
-                                /*if (!certificates.ContainsKey(x.Id))
+                                return identifier.Select(x =>
                                 {
-                                    return new X509SecurityKey(certificates[x.Id]);
-                                }*/
-                                if (certificates.ContainsKey(x.Id.ToUpper()))
-                                {
-                                    return new X509SecurityKey(certificates[x.Id.ToUpper()]);
-                                }
-                                return null;
-                            }).First(x => x != null);
-                        },
-                        ValidateLifetime = true,
-                        RequireExpirationTime = true,
-                        ClockSkew = TimeSpan.FromHours(13)
-                    };
+                                    // TODO: Consider returning null here if you have case sensitive JWTs.
+                                    /*if (!certificates.ContainsKey(x.Id))
+                                    {
+                                        return new X509SecurityKey(certificates[x.Id]);
+                                    }*/
+                                    if (certificates.ContainsKey(x.Id.ToUpper()))
+                                    {
+                                        return new X509SecurityKey(certificates[x.Id.ToUpper()]);
+                                    }
+                                    return null;
+                                }).First(x => x != null);
+                            },
+                            ValidateLifetime = true,
+                            RequireExpirationTime = true,
+                            ClockSkew = TimeSpan.FromHours(13)
+                        };
 
-                    try
-                    {
-                        // Validate using the provider
-                        SecurityToken validatedToken;
-                        ClaimsPrincipal cp = jsth.ValidateToken(idToken, tvp, out validatedToken);
+                        try
+                        {
+                            // Validate using the provider
+                            SecurityToken validatedToken;
+                            ClaimsPrincipal cp = jsth.ValidateToken(idToken, tvp, out validatedToken);
+                        }
+                        catch (Exception e)
+                        {
+                        }
                     }
-                    catch (Exception e)
-                    {
-                    }
-                }
 
-                // Get email
-                Claim[] claims = token.Claims.ToArray<Claim>();
-                for (int i = 0; i < claims.Length; i++)
-                {
-                    if (claims[i].Type.Equals("email"))
+                    // Get email
+                    Claim[] claims = token.Claims.ToArray<Claim>();
+                    String email = "";
+                    String name = "";
+                    for (int i = 0; i < claims.Length; i++)
                     {
-                        String email = claims[i].Value;
-                        int classId = DBHelper.getClassIdForEmail(email);
-                        if (classId > 0)
-                        {
-                            Session["ClassID"] = classId;
-                            context.Response.StatusCode = 200;
-                            context.Response.ContentType = "text/json";
-                            context.Response.Write("[]");
-                        }
-                        else
-                        {
-                            context.Response.StatusCode = 401;
-                            context.Response.ContentType = "text/json";
-                            context.Response.Write("[]");
-                        }
+                        if (claims[i].Type.Equals("email"))
+                            email = claims[i].Value;
+                        if (claims[i].Type.Equals("name"))
+                            name = claims[i].Value;
+                    }
+                    Tuple<int, int> ids = DBHelper.getClassIdForEmail(email, name);
+                    int teacherId = ids.Item1;
+                    int classId = ids.Item2;
+                    Debug.WriteLine("**** class id = " + classId);
+                    Session["ClassID"] = classId;
+                    Session["TeacherID"] = teacherId;
+                    if (classId > 0)
+                    {
+                        context.Response.StatusCode = 200;
+                        context.Response.ContentType = "text/json";
+                        context.Response.Write("[]");
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "text/json";
+                        context.Response.Write("[]");
                     }
                 }
             }
-
+            catch (Exception e)
+            {
+                Debug.Write(e.Message);
+                Debug.Write(e.StackTrace);
+                context.Response.StatusCode = 500;
+                context.Response.StatusDescription = e.Message;
+            }
         }
 
         // Used for string parsing the Certificates from Google

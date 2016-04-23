@@ -29,7 +29,22 @@
             margin: 24px;
         }
     </style>
+    <style is="custom-style">
+        paper-icon-button.roundButton {
+            width: 60px;
+            height: 60px;
+        }
+        /*paper-icon-button.pink {
+            color: var(--paper-pink-500);
+            --paper-icon-button-ink-color: var(--paper-indigo-500);
+            border-radius: 3px;
+            padding: 2px;
+        }*/
+    </style>
     <style>
+        img {
+            border-radius: 50%;
+        }
         #new_assignment_button {
             position: absolute;
             top: calc(64px - 28px);
@@ -94,8 +109,27 @@
                 console.log('Family Name: ' + profile.getFamilyName());
                 console.log('Image URL: ' + profile.getImageUrl());
                 console.log('Email: ' + profile.getEmail());
-
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', "http://" + document.location.hostname + ":50906//SignIn.aspx");
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        console.log('Signed in as: ' + xhr.responseText);
+                        document.getElementById('pictureButton').icon = undefined;
+                        document.getElementById('pictureButton').src = profile.getImageUrl();
+                    }
+                    else
+                        console.log("Error code " + xhr.status + ", " + xhr.statusText);
+                };
+                xhr.send('id_token=' + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token);
             });
+
+            document.getElementById('googleSignIn').addEventListener('google-signed-out', function (e) {
+                console.log('logged out');
+                document.getElementById('pictureButton').src = undefined;
+                document.getElementById('pictureButton').icon = "icons:account-circle";
+            });
+
         });
     </script>
     
@@ -118,12 +152,19 @@
                     <span class="space"></span>
 
                     <!-- Toolbar icons -->
-                    <paper-icon-button icon="icons:account-circle" onclick=""></paper-icon-button>
-                    <google-signin id="googleSignIn" client-id="162790104805-bq78951i6h5mk51e164ghtdldndvut9h.apps.googleusercontent.com"
-                                   scopes="https://www.googleapis.com/auth/drive"></google-signin>
+                    <paper-menu-button horizontal-align="right">
+                        <paper-icon-button id="pictureButton" class="roundButton dropdown-trigger" icon="icons:account-circle"
+                                           src="" onclick=""></paper-icon-button>
+                        <paper-menu class="dropdown-content">
+                            <paper-item>
+                                <google-signin id="googleSignIn" client-id="162790104805-bq78951i6h5mk51e164ghtdldndvut9h.apps.googleusercontent.com"
+                                               scopes="https://www.googleapis.com/auth/drive"></google-signin>
+                            </paper-item>
+                        </paper-menu>
+                    </paper-menu-button>
                     <!-- Application name -->
                     <div class="middle middle-container">
-                        <div class="app-name">Details</div>
+                        <div class="app-name">Details:</div>
                     </div>
 
                     <paper-fab hidden="true" id="delete_assignment_button" icon="icons:close"></paper-fab>

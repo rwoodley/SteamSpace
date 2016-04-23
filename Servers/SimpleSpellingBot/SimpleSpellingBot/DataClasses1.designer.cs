@@ -39,6 +39,9 @@ namespace SimpleSpellingBot
     partial void InsertAssignment(Assignment instance);
     partial void UpdateAssignment(Assignment instance);
     partial void DeleteAssignment(Assignment instance);
+    partial void InsertTeacher(Teacher instance);
+    partial void UpdateTeacher(Teacher instance);
+    partial void DeleteTeacher(Teacher instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -79,14 +82,6 @@ namespace SimpleSpellingBot
 			}
 		}
 		
-		public System.Data.Linq.Table<Teacher> Teachers
-		{
-			get
-			{
-				return this.GetTable<Teacher>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Class> Classes
 		{
 			get
@@ -108,6 +103,14 @@ namespace SimpleSpellingBot
 			get
 			{
 				return this.GetTable<Assignment>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Teacher> Teachers
+		{
+			get
+			{
+				return this.GetTable<Teacher>();
 			}
 		}
 		
@@ -195,87 +198,6 @@ namespace SimpleSpellingBot
 				if ((this._Answer1 != value))
 				{
 					this._Answer1 = value;
-				}
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Teachers")]
-	public partial class Teacher
-	{
-		
-		private int _TeacherID;
-		
-		private string _SecretCode;
-		
-		private string _Name;
-		
-		private string _Description;
-		
-		public Teacher()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeacherID", DbType="Int NOT NULL")]
-		public int TeacherID
-		{
-			get
-			{
-				return this._TeacherID;
-			}
-			set
-			{
-				if ((this._TeacherID != value))
-				{
-					this._TeacherID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SecretCode", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string SecretCode
-		{
-			get
-			{
-				return this._SecretCode;
-			}
-			set
-			{
-				if ((this._SecretCode != value))
-				{
-					this._SecretCode = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this._Name = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="VarChar(200) NOT NULL", CanBeNull=false)]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this._Description = value;
 				}
 			}
 		}
@@ -706,6 +628,116 @@ namespace SimpleSpellingBot
 					this._IsDeleted = value;
 					this.SendPropertyChanged("IsDeleted");
 					this.OnIsDeletedChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Teachers")]
+	public partial class Teacher : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TeacherID;
+		
+		private string _Email;
+		
+		private string _Name;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTeacherIDChanging(int value);
+    partial void OnTeacherIDChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public Teacher()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TeacherID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int TeacherID
+		{
+			get
+			{
+				return this._TeacherID;
+			}
+			set
+			{
+				if ((this._TeacherID != value))
+				{
+					this.OnTeacherIDChanging(value);
+					this.SendPropertyChanging();
+					this._TeacherID = value;
+					this.SendPropertyChanged("TeacherID");
+					this.OnTeacherIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(300) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(300) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
 				}
 			}
 		}

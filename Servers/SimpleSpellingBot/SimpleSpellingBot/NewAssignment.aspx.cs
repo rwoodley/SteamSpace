@@ -12,6 +12,10 @@ namespace SimpleSpellingBot
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            int classId = -1;
+            Int32.TryParse((Session["ClassID"] ?? "-1").ToString(), out classId);
+            if (classId < 0)
+                throw new UnauthorizedAccessException();
             var db = new DataClasses1DataContext();
 
             if (Request.HttpMethod.Equals("GET"))
@@ -22,7 +26,7 @@ namespace SimpleSpellingBot
                 ass.EffectiveDate = DateTime.Today;
                 ass.ExpirationDate = DateTime.Today.AddYears(1);
                 ass.Language = "US/EN";
-                ass.ClassID = 1;    // TODO
+                ass.ClassID = classId;    // TODO
                 db.Assignments.InsertOnSubmit(ass);
                 db.SubmitChanges();
                 var json = JsonConvert.SerializeObject(ass);
