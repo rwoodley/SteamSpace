@@ -37,6 +37,11 @@
     .no-close .ui-dialog-titlebar-close {
       display: none;
     }
+    #classIdNote { 
+      color: black;
+      font-style: italic;
+      font-size: 8pt;
+    }
     </style>
   </head>
   <body style="overflow-y: scroll;">
@@ -95,6 +100,7 @@
         <fieldset>
           <label for="classid">Class ID</label><br/>
           <input type="text" name="classid" id="classid"  class="text ui-widget-content ui-corner-all"><br/>
+          <div id='classIdNote'>Class ID is a 6 letter code that your teacher will have given you.</div>
           <label for="firstname">First Name</label><br/>
           <input type="text" name="firstname" id="firstname"  class="text ui-widget-content ui-corner-all"><br/>
           <label for="lastname">Last Name</label><br/>
@@ -110,7 +116,6 @@
     <script src="scripts/jquery-1.11.1.min.js"></script>
     <script src="scripts/jquery-ui.min-1.11.4.js"></script>
     <script src="scripts/ssUtil.js"></script>
-    <script src="scripts/ssAssignments.js"></script>
     <script src="scripts/ssPanel.js"></script>
     <script src="scripts/logon.js"></script>
     <script src="scripts/main.js"></script>

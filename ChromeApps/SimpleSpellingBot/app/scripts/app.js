@@ -5,7 +5,7 @@
 // If calls doPost() as needed to return results.
 // The code must implement 3 functions ss_getName(), ss_initApp() and ss_assignmentCallback()
 var _app;
-var _postURL = "http://192.168.0.103:50906/Answers.aspx";
+var _postURL = "http://localhost:50906/Answers.aspx";
 function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
@@ -64,7 +64,7 @@ var app = function() {
 
     var html = '';
     html += "<form id='spellingForm'>";
-    var tmp = "<div class='main-title'>Assignment: $0</div><div class='main-subtitle'>$1</div>";
+    var tmp = "<div class='main-title'>$0</div><div class='main-subtitle'>$1</div>";
     html += tmp.replace('$0', name).replace('$1', notes);
 
     html += "<table>";
@@ -123,7 +123,7 @@ var app = function() {
   this.showResults = function(headers, answers) {
 
     var html = '';
-    var tmp = "<div class='main-title'>Assignment: $0</div><div class='main-subtitle'>$1</div>";
+    var tmp = "<div class='main-title'>$0</div><div class='main-subtitle'>$1</div>";
     html += tmp.replace('$0', _assignmentName).replace('$1', _assignmentNotes);
 
     html += "<table>";
@@ -183,7 +183,7 @@ var app = function() {
   this.tryAgain = function() {
     // if there are no wrong words, but they have pressed Try Again, give them all the words.
     var testWords = _onlyWrongWords.length === 0 ? _allWords : _onlyWrongWords;
-    this.initWords(_allWords, _assignmentName, _assignmentNotes, testWords);
+    this.initWords(_assignmentId, _allWords, _assignmentName, _assignmentNotes, testWords);
   };
   var _firstWord = true;
   var _voice;

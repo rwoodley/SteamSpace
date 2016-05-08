@@ -1,4 +1,4 @@
-var _getURL = "http://192.168.0.103:50906/SpellingTest.aspx";
+var _getURL = "http://localhost:50906/SpellingTest.aspx";
 
 $().ready(function() {
     doLogon();      // Start here
@@ -6,6 +6,7 @@ $().ready(function() {
 
 // ---- All this to handle logon
 function doLogon() {
+
     dialog = $( "#logon-form" ).dialog({
       autoOpen: true,
       dialogClass: "no-close",
@@ -63,10 +64,7 @@ function checkRegexp( o, regexp, n ) {
 // ---- END: All this to handle logon
 function postLogonCallback(firstName, lastName, classId) {
 
-    //var url = "https://s3.amazonaws.com/spellingapp/$0/$1.json";
-    //url = url.replace('$0',curriculumCategory).replace('$1', curriculumName);
-    
-    var url = _getURL + "?classID=$1&firstName=$2$lastName=$3";
+    var url = _getURL + "?classCode=$1&firstName=$2$lastName=$3";
     url = url.replace('$1', classId).replace('$2', firstName).replace('$3', lastName);
     console.log("reading " + url);
     var jqxhr = $.ajax({ url: url, timeout: 5000 })
