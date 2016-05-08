@@ -1,11 +1,31 @@
 var _getURL = "http://localhost:50906/SpellingTest.aspx";
+var _googleEmail = '';
+var _googleFirstName = '';
+var _googleLastName = '';
 
 $().ready(function() {
-    doLogon();      // Start here
+  chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+    console.log(token);
+   if (chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError.message);
+        return;
+    }
+    var x = new XMLHttpRequest();
+    x.open('GET', 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=' + token);
+    x.onload = function() {
+        console.log(x.response);
+        var data = JSON.parse(x.response);
+        _googleEmail = data.email;
+        _googleFirstName = data.given_name;
+        _googleLastName = data.family_name;
+        doLogon(_googleFirstName,_googleLastName );      // Start here
+    };
+    x.send();
+  });
 });
 
 // ---- All this to handle logon
-function doLogon() {
+function doLogon(firstname, lastname) {
 
     dialog = $( "#logon-form" ).dialog({
       autoOpen: true,
@@ -17,7 +37,9 @@ function doLogon() {
         "Logon": processUserLogonInputs
       },
     });
- 
+    document.getElementById('firstname').value = firstname;
+    document.getElementById('lastname').value = lastname;
+
     form = dialog.find( "form" ).on( "submit", function( event ) {
       event.preventDefault();
       addUser();
@@ -69,7 +91,7 @@ function postLogonCallback(firstName, lastName, classId) {
     console.log("reading " + url);
     var jqxhr = $.ajax({ url: url, timeout: 5000 })
       .done(function(obj) {
-        ss_init(obj.Curriculum, obj, firstName, lastName, classId);  // TODO: simplify this.
+        ss_init(obj.Curriculum, obj, firstName, lastName, classId, _googleEmail);  // TODO: simplify this.
         console.log( "success" );
       })
       .fail(function(err, a1, a2) {

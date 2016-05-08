@@ -1,7 +1,7 @@
 'use strict';
 var _that;
-function ss_init(curriculumName, tag, firstName, lastName, classId) { // called on auth complete, kicks off menu initialization.
-  _that.initGUIForSteamspace(curriculumName, tag, firstName, lastName, classId);
+function ss_init(curriculumName, tag, firstName, lastName, classId, email) { // called on auth complete, kicks off menu initialization.
+  _that.initGUIForSteamspace(curriculumName, tag, firstName, lastName, classId, email);
 }
 // Setup GUI - Called on page load.
 
@@ -90,7 +90,7 @@ function GUISetup() {
   var _ssPanel;
   var _ssUtil;
   this._successfulAuthorization = false;
-  this.initGUIForSteamspace = function(curriculumName, classData, firstName, lastName, classId) {
+  this.initGUIForSteamspace = function(curriculumName, classData, firstName, lastName, classId, email) {
     var querySelector = document.querySelector.bind(document);
     var main = document.getElementById('mainel');
     _ssPanel = new ssPanel(main);
@@ -102,7 +102,7 @@ function GUISetup() {
     }
     _curriculumName = curriculumName;
 
-    ss_initApp(_ssPanel, _ssUtil, firstName, lastName, classId);
+    ss_initApp(_ssPanel, _ssUtil, firstName, lastName, classId, email);
     _ssPanel.showLoading(true);
     initSelectMenuForTeachers(classData.Classes[0]);
   }

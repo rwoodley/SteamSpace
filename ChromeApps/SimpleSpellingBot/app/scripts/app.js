@@ -22,13 +22,14 @@ function ss_modalDialog(divName) {
   });  
 }
 
-function ss_initApp(panel, utils, firstName, lastName, classId) {
+function ss_initApp(panel, utils, firstName, lastName, classId, email) {
   _app = new app();
-  _app.initApp(panel, utils, firstName, lastName, classId);
+  _app.initApp(panel, utils, firstName, lastName, classId, email);
 }
 function ss_assignmentCallback(id, words, name, notes, sentences) { _app.assignmentCallback(id, words, name, notes, sentences); }
 
 var app = function() {
+  var _email;
   var _classId;
   var _firstName;
   var _lastName;
@@ -44,11 +45,12 @@ var app = function() {
   var _assignmentNotes;
   var _sentenceLookup;
 
-  this.initApp = function(panel, utils, firstName, lastName, classId) { 
+  this.initApp = function(panel, utils, firstName, lastName, classId, email) { 
     _ssPanel = panel; 
     _ssUtil = utils;
     
     _classId = classId;
+    _email = email;
     _firstName = firstName;
     _lastName = lastName;
   } ;
@@ -168,6 +170,7 @@ var app = function() {
     });
     this.showResults(words, answers);
 
+   postData += "&email=" + encodeURIComponent(_email);
    postData += "&classId=" + encodeURIComponent(_classId);
    postData += "&assignmentId=" + encodeURIComponent(_assignmentId);
    postData += "&firstName=" + encodeURIComponent(_firstName);

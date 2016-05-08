@@ -42,13 +42,16 @@
       font-style: italic;
       font-size: 8pt;
     }
+    .myInputStyle  {
+      color: blue;
+    }
     </style>
   </head>
   <body style="overflow-y: scroll;">
     <header class="app-bar promote-layer">
       <div class="app-bar-container">
         <button class="menu"><img src="images/hamburger.svg" alt="Menu"></button>
-        <img style="border-radius: 30%; margin: 10px;" src="images/little-robot48.png" />
+        <img style="border-radius: 30%; margin: 10px;" src="images/botLogo_small.svg" />
         <h3 class="logo">Spelling Bot!</h3>
         <section class="app-bar-actions">
         <button class="selectMenu">
@@ -99,12 +102,12 @@
         <form>
         <fieldset>
           <label for="classid">Class ID</label><br/>
-          <input type="text" name="classid" id="classid"  class="text ui-widget-content ui-corner-all"><br/>
+          <input type="text" name="classid" id="classid"  class="myInputStyle text ui-widget-content ui-corner-all"><br/>
           <div id='classIdNote'>Class ID is a 6 letter code that your teacher will have given you.</div>
           <label for="firstname">First Name</label><br/>
-          <input type="text" name="firstname" id="firstname"  class="text ui-widget-content ui-corner-all"><br/>
+          <input type="text" name="firstname" id="firstname"  class="myInputStyle text ui-widget-content ui-corner-all"><br/>
           <label for="lastname">Last Name</label><br/>
-          <input type="text" name="lastname" id="lastname"  class="text ui-widget-content ui-corner-all"><br/>
+          <input type="text" name="lastname" id="lastname"  class="myInputStyle text ui-widget-content ui-corner-all"><br/>
 
           <!-- Allow form submission with keyboard without duplicating the dialog button -->
           <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
