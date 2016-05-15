@@ -1,4 +1,5 @@
-var _getURL = "http://localhost:50906/SpellingTest.aspx";
+var _getURL = "https://spellingbot.apphb.com/SpellingTest.aspx";
+//var _getURL = "https://localhost:44300/SpellingTest.aspx";
 var _googleEmail = '';
 var _googleFirstName = '';
 var _googleLastName = '';
@@ -6,7 +7,7 @@ var _googleLastName = '';
 $().ready(function() {
   chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
     console.log(token);
-   if (chrome.runtime.lastError) {
+    if (chrome.runtime.lastError) {
         console.log(chrome.runtime.lastError.message);
         return;
     }

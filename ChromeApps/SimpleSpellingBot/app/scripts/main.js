@@ -115,19 +115,24 @@ function GUISetup() {
     var html = '';
     html += '<li ><h4 class="selectMenu-container-header" >Choose a voice!</h4></li>';
     var voices = window.speechSynthesis.getVoices();
+    var englishVoices = [];
     for(var i = 0; i < voices.length; i++ ) {
-      console.log(voices[i].lang)
-      var id = "voice"+i;
-      html += "<li><a id='$0'>$1</a></li>".replace('$0', id).replace('$1', voices[i].name);
+      if (voices[i].name.toUpperCase().indexOf('ENGLISH') > -1 ||
+      voices[i].name.toUpperCase().indexOf('NATIVE') > -1) {
+        englishVoices.push(voices[i]);
+        console.log(voices[i].lang)
+        var id = "voice"+i;
+        html += "<li><a id='$0'>$1</a></li>".replace('$0', id).replace('$1', voices[i].name);
+      }
     }
     menuEl.innerHTML = html;
-    for(var i = 0; i < voices.length; i++ ) {
+    for(var i = 0; i < englishVoices.length; i++ ) {
       var id = "voice"+i;
       var el = document.getElementById(id);
       (function(t) { el.onclick = function() { 
         setVoice(t);
         hideSettingsMenu();
-        }; })(voices[i].name);
+        }; })(englishVoices[i].name);
     }
   }
   function initSelectMenuForTeachers(classData) {

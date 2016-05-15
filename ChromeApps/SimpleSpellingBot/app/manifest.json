@@ -2,14 +2,12 @@
   "name": "Simple Spelling Bot",
   "short_name": "Simple Spelling Bot",
   "description": "Speaks spelling words and gives you a simple spelling test.",
-  "version": "0.56",
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3K23xpW/wmJctb2LBkMVm59ZppxJpN4Z/LP9jk/eH2GQsm3nAM8vMPwZ3kdJP2Oct/H3vPjSOuRAatY7CDS4NyLaLukrr6vcnui1i7g3UN42xrcDTioiLCHD0/z+AJDq6uN2uAJrQsF3gACkTTIKcP6Qp18SIgZIAmUkDeUV9M8dHh0chRcz3Zv5mhwRJOlYlDU+QYgHaoT06qmchCD3GuFhX1+CR/olTefTjFSci9R/l1JzYVkf7JEJZXMft92pxQITHYzhhfVhhllk+0YS1xl00ngJN7VPVcLYNttYZRz4x/qq3s84EhhANJGU8ieTrG8r69RXf4UsFPhtHLGP/QIDAQAB",
+  "version": "0.12",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAivE+XxDi+8+eUH4P9o170GxFwrzXkP5vegKFn3B97dOJjLeNX3MU6llb8POZ1J19RQ0tgMGQd6PJfZGI1CLmLSGx4JTSTh6O0ID1Z+fjtAsqDiCyMcg71TiuhM5YnPSAt5K3Rl3AZzU865udqp/QiFPd1u5t5Cu1gq93ytkQAB+OKSGkOyejmbDPvOxNCwxLELY5f3GHodXx+Gt8MKyaDoMNyxbGdbcNwWAscpIYU7K233282RUemNpJCHgqaTM2vsX4qhmGftxhS994MxXOAh/Urw9NypwY4XJdwjOo/VCa19nyr7HbWuJ5WpKTtDHK7/ll5L9/leifOeOuJDq+pwIDAQAB",
   "oauth2": {
-      "client_id": "683512459303-nfac0rlkdvvudbs0bh2jc2dk25ipv3qj.apps.googleusercontent.com",
+      "client_id": "683512459303-e8ts3mls0g9689r4qks5468eqibb24l8.apps.googleusercontent.com",
       "scopes": [
         "https://www.googleapis.com/auth/plus.login",
-        "https://www.googleapis.com/auth/plus.profile.emails.read",   
-        "https://www.googleapis.com/auth/drive",
         "https://www.googleapis.com/auth/userinfo.email"
       ]
   },

@@ -5,11 +5,12 @@
 // If calls doPost() as needed to return results.
 // The code must implement 3 functions ss_getName(), ss_initApp() and ss_assignmentCallback()
 var _app;
-var _postURL = "http://localhost:50906/Answers.aspx";
+var _postURL = "https://spellingbot.apphb.com/Answers.aspx";
+//var _postURL = "https://localhost:44300/Answers.aspx";
 function speakWord(word, el) { _app.speakWord(word, el); }
 function scoreAndSubmit() { _app.scoreAndSubmit(); }
 function tryAgain() { _app.tryAgain(); }
-function ss_getName() { return "SpellingBot"; }
+function ss_getName() { return "SimpleSpellingBot"; }
 function ss_canRunStandalone() { return false; }
 
 function ss_modalDialog(divName) {
@@ -210,8 +211,9 @@ var app = function() {
     else
         window.speechSynthesis.cancel();
     var sentence = _sentenceLookup[word];
-    var thingToSay = sentence !== undefined ? "The word is " + word + ". " 
+    var thingToSay = sentence !== undefined ? "Please spell " + word + ". " 
           + sentence + "." : word;
+    console.log(thingToSay);
     var utt = new SpeechSynthesisUtterance(thingToSay);
     utt.voice = _voice;
     window.speechSynthesis.speak(utt);
