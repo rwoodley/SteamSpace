@@ -1,4 +1,4 @@
-var _getURL = "https://spellingbot.apphb.com/SpellingTest.aspx";
+var _getURL = "https://spellingbot.net/SpellingTest.aspx";
 //var _getURL = "https://localhost:44300/SpellingTest.aspx";
 var _googleEmail = '';
 var _googleFirstName = '';

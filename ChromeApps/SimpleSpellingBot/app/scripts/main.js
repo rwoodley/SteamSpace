@@ -116,13 +116,15 @@ function GUISetup() {
     html += '<li ><h4 class="selectMenu-container-header" >Choose a voice!</h4></li>';
     var voices = window.speechSynthesis.getVoices();
     var englishVoices = [];
+    var englishVoiceCount = 0;
     for(var i = 0; i < voices.length; i++ ) {
       if (voices[i].name.toUpperCase().indexOf('ENGLISH') > -1 ||
       voices[i].name.toUpperCase().indexOf('NATIVE') > -1) {
         englishVoices.push(voices[i]);
         console.log(voices[i].lang)
-        var id = "voice"+i;
+        var id = "voice"+englishVoiceCount;
         html += "<li><a id='$0'>$1</a></li>".replace('$0', id).replace('$1', voices[i].name);
+        englishVoiceCount++;
       }
     }
     menuEl.innerHTML = html;
