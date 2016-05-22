@@ -35,13 +35,12 @@
          <h1 style="overflow: hidden;"><div style=" float:right;   "><img src="images/steamsp_logotext_cropped.png" width=300px /></div></h1>
        </header>
        <div id="blurb">
-        Steam Space connects teachers with programmers to build educational applications. Teachers know what is needed, programmers can deliver it.
+        Steam Space provides free educational software.
         <p/>
-        This interaction is not unstructured however. We believe in building in the teacher-student interaction from the start, using existing tools that teachers are comfortable with. 
-        Our framework facilitates this.
+        The software is designed to be easy to use for both students and teachers and should provide hooks for teachers to easily retrieve metrics on student usage.
         <ul>Our current tool-kit is:
             <li>Chrome apps for students, and</li>
-            <li>Google Docs/Google Drive for teachers.</li>
+            <li>Web sites and Google Docs/Google Drive for teachers.</li>
         </ul>
         
        </div>
@@ -49,19 +48,13 @@
        <form id="register" name='blah'>
            <INPUT TYPE="HIDDEN" NAME="LoginID" VALUE="unused">
            <INPUT TYPE="HIDDEN" NAME="SpreadSheetName" VALUE="DemoRequests">
-          <h2>Get involved!</h2>
+          <h2>Join the mailing lists.</h2>
           <label for="name">Name</label>
           <input type="text" name="name" id="name"
              placeholder="Thomas A Anderson" required>
           <label for="email">Email address</label>
           <input type="email" name="email" id="email"
              placeholder="neo@example.com" required>
-          <label for="role">Your role</label>
-
-        <select name="role">
-          <option value="programmer">Programmer</option>
-          <option value="teacher">Teacher</option>
-        </select>
           <label for="location">Your location</label>
           <input type="location" name="location" id="location"
              placeholder="Chicago, IL" required>
@@ -70,54 +63,14 @@
         <br></br>
     </div>
  </div>
- <div id="section1">
-      <div class="container">
-        <h3>What is the Steam Space Framework?</h3>
-
-        The Steam Space Framework provides real-time feedback from students to teachers by integrating chrome apps with the teachers' Google Docs.
-        <p>Each Steam Space app has its own look and feel appropriate for the lesson it offers.
-        Some apps run in stand-alone mode and can be downloaded right now and used without needing a teacher's involvement.
-        However the Steam Space framework offers additional value and allows for a teacher to be involved with the student.</p>
-        <p>How Does It Work?</p>
-        <ul>
-          <li>Everything is accomplished via a few docs in the teacher's Google Drive.</li>
-          <li>The teacher groups students into rosters in a spreadsheet called 'Rosters'.</li>
-          <li>The teacher gives an assignment to a roster by entering a single line into a file called 'Assignments'.</li>
-          <li>Output from the assignment goes into its own spreadsheet. Data is updated immediately as the student uses the app.</li>
-          <li>Click <a href="http://www.steamspace.net/GettingStarted.html">here</a> if you are a teacher and would like to pilot the system.</li>
-        </ul>
-        <video  controls poster="images/poster.png">
-          <source src="images/ss.mov" type="video/mp4"></source>
-          <p>Sorry your browser doesn't support video.
-          </p>
-        </video>
-        <br>
-      </div>
-    </div>
-    <!--
-    <div id="section2">
-      <h2>Existing apps</h2>
-      <p>Existing Steam Space Apps:</p>
-    
-      <div id="images">
-        <img src="images/spellingBot128.png" alt="Spelling Bot">
-        <img src="images/visualCalculator128.png" alt="Visual Calculator">
-        <img src="images/formulaToy128.png" alt="Formula Toy">
-      </div>
-    
-      <br>
-    </div>
-    -->
  <div id="section3">
-      <h2>Sample Steam Space Apps</h2>
-      <p><div style="text-align: left;">These are all Chrome Apps. Click on the name to view in the App Store. These are pilot apps that rely on the Steam Space Framework.</div></p>
+      <h2>Steam Space Apps</h2>
       <table>
-        <thead>
+        <thead> 
            <tr>
              <th></th>
              <th>Name</th>
              <th>Description</th>
-             <th><nobr>Can run standalone? <a href="#standalone">*</a></nobr></th>
              <th>More Info</th>
            </tr>
         </thead>
@@ -129,24 +82,28 @@
         </colgroup>
         <tbody>
          <tr>
+            <td data-th=""><img src="images/botLogo_128.png" alt="Spelling Bot"></td>
+            <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/spelling-bot-20/opabciapflaamaidgiajimafnedniolo">Spelling Bot 2.0</a></h4></td>
+            <td data-th="Description">Practice spelling tests assigned by the teacher.</td>
+            <td data-th="More Info">Students, see: <a href='https://youtu.be/TAPHpjAXDCk'>this video</a>.<br/>
+            Teachers, see: <a href='https://youtu.be/WZsuQwfjkSY'>this video</a>.
+          </tr>
+         <tr>
             <td data-th=""><img src="images/spellingBot128.png" alt="Spelling Bot"></td>
-            <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/spelling-bot/ednohpldhkhgckejpgcehegljincabnk">Spelling Bot</a></h4></td>
-            <td data-th="Description">Practice Spelling Lists assigned by the teacher</td>
-            <td data-th="Standalone?">No</td>
-            <td data-th="More Info">See Video above</td>
+            <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/spelling-bot/ednohpldhkhgckejpgcehegljincabnk">Spelling Bot 1.0</a></h4></td>
+            <td data-th="Description">If you are new to Spelling Bot, please use version 2.0 (above).</td>
+            <td data-th="More Info">See Video <a href='https://youtu.be/sTD8I3NubHk'>here</a>.</td>
           </tr>
          <tr>
             <td data-th=""><img src="images/visualCalculator128.png" alt="Visual Calculator"></td>
             <td data-th="Name"><a href="https://chrome.google.com/webstore/detail/visual-calculator/gjhgkallojkgahkjhppaldkbngihhnnj">Visual Calculator</a></td>
-            <td data-th="Description">View mathematical operations as groupings of prime factors</td>
-            <td data-th="Standalone?">Yes</td>
+            <td data-th="Description">View mathematical operations as groupings of prime factors. (*)</td>
             <td data-th="More Info"><a href="images/visualCalculator.gif"><img height=128px src="images/visualCalculator.gif"></a></td>
           </tr>
          <tr>
             <td data-th=""><img src="images/FormulaToy128.png" alt="Visual Calculator"></td>
             <td data-th="Name"><h4><a href="https://chrome.google.com/webstore/detail/formula-toy/nlokcbhiaandlmgclipefjalpolicngo">Formula Toy</a></h4></td>
-            <td data-th="Description">View 3-D formulas in a variety of coordinate systems</td>
-            <td data-th="Standalone?">Yes</td>
+            <td data-th="Description">View 3-D formulas in a variety of coordinate systems. (*)</td>
             <td data-th="More Info"><a href="images/formulaToy.gif"><img height=128px src="images/formulaToy.gif"></a></td>
           </tr>
         </tbody>
@@ -156,7 +113,8 @@
       <br />
     </div><footer>
 <p>Contact: <a href=mailto:info@SteamSpace.net>info@SteamSpace.net</a></p>
-<p>Copyright <a href=http://rwoodley.org>Robert Woodley</a>, 2014</p>
+<p>Copyright <a href=http://rwoodley.org>Robert Woodley</a>, 2014-2016</p>
+<p><a href=http://ourdisclaimer.com/?i=SteamSpace.net>Disclaimer</a></p>
 </footer>
 
 
